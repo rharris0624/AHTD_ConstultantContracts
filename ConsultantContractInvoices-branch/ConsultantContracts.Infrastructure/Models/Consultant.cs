@@ -45,6 +45,8 @@ namespace ConsultantContracts.Infrastructure.Models
         public Nullable<decimal> Multiplier { get; set; }
         public bool Inactive { get; set; }
         public bool CityOrCounty { get; set; }
+        public string BusinessPhoneNumber { get; set; }
+        public string ContactPhoneNumber { get; set; }
     
         public virtual ICollection<Contract> Contracts { get; set; }
         public virtual ICollection<Invoice> SubInvoices { get; set; }
