@@ -919,6 +919,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
+    <Content Include="readme.txt" />
     <Content Include="Reports\Main.Master" />
     <Content Include="Reports\ReportTemplate.aspx" />
     <Content Include="Reports\site.Master" />
