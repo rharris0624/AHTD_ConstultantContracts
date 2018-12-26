@@ -1,0 +1,31 @@
+@model ConsultantContractsInternal.Models.Role
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.RoleName)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.RoleName)
+    @Html.ValidationMessageFor(model => model.RoleName)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.RoleDesc)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.RoleDesc)
+    @Html.ValidationMessageFor(model => model.RoleDesc)
+</div>
+
+<div class="editor-label">
+    Application
+</div>
+<div class="editor-field">
+    @Html.DropDownListFor(model => model.ApplicationId, ((IEnumerable<ConsultantContractsInternal.Models.Application>)ViewBag.PossibleApplications).Select(option => new SelectListItem {
+        Text = Html.DisplayTextFor(_ => option).ToString(), 
+        Value = option.ApplicationId.ToString(),
+        Selected = (Model != null) && (option.ApplicationId == Model.ApplicationId)
+    }), "Choose...")
+    @Html.ValidationMessageFor(model => model.ApplicationId)
+</div>

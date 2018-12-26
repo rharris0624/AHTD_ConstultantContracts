@@ -1,0 +1,526 @@
+﻿@model ConsultantContractsInternal.ViewModels.ContractEditVM
+/// <script src="~/Scripts/_references.js"></script>
+@{
+    ViewBag.Title = "Edit Contract";
+}
+
+@section scripts
+{
+   <script type="text/javascript">
+
+       function fdate(dateString) {
+            if (dateString === null)
+                return "";
+            return moment(dateString).format('MM/DD/YYYY');
+        }
+
+        ko.validation.init({ insertMessages: false });
+        var ContractData = function(c) {
+            var self = this;
+            self.ContractCode = c.ContractCode;
+            self.ContractTypeId = ko.observable(c.ContractTypeId).extend({ required: { params: true } });
+            self.ContractStatus = ko.observable(c.ContractStatus).extend({ required: { params: true } });
+            self.TitlePhase = ko.observable(c.TitlePhase).extend({ required: { params: true } });
+            self.Job = ko.observable();
+            self.JobNo = ko.observable(c.JobNo);
+            self.Consultant = ko.observable();
+            self.ConsultantId = ko.observable(c.ConsultantId);
+            //self.ConId = ko.computed({
+            //                                    read: self.ConsultantIdValue,
+            //                                    write: self.ConsultantIdValue
+            //                                });
+            self.RemitTo = ko.observable();
+            self.RemitToId = ko.observable(c.RemitToId);
+            filterflag = self.ConsultantId();
+            self.ConsultantContractNo = ko.observable(c.ConsultantContractNo);
+            self.AgreementDate = ko.observable(fdate(c.AgreementDate)).extend({
+                date: true,
+                required: true,
+                properDateFormat: true,
+                properDateRange: true
+            });
+            self.AgreementDate.subscribe(function(newValue) {
+                $('#NoticeProceedDate').datepicker('option', 'minDate', new Date(newValue));
+            });
+            self.NoticeProceedDate = ko.observable(fdate(c.NoticeProceedDate)).extend({
+                date: true,
+                required: true,
+                properDateFormat: true,
+                properDateRange: true,
+                greaterThanDate: {
+                    params: self.AgreementDate,
+                    message: 'Notice Proceed Date must be after Agreement Date'
+                }
+            });
+            self.NoticeProceedDate.subscribe(function(newValue) {
+                $('#ScheduledCompletionDate').datepicker('option', 'minDate', new Date(newValue));
+            });
+
+            self.AgreementTypeId = ko.observable(c.AgreementTypeId).extend({ required: { params: true } });
+            self.TaskOrderNo = ko.observable(c.TaskOrderNo).extend({
+                required: {
+                    onlyIf: function() {
+                        return self.AgreementTypeId() === 3;
+                    },
+                    message: "Task Order required on Task Order Agreement"
+                },
+                maxLength: 4,
+                pattern: /\w\d{3}/
+            });
+            self.ResponsibleDivisionId = ko.observable(c.ResponsibleDivisionId).extend({ required: { params: true } });
+            self.ContractCeiling = ko.observable(c.ContractCeiling); //validations called a bit further down
+            self.T1SvcsCeiling = ko.observable(c.T1SvcsCeiling).extend({ number: true });
+            self.T1FixedFeeMax = ko.observable(c.T1FixedFeeMax).extend({
+                number: true,
+                lessThan: {
+                    params: self.T1SvcsCeiling,
+                    message: "Fixed Fee Max must be less than Services Ceiling"
+                }
+            });
+            self.T2SvcsCeiling = ko.observable(c.T2SvcsCeiling).extend({ number: true });
+            self.T2FixedFeeMax = ko.observable(c.T2FixedFeeMax).extend({
+                number: true,
+                lessThan: {
+                    params: self.T2SvcsCeiling,
+                    message: "Fixed Fee Max must be less than Services Ceiling"
+                }
+            });
+            self.ScheduledCompletionDate = ko.observable(fdate(c.ScheduledCompletionDate)).extend({
+                date: true,
+                required: true,
+                properDateFormat: true,
+                properDateRange: true,
+                greaterThanDate: {
+                    params: self.NoticeProceedDate,
+                    message: 'Scheduled Completion Date must be after Notice Proceed Date'
+                }
+            });
+            self.CompletionDate = ko.observable(fdate(c.CompletionDate)).extend({
+                date: true,
+                properDateFormat: true,
+                properDateRange: true,
+                greaterThanDate: {
+                    params: self.NoticeProceedDate,
+                    message: 'Completion Date must be after Notice Proceed Date'
+                }
+            });
+            self.HomeOfficeOverheadRateMax = ko.observable(c.HomeOfficeOverheadRateMax);
+            self.FieldServiceOverheadRateMax = ko.observable(c.FieldServiceOverheadRateMax);
+            self.FCCM = ko.observable(c.FCCM);
+            self.Multiplier = ko.observable(c.Multiplier);
+            self.Remarks = ko.observable(c.Remarks);
+
+            //added a few validators later to delay first evaluation
+
+            self.TitleSum = ko.computed(function () { // called down here to let T1 & T2 SvcCeilings initilize
+
+                var t1 = Number(self.T1SvcsCeiling());
+                var t2 = Number(self.T2SvcsCeiling());
+
+                if (!isNaN(t1) && !isNaN(t2)) {
+                    return t1 + t2 + "";
+                } else if ((!isNaN(t1)) && (isNaN(t2))) {
+                    return self.T1SvcsCeiling() + "";
+                } else if (isNaN(t1) && (!isNaN(t2))) {
+                    return self.T2SvcsCeiling() + "";
+                } else return "0";
+            });
+
+            self.ContractCeiling.extend({ //called down here because TitleSum
+                number: true,
+                required: { params: true },
+                equalNumbers: {
+                    params: self.TitleSum,
+                    onlyIf: function () {
+                        return ((self.T1SvcsCeiling() !== '' && self.T1SvcsCeiling() !== undefined) || (self.T2SvcsCeiling() !== '' && self.T2SvcsCeiling() !== undefined));
+                    },
+                    message: "Title Ceilings must add up to Contract Ceiling"
+                }
+            });
+
+            self.errors = ko.validation.group(this, { deep: true, observable: false });
+            self.isValid = function() {
+                return self.errors().length < 1;
+            };
+        };
+        
+        var NewContractVM = function() {
+
+            var self = this;
+
+            self.contract = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)));
+
+            self.contractData = new ContractData(self.contract);
+
+            var submitError = function(jqXHR, textStatus, errorThrown) {
+                alert('bad things happened');
+            };
+            var submitSuccess = function(data, textStatus, jqXHR) {
+                if (data.Status === 'OK') {
+                    window.location = '@Url.Action("Details")/' + data.ContractCode;
+                } else if (data.Status === "ERROR") {
+                    alert('something went wrong');
+                }
+            }
+
+            self.submit = function() {
+                //var c = self.contractData;
+                if (!self.contractData.isValid()) {
+                } else {
+                    
+
+                    $.ajax({
+                        url: '@Url.Action("Edit", new { id = "" })',
+                        data: ko.toJSON(self.contractData),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        error: submitError,
+                        success: submitSuccess,
+                        type: 'POST'
+                    });
+                }
+                self.contractData.errors.showAllMessages();
+            };            
+
+            
+            var lookupSuccess = function(data){
+                self.contractData.ConsultantName = data.ConsultantName;
+            };
+
+            self.remoteData = ko.observableArray(); //new Array();
+
+            $.ajax({
+                url: '@Url.Action("Search", "Consultants")',
+                type: 'GET',
+                dataType: 'json',
+                data: {term: ''},
+                async: false,
+                success: (function (data){
+                    self.remoteData = data;
+                })
+            });
+            
+            self.consultants = self.remoteData;
+            self.options = self.consultants.map(function (element) {
+                return {
+                    label: element.label,
+                    value: element.value,
+                    object: element,
+                    ConsultantId: element.value
+                };
+            });
+
+            self.consultantQuery = function (term, callback) {
+                $.ajax({
+                    url: '@Url.Action("Search", "Consultants")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { term: term },
+                    async: false
+                }).done(callback);
+            };
+
+            self.jobQuery = function (term, callback) {
+                $.ajax({
+                    url: '@Url.Action("JobSearch", "AllotmentsLookup")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { term: term }
+                }).done(callback);
+            };
+
+            //Select list values
+            self.divisions = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.responsibleDivisions)));
+
+            self.contractTypes = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.contractTypes)));
+
+            self.agreementTypes = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.agreementTypes)));
+
+            //self.contractStatuses = ['A', 'F', 'I'];
+            self.contractStatuses = [
+                { label: 'Active', value: 'A' },
+                { label: 'Final', value: 'F' },
+                { label: 'Inactive', value: 'I' }
+            ];
+
+            self.DetailsLink = ko.computed(function(){
+                return '@Url.Action("Details", "Contracts")/{0}'.format(self.contractData.ContractCode);
+            });
+
+            self.contractTitlePhase = [
+                { label: 'Title I', value: 1 },
+                { label: 'Title II', value: 2 },
+                { label: 'Title I & II', value: 3 }
+            ];
+        }  ;
+
+        var vm = new NewContractVM();
+        ko.applyBindings(vm);      
+
+        $(function() {
+            $(".date").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                maxDate: "+10Y"
+            });
+
+            $(".pasteRemoveButton").on("click",function (){
+
+            });
+        });
+
+    </script>
+}
+<h2>Edit</h2>
+
+<table >
+    <tr>
+        <td>
+            <label for="Consultant">Consultant</label>
+        </td>
+        @*<td>
+            <input id="ConsultantId" type="text" class="searchBar" data-bind="autoComplete: { selected: contractData.selectedOption, options: options }" />
+            <p data-bind="text: contractData.selectedOption().label"></p>
+        </td>*@
+        <td>
+            <input type="text" id="Consultant" name="Consultant" class="searchBar" data-bind="selectOnFocus: true, jqAuto: { source: remoteData, inputProp: 'label', dataValue: contractData.Consultant,
+                                                                                                value: contractData.ConsultantId, valueProp: 'value', labelProp: 'label', options: { minLength: 2} }" />
+            <span class="validationMessage">*</span>
+            <span class="validationMessage" data-bind="validationMessage: contractData.Consultant"></span>
+        </td>
+        <td>
+            <span id="ConsultantName" data-bind="text: contractData.ConsultantName"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="JobNo">Job Number</label>
+        </td>
+        <td>
+            <input type="text" id="JobNo" name="JobNo" class ="searchBar" data-bind="selectOnFocus: true, jqAuto: { source: jobQuery, inputProp: 'label', dataValue: contractData.Job, value: contractData.JobNo, valueProp: 'value', labelProp: 'label', 
+                                                                                        options: { minLength: 2} }" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="RemitTo">Remit To</label>
+        </td>
+        <td>
+            <input type="text" id="RemitTo" name="RemitTo" class="searchBar" data-bind="selectOnFocus: true, jqAuto: {source: remoteData, inputProp: 'label', dataValue: contractData.RemitTo,
+                                                                                        labelProp: 'label', value: contractData.RemitToId, valueProp: 'value', options: { minLength: 2} }" />
+            @*<input id="RemitTo" type="text" class="searchBar" data-bind="autocomplete: { selected: contractData.selectedRemitOption, options: remitOptions }" />*@
+            <span class="validationMessage">*</span>
+            <span class="validationMessage" data-bind="validationMessage: contractData.RemitTo"></span>
+        </td>
+        <td>
+            <span id="RemitToName" data-bind="text: contractData.RemitToName"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="ContractType">Contract Type</label>
+        </td>
+        <td>
+            <select id="ContractType" name="ContractType" data-bind="value: contractData.ContractTypeId, options: contractTypes, optionsValue:'value', optionsText:'label', optionsCaption: 'Types...'"></select>
+            <span class="validationMessage" data-bind="validationMessage: contractData.ContractTypeId"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="ContractStatus">Contract Status</label>
+        </td>
+        <td>
+            <select id="ContractStatus" name="ContractStatus" data-bind="value: contractData.ContractStatus, options: contractStatuses, optionsText: 'label', optionsValue: 'value' "></select>
+            <span class="validationMessage" data-bind="validationMessage: contractData.ContractStatus"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="TitlePhase">Title Phase</label>
+        </td>
+        <td>
+            <select id="TitlePhase" name="TitlePhase" data-bind="value: contractData.TitlePhase, options: contractTitlePhase, optionsText: 'label', optionsValue: 'value' "></select>
+            <span class="validationMessage" data-bind="validationMessage: contractData.TitlePhase"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="AgreementDate">Agreement Date</label>
+        </td>
+        <td>
+            <input type="text" id="AgreementDate" name="AgreementDate" class="date" data-bind="value: contractData.AgreementDate" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.AgreementDate"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="NoticeProceedDate">Notice Proceed Date</label>
+        </td>
+        <td>
+            <input type="text" id="NoticeProceedDate" name="NoticeProceedDate" class="date" data-bind="value: contractData.NoticeProceedDate" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.NoticeProceedDate"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="AgreementType">Agreement Type</label>
+        </td>
+        <td>
+            <select id="AgreementType" name="AgreementType" data-bind="value: contractData.AgreementTypeId, options: agreementTypes, optionsValue:'value', optionsText:'label', optionsCaption: 'Types...'"></select>
+            <span class="validationMessage" data-bind="validationMessage: contractData.AgreementTypeId"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="TaskOrderNo" data-bind="visible: contractData.AgreementTypeId() === 3">Task Order</label>
+        </td>
+        <td>
+            <input type="text" id="TaskOrderNo" name="TaskOrderNo" data-bind="value: contractData.TaskOrderNo, visible: contractData.AgreementTypeId() === 3" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.TaskOrderNo"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="ResponsibleDivision">Responsible Division</label>
+        </td>
+        <td>
+            <select id="ResponsibleDivision" name="ResponsibleDivision" data-bind="value: contractData.ResponsibleDivisionId, options: divisions, optionsValue:'value', optionsText:'label', optionsCaption:'Responsible Division'"></select>
+            <span class="validationMessage" data-bind="validationMessage: contractData.ResponsibleDivisionId"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="ContractCeiling">Contract Ceiling</label>
+        </td>
+        <td>
+            <input type="text" class="money" id="ContractCeiling" name="ContractCeiling" data-bind="moneyvalue: contractData.ContractCeiling/*toFixed(2)*/" />
+            <span class="validationMessage">*</span>
+            <span class="validationMessage" data-bind="validationMessage: contractData.ContractCeiling"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="T1SvcsCeiling">Title I Services Ceiling</label>
+        </td>
+        <td>
+            <input type="text" class="money" id="T1SvcsCeiling" name="T1SvcsCeiling" data-bind="moneyvalue: contractData.T1SvcsCeiling/*.toFixed(2)*/" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.T1SvcsCeiling"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="T1FixedFeeMax">Title I Fixed Fee Max</label>
+        </td>
+        <td>
+            <input type="text" class="money" id="T1FixedFeeMax" name="T1FixedFeeMax" data-bind="moneyvalue: contractData.T1FixedFeeMax/*.toFixed(2)*/" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.T1FixedFeeMax"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="T2SvcsCeiling">Title II Services Ceiling</label>
+        </td>
+        <td>
+            <input type="text" class="money" id="T2SvcsCeiling" name="T2SvcsCeiling" data-bind="moneyvalue: contractData.T2SvcsCeiling/*.toFixed(2)*/" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.T2SvcsCeiling"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="T2FixedFeeMax">Title II Fixed Fee Max</label>
+        </td>
+        <td>
+            <input type="text" class="money" id="T2FixedFeeMax" name="T2FixedFeeMax" data-bind="moneyvalue: contractData.T2FixedFeeMax/*.toFixed(2)*/" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.T2FixedFeeMax"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="ScheduledCompletionDate">Scheduled Completion Date</label>
+        </td>
+        <td>
+            <input type="text" id="ScheduledCompletionDate" name="ScheduledCompletionDate" class="date" data-bind="value: contractData.ScheduledCompletionDate" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.ScheduledCompletionDate"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="CompletionDate">Completion Date</label>
+        </td>
+        <td>
+            <input type="text" id="CompletionDate" name="CompletionDate" class="date" data-bind="value: contractData.CompletionDate" />
+            <span class="validationMessage" data-bind="validationMessage: contractData.CompletionDate"></span>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="HomeOfficeOverheadRateMax">Home Office Overhead Rate Max</label>
+        </td>
+        <td>
+            <input type="text" class="rateAmount" id="HomeOfficeOverheadRateMax" name="HomeOfficeOverheadRateMax" data-bind="percentvalue: contractData.HomeOfficeOverheadRateMax" />
+           @* <span class="validationMessage" data-bind="validationMessage: contractData"></span>*@
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="FieldServiceOverheadRateMax">Field Service Overhead Rate Max</label>
+        </td>
+        <td>
+            <input type="text" class="rateAmount" id="FieldServiceOverheadRateMax" name="FieldServiceOverheadRateMax" data-bind="percentvalue:contractData.FieldServiceOverheadRateMax" />
+       @*     <span class="validationMessage" data-bind="validationMessage: contractData.FieldServiceOverheadRateMax"></span>*@
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="FCCM">FCCM</label>
+        </td>
+        <td>
+            <input type="text" class="rateAmount" id="FCCM" name="FCCM" data-bind="percentvalue: contractData.FCCM" />
+         @*   <span class="validationMessage" data-bind="validationMessage: contractData.FCCM"></span>*@
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="Multiplier">Multiplier</label>
+        </td>
+        <td>
+            <input type="text" class="numericAmount" id="Multiplier" name="Multiplier" data-bind="numeralvalue: contractData.Multiplier" />
+         @*   <span class="validationMessage" data-bind="validationMessage: contractData.Multiplier"></span>*@
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label for="Remarks">Remarks</label>
+        </td>
+        <td colspan="2">
+            <textarea id="Remarks" name="Remarks" data-bind="value: contractData.Remarks" style="width:500px;height:40px;"></textarea>
+        </td>
+    </tr>
+</table>
+
+
+<input type="button" data-bind="click:submit" value="Submit" />
+<br />
+<br />
+@Html.ActionLink("Home","Index","Home", null ,new {@class="hyperlink"})<br />
+<a class="hyperlink" data-bind="attr: { href: DetailsLink }">Back</a>
+

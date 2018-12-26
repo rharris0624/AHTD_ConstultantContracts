@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ConsultantContractsInternal.ViewModels.UserRoleBudgetVM>
+@(
+    Layout=""
+)
+<table class="homepagetable" id="assignedBudgetsTable">
+    <thead>
+        <tr>
+            @*<th>
+                @Html.Display("Mark")
+            </th>*@
+            <th><input type="checkbox" name="toggleCheckBox" class="toggleCheckBox" id="toggleCheckBox" ></th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.RoleId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResourceDesc)
+            </th>
+            <th><button type="button" id="deleteSelectedBudgets" >Delete Marked</button></th>
+        </tr>
+    </thead>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.CheckBox("Mark")
+        </td>
+        <td hidden="hidden">
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td hidden="hidden" class ="UserId">
+            @Html.DisplayFor(modelItem => item.UserId)
+        </td>
+        <td hidden="hidden" class="ResourceId">
+            @Html.DisplayFor(modelItem => item.ResourceId)
+        </td>
+        <td class="RoleId">
+            @Html.DisplayFor(modelItem => item.RoleId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResourceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResourceDesc)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { applicationId=item.ApplicationId, userId=item.UserId, roleId=item.RoleId, sequence=item.Sequence, resourceId=item.ResourceId })
+        </td>
+        <td hidden="hidden" class="Sequence">
+            @Html.DisplayFor(modelItem => item.Sequence)
+        </td>
+        <td hidden="hidden" class="ApplicationId">
+            @Html.DisplayFor(modelItem => item.ApplicationId)
+        </td>
+    </tr>
+}
+</table>
+@*@foreach (var item in Model) {
+    <div class="item1">
+        @Html.DisplayFor(modelItem => item.UserName)
+    </div>
+    <div class ="item2">
+        @Html.DisplayFor(modelItem => item.UserId)
+    </div>
+    <div class="item3">
+        @Html.DisplayFor(modelItem => item.RoleId)
+    </div>
+    <div class="item4">
+        @Html.DisplayFor(modelItem => item.ResourceName)
+    </div>
+    <div>
+        @Html.ActionLink("Delete", "Delete", new { applicationId=item.ApplicationId, userId=item.UserId, roleId=item.RoleId, sequence=item.Sequence, resourceId=item.ResourceId })
+    </div>
+    <div>
+        @Html.HiddenFor(modelItem => item.Sequence)
+        @Html.HiddenFor(modelItem => item.ApplicationId)
+    </div>
+}*@

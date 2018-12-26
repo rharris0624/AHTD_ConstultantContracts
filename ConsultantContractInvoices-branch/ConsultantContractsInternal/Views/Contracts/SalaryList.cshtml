@@ -1,0 +1,29 @@
+﻿@model List<ConsultantContractsInternal.Models.SalaryRate>
+
+@if (Model.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left">Job Title</th>
+                <th>Min Rate</th>
+                <th>Max Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.JobTitle</td>
+                    <td class="rightJustify">@item.RateMin.ToString("C2")</td>
+                    <td class="rightJustify">@item.RateMax.ToString("C2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <text>None</text>
+}
+

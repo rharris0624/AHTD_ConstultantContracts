@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ProgConAllotmentsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ProgConAllotmentsModelStoreContainer">
+          <EntitySet Name="Allotments" EntityType="ProgConAllotmentsModel.Store.Allotments" store:Type="Tables" Schema="Alt" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="vw_ActiveJobAllotments" EntityType="ProgConAllotmentsModel.Store.vw_ActiveJobAllotments" store:Type="Views" store:Schema="dbo" store:Name="vw_ActiveJobAllotments" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+            <DefiningQuery>SELECT 
+      [vw_ActiveJobAllotments].[ConstructionJobNumber] AS [ConstructionJobNumber], 
+      [vw_ActiveJobAllotments].[PEJobNumber] AS [PEJobNumber], 
+      [vw_ActiveJobAllotments].[JobStatus] AS [JobStatus], 
+      [vw_ActiveJobAllotments].[JobSystem] AS [JobSystem], 
+      [vw_ActiveJobAllotments].[JobName] AS [JobName], 
+      [vw_ActiveJobAllotments].[JobDescription] AS [JobDescription], 
+      [vw_ActiveJobAllotments].[DatePosted] AS [DatePosted], 
+      [vw_ActiveJobAllotments].[FederalAidProjectNumber] AS [FederalAidProjectNumber], 
+      [vw_ActiveJobAllotments].[FunctionNumber] AS [FunctionNumber], 
+      [vw_ActiveJobAllotments].[FAPFuncIssueDate] AS [FAPFuncIssueDate], 
+      [vw_ActiveJobAllotments].[FederalPercent] AS [FederalPercent], 
+      [vw_ActiveJobAllotments].[StatePercent] AS [StatePercent], 
+      [vw_ActiveJobAllotments].[StateAidPercent] AS [StateAidPercent], 
+      [vw_ActiveJobAllotments].[OtherPercent] AS [OtherPercent], 
+      [vw_ActiveJobAllotments].[CurrentAmount] AS [CurrentAmount], 
+      [vw_ActiveJobAllotments].[TotalBalance] AS [TotalBalance], 
+      [vw_ActiveJobAllotments].[LastAmount] AS [LastAmount], 
+      [vw_ActiveJobAllotments].[TotalAmount] AS [TotalAmount]
+      FROM [dbo].[vw_ActiveJobAllotments] AS [vw_ActiveJobAllotments]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <EntityType Name="Allotments">
+          <Key>
+            <PropertyRef Name="AllotmentId" />
+          </Key>
+          <Property Name="AllotmentId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ConstructionJobNumber" Type="char" Nullable="false" MaxLength="6" />
+          <Property Name="PEJobNumber" Type="char" MaxLength="6" />
+          <Property Name="JobStatusId" Type="int" Nullable="false" />
+          <Property Name="JobSystem" Type="varchar" MaxLength="12" />
+          <Property Name="JobName" Type="varchar" MaxLength="50" />
+          <Property Name="JobDescription" Type="varchar" MaxLength="200" />
+          <Property Name="FundingInformation" Type="varchar" MaxLength="200" />
+          <Property Name="MinuteOrder" Type="varchar" MaxLength="8" />
+          <Property Name="DatePosted" Type="date" Nullable="false" />
+          <Property Name="DistrictNumber" Type="tinyint" />
+          <Property Name="Route" Type="varchar" MaxLength="5" />
+          <Property Name="Section" Type="varchar" MaxLength="3" />
+          <Property Name="BeginningBalance" Type="money" Nullable="false" />
+          <Property Name="TotalBalance" Type="money" Nullable="false" />
+          <Property Name="DeleteFlag" Type="bit" />
+          <Property Name="Comments" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'ProgCon_Allotments.dbo.vw_ActiveJobAllotments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="vw_ActiveJobAllotments">
+          <Key>
+            <PropertyRef Name="ConstructionJobNumber" />
+            
+            
+            <PropertyRef Name="FederalAidProjectNumber" />
+            <PropertyRef Name="FunctionNumber" />
+            
+            
+            
+            
+            
+            
+            
+            
+            
+          </Key>
+          <Property Name="ConstructionJobNumber" Type="char" Nullable="false" MaxLength="6" />
+          <Property Name="PEJobNumber" Type="char" MaxLength="6" />
+          <Property Name="JobStatus" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="JobSystem" Type="varchar" MaxLength="12" />
+          <Property Name="JobName" Type="varchar" MaxLength="50" />
+          <Property Name="JobDescription" Type="varchar" MaxLength="200" />
+          <Property Name="DatePosted" Type="date" Nullable="false" />
+          <Property Name="FederalAidProjectNumber" Type="varchar" Nullable="false" MaxLength="11" />
+          <Property Name="FunctionNumber" Type="char" Nullable="false" MaxLength="4" />
+          <Property Name="FAPFuncIssueDate" Type="date" Nullable="false" />
+          <Property Name="FederalPercent" Type="float" Nullable="false" />
+          <Property Name="StatePercent" Type="float" Nullable="false" />
+          <Property Name="StateAidPercent" Type="float" Nullable="false" />
+          <Property Name="OtherPercent" Type="float" Nullable="false" />
+          <Property Name="CurrentAmount" Type="money" Nullable="false" />
+          <Property Name="TotalBalance" Type="money" Nullable="false" />
+          <Property Name="LastAmount" Type="money" Nullable="false" />
+          <Property Name="TotalAmount" Type="money" Nullable="false" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProgConAllotmentsModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ProgCon_AllotmentsEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="vw_ActiveJobAllotments" EntityType="ProgConAllotmentsModel.vw_ActiveJobAllotments" />
+          <EntitySet Name="Allotments" EntityType="ProgConAllotmentsModel.Allotment" />
+        </EntityContainer>
+        <EntityType Name="vw_ActiveJobAllotments">
+          <Key>
+            <PropertyRef Name="ConstructionJobNumber" />
+            <PropertyRef Name="FederalAidProjectNumber" />
+            <PropertyRef Name="FunctionNumber" />
+          </Key>
+          <Property Name="ConstructionJobNumber" Type="String" Nullable="false" MaxLength="6" Unicode="false" FixedLength="true" />
+          <Property Name="PEJobNumber" Type="String" MaxLength="6" Unicode="false" FixedLength="true" />
+          <Property Name="JobStatus" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="JobSystem" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="JobName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="JobDescription" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="DatePosted" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FederalAidProjectNumber" Type="String" Nullable="false" MaxLength="11" Unicode="false" FixedLength="false" />
+          <Property Name="FunctionNumber" Type="String" Nullable="false" MaxLength="4" Unicode="false" FixedLength="true" />
+          <Property Name="FAPFuncIssueDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FederalPercent" Type="Double" Nullable="false" />
+          <Property Name="StatePercent" Type="Double" Nullable="false" />
+          <Property Name="StateAidPercent" Type="Double" Nullable="false" />
+          <Property Name="OtherPercent" Type="Double" Nullable="false" />
+          <Property Name="CurrentAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="TotalBalance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="LastAmount" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="TotalAmount" Nullable="false" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="Allotment">
+          <Key>
+            <PropertyRef Name="AllotmentId" />
+          </Key>
+          <Property Type="Int32" Name="AllotmentId" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="ConstructionJobNumber" Nullable="false" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="PEJobNumber" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Type="Int32" Name="JobStatusId" Nullable="false" />
+          <Property Type="String" Name="JobSystem" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="JobName" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="JobDescription" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="FundingInformation" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="MinuteOrder" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="DatePosted" Nullable="false" Precision="0" />
+          <Property Type="Byte" Name="DistrictNumber" />
+          <Property Type="String" Name="Route" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Section" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="BeginningBalance" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="TotalBalance" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Boolean" Name="DeleteFlag" />
+          <Property Type="String" Name="Comments" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProgConAllotmentsModelStoreContainer" CdmEntityContainer="ProgCon_AllotmentsEntities">
+          <EntitySetMapping Name="vw_ActiveJobAllotments">
+            <EntityTypeMapping TypeName="ProgConAllotmentsModel.vw_ActiveJobAllotments">
+              <MappingFragment StoreEntitySet="vw_ActiveJobAllotments">
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="LastAmount" ColumnName="LastAmount" />
+                <ScalarProperty Name="ConstructionJobNumber" ColumnName="ConstructionJobNumber" />
+                <ScalarProperty Name="PEJobNumber" ColumnName="PEJobNumber" />
+                <ScalarProperty Name="JobStatus" ColumnName="JobStatus" />
+                <ScalarProperty Name="JobSystem" ColumnName="JobSystem" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
+                <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+                <ScalarProperty Name="DatePosted" ColumnName="DatePosted" />
+                <ScalarProperty Name="FederalAidProjectNumber" ColumnName="FederalAidProjectNumber" />
+                <ScalarProperty Name="FunctionNumber" ColumnName="FunctionNumber" />
+                <ScalarProperty Name="FAPFuncIssueDate" ColumnName="FAPFuncIssueDate" />
+                <ScalarProperty Name="FederalPercent" ColumnName="FederalPercent" />
+                <ScalarProperty Name="StatePercent" ColumnName="StatePercent" />
+                <ScalarProperty Name="StateAidPercent" ColumnName="StateAidPercent" />
+                <ScalarProperty Name="OtherPercent" ColumnName="OtherPercent" />
+                <ScalarProperty Name="CurrentAmount" ColumnName="CurrentAmount" />
+                <ScalarProperty Name="TotalBalance" ColumnName="TotalBalance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Allotments">
+            <EntityTypeMapping TypeName="ProgConAllotmentsModel.Allotment">
+              <MappingFragment StoreEntitySet="Allotments">
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="DeleteFlag" ColumnName="DeleteFlag" />
+                <ScalarProperty Name="TotalBalance" ColumnName="TotalBalance" />
+                <ScalarProperty Name="BeginningBalance" ColumnName="BeginningBalance" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Route" ColumnName="Route" />
+                <ScalarProperty Name="DistrictNumber" ColumnName="DistrictNumber" />
+                <ScalarProperty Name="DatePosted" ColumnName="DatePosted" />
+                <ScalarProperty Name="MinuteOrder" ColumnName="MinuteOrder" />
+                <ScalarProperty Name="FundingInformation" ColumnName="FundingInformation" />
+                <ScalarProperty Name="JobDescription" ColumnName="JobDescription" />
+                <ScalarProperty Name="JobName" ColumnName="JobName" />
+                <ScalarProperty Name="JobSystem" ColumnName="JobSystem" />
+                <ScalarProperty Name="JobStatusId" ColumnName="JobStatusId" />
+                <ScalarProperty Name="PEJobNumber" ColumnName="PEJobNumber" />
+                <ScalarProperty Name="ConstructionJobNumber" ColumnName="ConstructionJobNumber" />
+                <ScalarProperty Name="AllotmentId" ColumnName="AllotmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams />
+  </edmx:Designer>
+</edmx:Edmx>

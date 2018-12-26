@@ -1,0 +1,42 @@
+﻿CREATE TABLE [dbo].[BUILDING_INVENTORY] (
+    [ID_NUMBER]         CHAR (6)        NOT NULL,
+    [DESCRIPTION]       CHAR (40)       NOT NULL,
+    [TYPE]              CHAR (1)        NOT NULL,
+    [BUDGET]            CHAR (3)        NOT NULL,
+    [ORIGINATING_MONTH] CHAR (2)        NOT NULL,
+    [ORIGINATING_YEAR]  CHAR (4)        NOT NULL,
+    [COST]              DECIMAL (12, 2) NOT NULL,
+    [DEPRECIATION]      DECIMAL (12, 2) NOT NULL,
+    CONSTRAINT [PK_BUILDING_INVENTORY] PRIMARY KEY CLUSTERED ([ID_NUMBER] ASC)
+);
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[dbo].[BUILDING_INVENTORY] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[BUILDING_INVENTORY] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[dbo].[BUILDING_INVENTORY] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[dbo].[BUILDING_INVENTORY] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[BUILDING_INVENTORY] TO [VoucherVendors]
+    AS [dbo];
+

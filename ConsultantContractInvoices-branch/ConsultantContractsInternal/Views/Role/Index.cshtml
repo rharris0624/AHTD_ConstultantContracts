@@ -1,0 +1,54 @@
+@model IEnumerable<ConsultantContractsInternal.Models.Role>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            RoleName
+        </th>
+        <th>
+            RoleDesc
+        </th>
+        <th>
+            ApplicationSecurities
+        </th>
+        <th>
+            RolePermissions
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RoleId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RoleId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RoleId })
+        </td>
+        <td>
+			@item.RoleName
+        </td>
+        <td>
+			@item.RoleDesc
+        </td>
+        <td>
+			@(item.ApplicationSecurities == null ? "None" : item.ApplicationSecurities.Count.ToString())
+        </td>
+        <td>
+			@(item.RolePermissions == null ? "None" : item.RolePermissions.Count.ToString())
+        </td>
+    </tr>
+}
+
+</table>
+
+

@@ -1,0 +1,67 @@
+﻿@using System.Security.Cryptography.X509Certificates
+@using System.Text
+@using ConsultantContractsInternal.Models
+@model List<Invoice>
+
+@functions{
+
+    private decimal NullAdd(decimal? d1, decimal? d2)
+    {
+        return d1.GetValueOrDefault() + d2.GetValueOrDefault();
+    }
+
+    private IHtmlString SubmittedBy(Invoice i)
+    {
+        var sb = new StringBuilder();
+        var con = i.Contract.Consultant;
+        sb.Append(Html.ActionLink(con.Name, "Details", "Consultants", new { id = con.ConsultantId }, new { @class = "hyperlink" }));
+        if (i.SubConsultant != null)
+        {
+            var sc = i.SubConsultant;
+            sb.Append(" for ");
+
+            sb.Append(Html.ActionLink(sc.Name, "Details", "Consultants", new { id = sc.ConsultantId }, new { @class = "hyperlink" }));
+        }
+
+        return Html.Raw(sb.ToString());
+    }
+
+    private string ResolveDate(DateTime? dt)
+    {
+        if (dt.HasValue)
+        {
+            return dt.Value.ToShortDateString();
+        }
+        return String.Empty;
+    }
+}
+
+
+
+    <table class="homepagetable" id="InvoiceToReview">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Invoice No</th>
+                <th>Amount</th>
+                <th>Contract</th>
+                <th>Submitted By</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in Model)
+            {
+                <tr>
+                    <td>@i.InvoiceDate.ToShortDateString()</td>
+                    <td style="text-align: center">@Html.ActionLink(i.InvoiceNo.ToString(), "Details", new { id = i.InvoiceId }, new { @class = "hyperlink" })</td>
+                    <td>@(NullAdd(i.T1Svcs, i.T2Svcs).ToString("C2"))</td>
+                    <td>@Html.Raw(String.Format("{0} - {1}", Html.ActionLink(i.Contract.JobNo, "Details", "Contracts", new { id = i.ContractCode }, new { @class = "hyperlink" }), i.ContractCode.ToString()))</td>
+                    <td style="text-align: left">@SubmittedBy(i)</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+  
+
+

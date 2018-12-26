@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="bcbe0b4a1bd547d2ada29283aede89a4" Name="Diagram1">
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AccessRequestAction" Width="1.5" PointX="3" PointY="57.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AccessRequest" Width="1.5" PointX="5.25" PointY="58.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AppAdmin" Width="1.5" PointX="5.25" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AppBudget" Width="1.5" PointX="8.25" PointY="21.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AppClaim" Width="1.5" PointX="5.25" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Application" Width="1.5" PointX="3" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AppLocation" Width="1.5" PointX="5.25" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AppPrerequisite" Width="1.5" PointX="5.25" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.AppRequest" Width="1.5" PointX="7.5" PointY="33.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Budget" Width="1.5" PointX="0.75" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Claim" Width="1.5" PointX="3" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.GrantedAccess" Width="1.5" PointX="10.5" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Location" Width="1.5" PointX="1.5" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.LocationType" Width="1.5" PointX="1.5" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Platform" Width="1.5" PointX="0.75" PointY="25.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.RequiredShareFolder" Width="1.5" PointX="10.5" PointY="37.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Role" Width="1.5" PointX="5.25" PointY="47.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.RoleSecurityType" Width="1.5" PointX="7.5" PointY="39.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Section" Width="1.5" PointX="1.5" PointY="39" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.SecurityInstance" Width="1.5" PointX="3" PointY="60.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.SecurityType" Width="1.5" PointX="0.75" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.SubWorkflow" Width="1.5" PointX="5.25" PointY="52.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Directory" Width="1.5" PointX="0.75" PointY="28.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.LDAP" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.Message" Width="1.5" PointX="12.75" PointY="32.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.MessageType" Width="1.5" PointX="10.5" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.TerminalService" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.vw_AHTDDirectory_EmpUserID" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.vw_AccessRequestsForActiveUsers" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.vw_GrantedAccess" Width="1.5" PointX="3.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.vw_OutstandingMessages" Width="1.5" PointX="5.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.vw_PAHREmployees" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.vw_PAHREmployeesNotInAD" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AHTD_UserProvModel.vw_SupervisorLookup" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AccessRequests_AccessRequestActions" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AccessRequests_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AccessRequests_SecurityInstances" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppRequests_AccessRequests" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Messages_AccessRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppAdmins_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppAdmins_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppBudgets_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppBudgets_Budgets" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppClaims_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppClaims_Claims" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Applications_Budgets" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Applications_Platforms" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Applications_SecurityTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_ApplicationsAppAdmin_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_ApplicationsAppAdminBackup_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppLocations_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppRequests_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_GrantedAccess_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_RequiredShareFolders_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Roles_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Xaml_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK1_AppPrerequisites_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK2_AppPrerequisites_Applications" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppLocations_Locations" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppRequests_Budgets" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppRequests_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppRequests_Locations" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_AppRequests_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Messages_AppRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Budgets_Locations" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Directory_Budgets" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_GrantedAccess_Budgets" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_GrantedAccess_Locations" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_GrantedAccess_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_GrantedAccess_SecurityInstances" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Locations_LocationTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_RequiredShareFolders_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_RoleSecurityTypes_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_RoleSecurityTypes_SecurityTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Directory_Sections" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_SecurityInstances_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_DirectoryReportsTo_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_MessagesPrimaryRecipient_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_MessagesResponseBy_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_MessagesStartedBy_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_MessagesTargetUser_Directory" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.FK_Messages_MessageTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="AHTD_UserProvModel.EmployeeInbox" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

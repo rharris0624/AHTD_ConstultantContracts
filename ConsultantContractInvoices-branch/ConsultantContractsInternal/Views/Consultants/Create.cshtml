@@ -1,0 +1,474 @@
+﻿@using System.Web.Optimization
+@using System.Web.Services.Description
+@model ConsultantContractsInternal.Models.Consultant
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section styles{
+
+    <style type="text/css">
+        input[type='text'] {
+            width: 250px;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/Scripts/inputmask")
+    @Scripts.Render("~/scripts/vms")
+        <script type="text/javascript">
+        //This needs to be here to be on everypage
+        var logErrorUrl = '@Url.Action( "LogJavaScriptError", "Home" )';
+    </script>
+    <script type="text/javascript">
+        function zipcode() {
+            $('#postalcode').bind('keypress', function (e) {
+                if (e.keyCode == '9' || e.keyCode == '16') {
+                    return;
+                }
+                var code;
+                if (e.keyCode) code = e.keyCode;
+                else if (e.which) code = e.which;
+                if (e.which == 46)
+                    return false;
+                if (code == 8 || code == 462)
+                    return true;
+                if (code < 48 || code > 57)
+                    return true;
+            });
+        }
+
+        var submitError = function (jqXHR, textStatus, errorThrown) {
+            //alert('something went wrong');
+            throw new Error("Create Consultant Javascript Error");
+        };
+        var submitSuccess = function (data, textStatus, jqXHR) {
+            if (data.status === 'OK') {
+                window.location = '@Url.Action("Details")/' + data.id;
+            }
+            else if (data.status === 'Already Exist') {
+                alert('Consultant already exist with this Tax Id and Sequence No.');
+                return false;
+            }
+            else if (data.Status === "ERROR") {
+                //alert('something went wrong');
+                throw new Error("Create Consultant Javascript Error");
+            }
+
+        }
+
+    function ViewModel() {
+        var self = this;
+        self.Consultant = ko.validatedObservable(new Consultant());
+        self.Consultant().PostalCode = ko.observable('').extend({ required: { params: true, min: 5, message: 'US Zip Code format required' }, });
+        self.selectedVendor = ko.observable();
+        self.disableCntrls = ko.observable(true);
+        self.selectedVendor.subscribe(function (newValue) {
+            vendorinfo(newValue.TaxId, newValue.SeqNo);
+        });
+        self.TaxIdNotFoundMessage = ko.observable('&emsp; &emsp; &emsp; Tax Id and Sequence No not found on Vendor Master. Consultant must first be added to the Vendor Master. Contact Fiscal Services.');
+        self.TaxIdNotFoundMessageVisbility = ko.observable(false);
+        vendorinfo = function (TaxId, SeqNo) {
+            $.ajax({
+                url: '@Url.Action("VendorInfo", "VendorLookup")',
+                type: 'GET',
+                dataType: 'json',
+                data: { taxId: TaxId, seqNo: SeqNo },
+            }).done(function (data) {
+                //set things here  
+                self.TaxIdNotFoundMessageVisbility(false);
+                self.Consultant().TaxId(data.TaxId != null ? data.TaxId : TaxId);
+                self.Consultant().SeqNo(data.SeqNo != null ? data.SeqNo : SeqNo);
+                self.Consultant().Name(data.Name);
+                self.Consultant().PhysicalAddress(data.PhysicalAddress);
+                self.Consultant().City(data.City);
+                self.Consultant().State(data.State);
+                self.Consultant().CountryCode(data.CountryCode);
+                self.Consultant().PostalCode(data.PostalCode);
+                self.Consultant().VendorAddress(data.VendorAddress);
+                self.Consultant().Vendorfulladdress(data.Vendorfulladdress);
+                self.Consultant().Phone(data.Phone != null ? data.Phone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3") : '');
+                self.Consultant().Fax(data.Fax != null ? data.Fax.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3") : '');
+                self.Consultant().PrimaryContactFirstName(data.PrimaryContactFirstName);
+                self.Consultant().PrimaryContactLastName(data.PrimaryContactLastName);
+                self.Consultant().EmailAddress(data.EmailAddress != null ? data.EmailAddress : '');
+                self.Consultant().SecondaryContactFirstName(data.SecondaryContactFirstName);
+                self.Consultant().SecondaryContactLastName(data.SecondaryContactLastName);
+                self.Consultant().BusinessPhone(data.BusinessPhone != null ? data.BusinessPhone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3") : '');
+                self.Consultant().ContactPhone(data.ContactPhone != null ? data.ContactPhone.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3") : '');
+                //self.Consultant().HomeOfficeOverheadRateMax(data.HomeOfficeOverheadRateMax);
+                //self.Consultant().FCCM(data.FCCM);
+                //self.Consultant().FieldServiceOverheadRateMax(data.FieldServiceOverheadRateMax);
+                //self.Consultant().Multiplier(data.Multiplier);
+                self.countrycode(data.CountryCode + '-' + data.State);
+                if (data.Type == "Conusltant") {
+                    self.TaxIdNotFoundMessageVisbility(true)
+                }
+                if (data.CountryCode == "US") {
+                    self.ISCheckedUS("true");
+                }
+                else {
+                    self.ISCheckedUS("false");
+                }
+            });
+        }      
+
+        self.Submit = function () {
+            if (self.ISCheckedUS() != "true") { self.Consultant().State('TP') }
+            else {
+                self.Consultant().State($('#regions option:selected').val().split("-")[1]);
+            }
+            if (self.Consultant.isValid()) {
+                //console.log(ko.toJSON(self.Consultant()));
+                self.state = ko.observable('Temp');
+                self.state($('#regions option:selected').text().split("-")[1]);
+                self.Consultant().StateName(self.state());
+                var dt = ko.toJSON(self.Consultant())
+                $.ajax({
+                    url: '@Url.Action("Create")',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    error: submitError,
+                    success: submitSuccess,
+                    type: 'POST',
+                    data: ko.toJSON(self.Consultant(), self.state()),
+                });
+            }
+            else {
+                self.Consultant.errors.showAllMessages();
+            }
+        };
+
+        self.TaxidErrormessage = ko.observable('Taxpayer ID must contain nine digits');
+        self.TaxIdErrorVisibility = ko.observable(false);
+
+        self.SeqNoErrormessage = ko.observable('Please enter SeqNo');
+        self.SeqNoErrormessageVisibility = ko.observable(false);
+
+        self.CheckTaxID = function () {
+            self.selectedVendor('');
+            self.vendorQuery('');
+            if (self.Consultant().TaxId().length != 9) {
+                self.TaxIdErrorVisibility(true);
+            }
+            else {
+                self.TaxIdErrorVisibility(false);
+                if (self.Consultant().SeqNo().length == 0 || self.Consultant().SeqNo() == 'undefined') {
+                    self.SeqNoErrormessageVisibility(true);
+                }
+                else {
+                    self.SeqNoErrormessageVisibility(false);
+                    vendorinfo(self.Consultant().TaxId(), self.Consultant().SeqNo());
+                }
+            }
+        };
+
+        self.vendorQuery = function (term, callback) {
+            $.ajax({
+                url: '@Url.Action("VendorSearch", "VendorLookup")',
+                type: 'GET',
+                dataType: 'json',
+                data: { term: term }
+            }).done(callback);
+        };
+        self.USstates = ko.observableArray();
+        self.CountriesList = ko.observableArray();
+
+        $.ajax({
+            url: '@Url.Action("GetCountryRegionNames", "Consultants")',
+            type: 'GET',
+            dataType: 'json',
+        }).done(function (data) {
+            self.CountriesList(data);
+            self.countrycode('US-AR');
+            self.Consultant().CountryCode('US');
+        });
+
+        self.ischeckedUS = ko.observable(true)
+        self.ischeckedNonUS = ko.observable(false);
+
+        self.countrycode = ko.observable('');
+        self.countrycode.subscribe(function (newvalue) {
+            if (newvalue != undefined) {
+                var _countrycode = $('#regions option:selected').val().split('-');
+                if (_countrycode.length > 0) {
+                    self.Consultant().CountryCode(_countrycode[0]);
+                    self.Consultant().State(_countrycode[1]);
+                }
+            }
+        });
+
+        self.Consultant().State.subscribe(function (newvalue) {
+            self.Consultant().State(newvalue);
+        });
+
+        self.ISCheckedUS = ko.computed({
+            read: function () {
+                return self.ischeckedUS().toString();
+            },
+            write: function (newValue) {
+                if (newValue == "true") {
+                    self.ischeckedUS(true);
+                    self.ischeckedNonUS(false);
+                    $('#postalcode').mask('99999?-9999');
+                    jQuery(zipcode());
+                    $('#regions').val("US-AR");
+                    self.Consultant().CountryCode('US');
+                }
+                else {
+                    $('#regions').val("AR-00");
+                    self.Consultant().CountryCode('AR');
+                    self.ischeckedUS(false);
+                    self.ischeckedNonUS(true);
+                    $('#postalcode').mask("9?9999999999");
+                }
+            }, owner: self
+        });
+
+        self.Consultant.EmailAddress = ko.observable("").extend({ email: true});
+
+        self.clear = function () {
+            self.Consultant().TaxId('');
+            self.Consultant().SeqNo('');
+            self.Consultant().Name('');
+            self.Consultant().PrimaryContactFirstName('');
+            self.Consultant().PrimaryContactLastName('');
+            self.Consultant().EmailAddress('');
+            self.Consultant().SecondaryContactFirstName();
+            self.Consultant().PhysicalAddress('');
+            self.Consultant().City('');
+            self.ischeckedUS(true);
+            self.Consultant().CountryCode('US');
+            self.Consultant().PostalCode('');
+            //self.Consultant().HomeOfficeOverheadRateMax('');
+            //self.Consultant().FCCM('');
+            //self.Consultant().FieldServiceOverheadRateMax('');
+            //self.Consultant().Multiplier('');
+            self.Consultant().VendorAddress('');
+            self.Consultant().Vendorfulladdress('');
+            self.Consultant().Phone('');
+            self.Consultant().BusinessPhone('');
+            self.Consultant().ContactPhone('');
+            self.Consultant().Fax('');
+            self.selectedVendor('');
+            self.ischeckedNonUS(false);
+            self.TaxIdErrorVisibility(false);
+            self.TaxIdNotFoundMessageVisbility(false);
+        }
+    };
+
+    var vm = new ViewModel();
+    ko.applyBindings(vm);
+
+    $('[data-mask]').each(function () {
+        console.log('mask');
+        $this = $(this);
+        var mask = $this.attr('data-mask') || 'error...', mask_placeholder = $this.attr('data-mask-placeholder') || 'X';
+
+        $this.mask(mask, {
+            placeholder: mask_placeholder
+        });
+    })
+   </script>
+}
+
+<h2>New Consultant</h2>
+
+<span style="color: red" data-bind="html: TaxIdNotFoundMessage, visible: TaxIdNotFoundMessageVisbility"></span>
+<br />
+@using (Html.BeginForm())
+{
+    <span>Search Vendors
+        <input type="text" class="searchBar" data-bind="selectOnFocus: true, jqAuto: { source: vendorQuery, value: selectedVendor, valueProp: 'value', labelProp: 'label', ignoreBlur: true, options: { minLength: 2 } }, valueUpdate: 'blur'" />
+    </span>
+       
+    <fieldset data-bind="with: Consultant">
+        <table>
+            <tr>
+                <td class="TDRightStyle">Tax Id:</td>
+                <td>
+                    <input id="taxid" type="text" data-bind="textInput: TaxId" maxlength="9" />
+                    <input type="button" id="CheckTaxID" value="Verify TaxID" data-bind="click: $parent.CheckTaxID" />
+                    <label id="errormessage" style="color: red" data-bind="text: $parent.TaxidErrormessage, visible: $parent.TaxIdErrorVisibility"></label>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Sequence No:</td>
+                <td>
+                    <input id="seqno" type="text" data-bind="value: SeqNo" disabled="disabled" />
+                    <label id="Seqnoerrormessage" style="color: red" data-bind="text: $parent.SeqNoErrormessage, visible: $parent.SeqNoErrormessageVisibility"></label>
+
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Name:</td>
+                <td>
+                    <input type="text" data-bind="value: Name" placeholder="Company Name" maxlength="50" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Primary Contact First Name:</td>
+                <td>
+                    <input type="text" data-bind="value: PrimaryContactFirstName" placeholder="John" maxlength="50" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Primary Contact Last Name:</td>
+                <td>
+                    <input type="text" data-bind="value: PrimaryContactLastName" placeholder="Doe" maxlength="50" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Email Address(s):</td>
+                <td>
+                    <textarea data-bind="value: EmailAddress, valueUpdate: ['afterkeydown', 'input']" placeholder="Test1@mail.com;Test2@mail.com" maxlength="200" style="width: 250px;"></textarea>
+                    <span class="validationMessage">*</span>
+                    <span data-bind="text: EmailAddress().length"></span>/200characters
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Is Consultant U.S.?:</td>
+                <td>
+                    <label>
+                        <input type="radio" name="state" value="true" data-bind="checked: $parent.ISCheckedUS" />Yes
+                    </label>
+                    <label>
+                        <input type="radio" name="state" value="false" data-bind="checked: $parent.ISCheckedUS" />No
+                    </label>
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Secondary Contact First Name:</td>
+                <td>
+                    <input type="text" data-bind="value: SecondaryContactFirstName" maxlength="50" />
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Secondary Contact Last Name:</td>
+                <td>
+                    <input type="text" data-bind="value: SecondaryContactLastName" maxlength="50" />
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Physical Address:</td>
+                <td>
+                    <input type="text" data-bind="value: PhysicalAddress" maxlength="50" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">City:</td>
+                <td>
+                    <input type="text" data-bind="value: City" maxlength="50" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">State:</td>
+                <td>
+                    @*<select data-bind="options: $parent.USstates, visible: $parent.ischeckedUS, optionsText: 'Statename', optionsValue: 'State', value: State "></select>*@
+
+                    <select id="regions" data-bind="options: $parent.CountriesList, optionsText: 'countries', optionsValue: 'Countrycode', value: $parent.countrycode "></select>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Country Code:</td>
+                <td>
+                    <input type="text" data-bind="value: CountryCode" maxlength="50" />
+                </td>
+            </tr>
+
+            <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Postal Code:</td>
+                <td>
+                    <input id="postalcode" class="zipCode" type="text" data-bind="value: PostalCode" maxlength="50" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr data-bind="visible: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Business Phone:</td>
+                <td>
+                    <input type="text" data-mask="(999) 999-9999" data-bind="value: BusinessPhoneNumber" maxlength="11" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr data-bind="visible: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Contact Phone:</td>
+                <td>
+                    <input type="text" data-mask="(999) 999-9999" data-bind="value: ContactPhoneNumber" maxlength="11" /><span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            @*<tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+            <td class="TDRightStyle">Home Office Overhead Rate Max:</td>
+            <td>
+                <input type="text" class="rateAmount" data-bind="percentvalue: HomeOfficeOverheadRateMax" /></td>
+        </tr>
+
+        <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+            <td class="TDRightStyle">FCCM:</td>
+            <td>
+                <input type="text" class="rateAmount" data-bind="percentvalue: FCCM" /> </td>
+        </tr>
+
+        <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+            <td class="TDRightStyle">Field Service Overhead Rate Max:</td>
+            <td>
+                <input type="text" class="rateAmount" data-bind="percentvalue: FieldServiceOverheadRateMax" /></td>
+        </tr>
+
+        <tr data-bind="enable: !$parent.TaxIdNotFoundMessageVisbility()">
+            <td class="TDRightStyle">Multiplier:</td>
+            <td>
+                <input type="text" class="rateAmount" data-bind="numeralvalue: Multiplier" />
+            </td>
+        </tr>*@
+
+            <tr data-bind="visible: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Vendor Address:</td>
+                <td data-bind="text: VendorAddress"></td>
+            </tr>
+            <tr data-bind="visible: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">City,State,Country,Zip:</td>
+                <td data-bind="text: Vendorfulladdress"></td>
+            </tr>
+
+            <tr data-bind="visible: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Phone:</td>
+                <td>
+                    <label id="phone" data-mask="(999) 999-9999" data-bind="text: Phone" />
+                </td>
+            </tr>
+
+            <tr data-bind="visible: !$parent.TaxIdNotFoundMessageVisbility()">
+                <td class="TDRightStyle">Fax:</td>
+                <td data-bind="text: Fax"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="text-align: center;">
+                    <input type="button" data-bind="click: $parent.Submit, enable: !$parent.TaxIdNotFoundMessageVisbility()" value="Create" />
+                    <input type="button" data-bind="click: $parent.clear" value="Clear" />
+                </td>
+            </tr>
+
+        </table>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+

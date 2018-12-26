@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ConsultantContractsInternal.Models.ApplicationSecurity>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApplicationId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoleId)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { applicationId=item.ApplicationId, userId=item.UserId, roleId=item.RoleId}) |
+            @Html.ActionLink("Delete", "Delete", new { applicationId=item.ApplicationId, userId=item.UserId, roleId=item.RoleId})
+        </td>
+    </tr>
+}
+
+</table>

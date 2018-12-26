@@ -1,0 +1,2343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ConsultantContractsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="ConsultantContractsModelStoreContainer">
+          <EntitySet Name="AgreementType" EntityType="ConsultantContractsModel.Store.AgreementType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="CommentsHistory" EntityType="ConsultantContractsModel.Store.CommentsHistory" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Consultant" EntityType="ConsultantContractsModel.Store.Consultant" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ContractAllotments" EntityType="ConsultantContractsModel.Store.ContractAllotments" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Contracts" EntityType="ConsultantContractsModel.Store.Contracts" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ContractSubConsultants" EntityType="ConsultantContractsModel.Store.ContractSubConsultants" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ContractTypes" EntityType="ConsultantContractsModel.Store.ContractTypes" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ContractWorkTypes" EntityType="ConsultantContractsModel.Store.ContractWorkTypes" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Invoice" EntityType="ConsultantContractsModel.Store.Invoice" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="InvoiceApproval" EntityType="ConsultantContractsModel.Store.InvoiceApproval" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="InvoicePayments" EntityType="ConsultantContractsModel.Store.InvoicePayments" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ResponsibleDivision" EntityType="ConsultantContractsModel.Store.ResponsibleDivision" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SalaryRates" EntityType="ConsultantContractsModel.Store.SalaryRates" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ServiceRates" EntityType="ConsultantContractsModel.Store.ServiceRates" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SubConsultantSalaryRates" EntityType="ConsultantContractsModel.Store.SubConsultantSalaryRates" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SubConsultantServiceRates" EntityType="ConsultantContractsModel.Store.SubConsultantServiceRates" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SuppAgreement" EntityType="ConsultantContractsModel.Store.SuppAgreement" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SuppAllotments" EntityType="ConsultantContractsModel.Store.SuppAllotments" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SuppSalaryRate" EntityType="ConsultantContractsModel.Store.SuppSalaryRate" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SuppServiceRate" EntityType="ConsultantContractsModel.Store.SuppServiceRate" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SuppSubConsultantInfo" EntityType="ConsultantContractsModel.Store.SuppSubConsultantInfo" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SuppSubConsultantSalaryRates" EntityType="ConsultantContractsModel.Store.SuppSubConsultantSalaryRates" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SuppSubConsultantServiceRate" EntityType="ConsultantContractsModel.Store.SuppSubConsultantServiceRate" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="WorkType" EntityType="ConsultantContractsModel.Store.WorkType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Vw_CountryRegionNames" EntityType="ConsultantContractsModel.Store.Vw_CountryRegionNames" store:Type="Views" store:Schema="dbo" store:Name="Vw_CountryRegionNames" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+            <DefiningQuery>SELECT 
+      [Vw_CountryRegionNames].[COUNTRY_CODE] AS [COUNTRY_CODE], 
+      [Vw_CountryRegionNames].[REGION_CODE] AS [REGION_CODE], 
+      [Vw_CountryRegionNames].[COUNTRY_NAME] AS [COUNTRY_NAME], 
+      [Vw_CountryRegionNames].[REGION_NAME] AS [REGION_NAME]
+      FROM [dbo].[Vw_CountryRegionNames] AS [Vw_CountryRegionNames]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Vw_StateNames" EntityType="ConsultantContractsModel.Store.Vw_StateNames" store:Type="Views" store:Schema="dbo" store:Name="Vw_StateNames" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+            <DefiningQuery>SELECT 
+      [Vw_StateNames].[STATE_CODE] AS [STATE_CODE], 
+      [Vw_StateNames].[STATE_NAME] AS [STATE_NAME], 
+      [Vw_StateNames].[USA_FLAG] AS [USA_FLAG]
+      FROM [dbo].[Vw_StateNames] AS [Vw_StateNames]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ContractDetail_Contracts" Association="ConsultantContractsModel.Store.FK_ContractDetail_Contracts">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="ContractAllotments" EntitySet="ContractAllotments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contracts_AgreementType" Association="ConsultantContractsModel.Store.FK_Contracts_AgreementType">
+            <End Role="AgreementType" EntitySet="AgreementType" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contracts_Consultant" Association="ConsultantContractsModel.Store.FK_Contracts_Consultant">
+            <End Role="Consultant" EntitySet="Consultant" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contracts_ConsultantRemitTo" Association="ConsultantContractsModel.Store.FK_Contracts_ConsultantRemitTo">
+            <End Role="Consultant" EntitySet="Consultant" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contracts_ContractTypes" Association="ConsultantContractsModel.Store.FK_Contracts_ContractTypes">
+            <End Role="ContractTypes" EntitySet="ContractTypes" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contracts_ResponsibleDivision" Association="ConsultantContractsModel.Store.FK_Contracts_ResponsibleDivision">
+            <End Role="ResponsibleDivision" EntitySet="ResponsibleDivision" />
+            <End Role="Contracts" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContractSubConsultants_Consultant" Association="ConsultantContractsModel.Store.FK_ContractSubConsultants_Consultant">
+            <End Role="Consultant" EntitySet="Consultant" />
+            <End Role="ContractSubConsultants" EntitySet="ContractSubConsultants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContractSubConsultants_Contracts" Association="ConsultantContractsModel.Store.FK_ContractSubConsultants_Contracts">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="ContractSubConsultants" EntitySet="ContractSubConsultants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContractWorkTypes_Contracts" Association="ConsultantContractsModel.Store.FK_ContractWorkTypes_Contracts">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="ContractWorkTypes" EntitySet="ContractWorkTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContractWorkTypes_WorkType" Association="ConsultantContractsModel.Store.FK_ContractWorkTypes_WorkType">
+            <End Role="WorkType" EntitySet="WorkType" />
+            <End Role="ContractWorkTypes" EntitySet="ContractWorkTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Consultant" Association="ConsultantContractsModel.Store.FK_Invoice_Consultant">
+            <End Role="Consultant" EntitySet="Consultant" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Contracts" Association="ConsultantContractsModel.Store.FK_Invoice_Contracts">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoiceApproval_Invoice" Association="ConsultantContractsModel.Store.FK_InvoiceApproval_Invoice">
+            <End Role="Invoice" EntitySet="Invoice" />
+            <End Role="InvoiceApproval" EntitySet="InvoiceApproval" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoicePayments_Invoice" Association="ConsultantContractsModel.Store.FK_InvoicePayments_Invoice">
+            <End Role="Invoice" EntitySet="Invoice" />
+            <End Role="InvoicePayments" EntitySet="InvoicePayments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalaryRates_Contracts" Association="ConsultantContractsModel.Store.FK_SalaryRates_Contracts">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="SalaryRates" EntitySet="SalaryRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceRates_Contracts" Association="ConsultantContractsModel.Store.FK_ServiceRates_Contracts">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="ServiceRates" EntitySet="ServiceRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubConsultantSalaryRates_ContractSubConsultants" Association="ConsultantContractsModel.Store.FK_SubConsultantSalaryRates_ContractSubConsultants">
+            <End Role="ContractSubConsultants" EntitySet="ContractSubConsultants" />
+            <End Role="SubConsultantSalaryRates" EntitySet="SubConsultantSalaryRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubConsultantServiceRates_ContractSubConsultants" Association="ConsultantContractsModel.Store.FK_SubConsultantServiceRates_ContractSubConsultants">
+            <End Role="ContractSubConsultants" EntitySet="ContractSubConsultants" />
+            <End Role="SubConsultantServiceRates" EntitySet="SubConsultantServiceRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppAgreement_Contracts" Association="ConsultantContractsModel.Store.FK_SuppAgreement_Contracts">
+            <End Role="Contracts" EntitySet="Contracts" />
+            <End Role="SuppAgreement" EntitySet="SuppAgreement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppAllotments_SuppAgreement" Association="ConsultantContractsModel.Store.FK_SuppAllotments_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreement" />
+            <End Role="SuppAllotments" EntitySet="SuppAllotments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSalaryRate_SuppAgreement" Association="ConsultantContractsModel.Store.FK_SuppSalaryRate_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreement" />
+            <End Role="SuppSalaryRate" EntitySet="SuppSalaryRate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppServiceRate_SuppAgreement" Association="ConsultantContractsModel.Store.FK_SuppServiceRate_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreement" />
+            <End Role="SuppServiceRate" EntitySet="SuppServiceRate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantInfo_Consultant" Association="ConsultantContractsModel.Store.FK_SuppSubConsultantInfo_Consultant">
+            <End Role="Consultant" EntitySet="Consultant" />
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantInfo_SuppAgreement" Association="ConsultantContractsModel.Store.FK_SuppSubConsultantInfo_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreement" />
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo" Association="ConsultantContractsModel.Store.FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo">
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfo" />
+            <End Role="SuppSubConsultantSalaryRates" EntitySet="SuppSubConsultantSalaryRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo" Association="ConsultantContractsModel.Store.FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo">
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfo" />
+            <End Role="SuppSubConsultantServiceRate" EntitySet="SuppSubConsultantServiceRate" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AgreementType">
+          <Key>
+            <PropertyRef Name="AgreementTypeId" />
+          </Key>
+          <Property Name="AgreementTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AgreementTypeName" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CommentsHistory">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Name="CommentId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CommentNo" Type="char" Nullable="false" MaxLength="15" />
+          <Property Name="Type" Type="char" Nullable="false" MaxLength="15" />
+          <Property Name="Comment" Type="varchar" Nullable="false" MaxLength="300" />
+          <Property Name="UserId" Type="char" Nullable="false" MaxLength="7" />
+          <Property Name="DateEntered" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Consultant">
+          <Key>
+            <PropertyRef Name="ConsultantId" />
+          </Key>
+          <Property Name="ConsultantId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TaxId" Type="nchar" MaxLength="10" />
+          <Property Name="SeqNo" Type="int" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="PrimaryContactFirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="PrimaryContactLastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="SecondaryContactFirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SecondaryContactLastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PhysicalAddress" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="State" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="CountryCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="PostalCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="200" />
+          <Property Name="HomeOfficeOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCM" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FieldServiceOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="Multiplier" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="CityOrCounty" Type="bit" Nullable="false" />
+          <Property Name="Inactive" Type="bit" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ContractAllotments">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="Func" />
+            <PropertyRef Name="FAP" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="Func" Type="nchar" Nullable="false" MaxLength="4" />
+          <Property Name="FAP" Type="nchar" Nullable="false" MaxLength="11" />
+          <Property Name="FundingPriority" Type="decimal" Precision="2" />
+          <Property Name="FedPct" Type="decimal" Nullable="false" Precision="5" Scale="4" />
+          <Property Name="StatePct" Type="decimal" Nullable="false" Precision="5" Scale="4" />
+          <Property Name="StateAidPct" Type="decimal" Nullable="false" Precision="5" Scale="4" />
+          <Property Name="OtherPct" Type="decimal" Nullable="false" Precision="5" Scale="4" />
+          <Property Name="AllottedAmt" Type="money" Nullable="false" />
+          <Property Name="AllottedAmtOrig" Type="money" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="Contracts">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+          </Key>
+          <Property Name="JobNo" Type="nchar" Nullable="false" MaxLength="10" />
+          <Property Name="ContractCode" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ConsultantId" Type="int" Nullable="false" />
+          <Property Name="ContractTypeId" Type="int" Nullable="false" />
+          <Property Name="ContractStatus" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="AgreementDate" Type="date" />
+          <Property Name="NoticeProceedDate" Type="date" />
+          <Property Name="ConsultantContractNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="TaskOrderNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="AgreementTypeId" Type="int" Nullable="false" />
+          <Property Name="ResponsibleDivisionId" Type="int" Nullable="false" />
+          <Property Name="RemitTo" Type="int" />
+          <Property Name="ContractCeiling" Type="money" />
+          <Property Name="ContractCeilingOrig" Type="money" />
+          <Property Name="T1SvcsCeiling" Type="money" />
+          <Property Name="T1SvcsCeilingOrig" Type="money" />
+          <Property Name="T1FixedFeeMax" Type="money" />
+          <Property Name="T1FixedFeeMaxOrig" Type="money" />
+          <Property Name="HomeOfficeOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="HomeOfficeOverheadRateMaxOrig" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCM" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCMOrig" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="T2SvcsCeiling" Type="money" />
+          <Property Name="T2SvcsCeilingOrig" Type="money" />
+          <Property Name="T2FixedFeeMax" Type="money" />
+          <Property Name="T2FixedFeeMaxOrig" Type="money" />
+          <Property Name="FieldServiceOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FieldServiceOverheadRateMaxOrig" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="Multiplier" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="MultiplierOrig" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="ScheduledCompletionDate" Type="date" />
+          <Property Name="CompletionDate" Type="datetime2" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+          <Property Name="RemarkLastEditDate" Type="datetime2" />
+          <Property Name="RemarkLastEditUser" Type="nchar" MaxLength="7" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+          <Property Name="TitlePhase" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContractSubConsultants">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SubConsultantId" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SubConsultantId" Type="int" Nullable="false" />
+          <Property Name="ContractCeiling" Type="money" />
+          <Property Name="ContractCeilingOrig" Type="money" />
+          <Property Name="T1SvcsCeiling" Type="money" />
+          <Property Name="T1SvcsCeilingOrig" Type="money" />
+          <Property Name="T1FixedFeeMax" Type="money" />
+          <Property Name="T1FixedFeeMaxOrig" Type="money" />
+          <Property Name="HomeOfficeOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="HomeOfficeOverheadRateMaxOrig" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCM" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCMOrig" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="T2SvcsCeiling" Type="money" />
+          <Property Name="T2SvcsCeilingOrig" Type="money" />
+          <Property Name="T2FixedFeeMax" Type="money" />
+          <Property Name="T2FixedFeeMaxOrig" Type="money" />
+          <Property Name="FieldServiceOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FieldServiceOverheadRateMaxOrig" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="Multiplier" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="MultiplierOrig" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ContractTypes">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="TypeShortName" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="TypeName" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ContractWorkTypes">
+          <Key>
+            <PropertyRef Name="WorkTypeId" />
+            <PropertyRef Name="ContractCode" />
+          </Key>
+          <Property Name="WorkTypeId" Type="int" Nullable="false" />
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="InvoiceId" />
+          </Key>
+          <Property Name="InvoiceId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="InvoiceNo" Type="int" Nullable="false" />
+          <Property Name="RevisionNo" Type="int" Nullable="false" />
+          <Property Name="InvoiceDate" Type="date" Nullable="false" />
+          <Property Name="SubmittedDate" Type="date" />
+          <Property Name="IsSimple" Type="bit" Nullable="false" />
+          <Property Name="BeginDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="ConsultantInvoiceNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="SubConsultantId" Type="int" />
+          <Property Name="PrimeInvoice" Type="bit" Nullable="false" />
+          <Property Name="PrimeApproval" Type="date" />
+          <Property Name="PrimeApprovalBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LumpSumPercentage" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="ContractCeiling" Type="money" />
+          <Property Name="T1SvcsCeiling" Type="money" />
+          <Property Name="T1Svcs" Type="money" />
+          <Property Name="T1FixedFee" Type="money" />
+          <Property Name="T1FixedFeeMax" Type="money" />
+          <Property Name="HomeOfficeOverheadRate" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="HomeOfficeOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCM" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="T2SvcsCeiling" Type="money" />
+          <Property Name="T2Svcs" Type="money" />
+          <Property Name="T2FixedFee" Type="money" />
+          <Property Name="T2FixedFeeMax" Type="money" />
+          <Property Name="FieldServiceOverheadRate" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FieldServiceOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="Multiplier" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="PhysicalAddress" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="State" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="CountryCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="PostalCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+          <Property Name="RemarkLastEditDate" Type="datetime2" />
+          <Property Name="RemarkLastEditUser" Type="nchar" MaxLength="7" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="10" />
+          <Property Name="ConsultantJobNo" Type="nchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="InvoiceApproval">
+          <Key>
+            <PropertyRef Name="InvoiceApprovalID" />
+          </Key>
+          <Property Name="InvoiceApprovalID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="Status" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="StatusDate" Type="datetime" Nullable="false" />
+          <Property Name="ActiveStatus" Type="bit" Nullable="false" />
+          <Property Name="AuditReview" Type="bit" Nullable="false" />
+          <Property Name="VoucherDate" Type="date" />
+          <Property Name="VoucherNo" Type="nchar" MaxLength="10" />
+          <Property Name="RejectedReason" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="InvoicePayments">
+          <Key>
+            <PropertyRef Name="InvoiceId" />
+            <PropertyRef Name="Func" />
+            <PropertyRef Name="FAP" />
+          </Key>
+          <Property Name="InvoiceId" Type="int" Nullable="false" />
+          <Property Name="Func" Type="char" Nullable="false" MaxLength="4" />
+          <Property Name="FAP" Type="char" Nullable="false" MaxLength="11" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="ObjectCode" Type="char" Nullable="false" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="ResponsibleDivision">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+          </Key>
+          <Property Name="DivisionId" Type="int" Nullable="false" />
+          <Property Name="DivisionName" Type="nvarchar" Nullable="false" MaxLength="60" />
+          <Property Name="ShortName" Type="nvarchar" Nullable="false" MaxLength="30" />
+          <Property Name="Budget" Type="char" Nullable="false" MaxLength="3" />
+        </EntityType>
+        <EntityType Name="SalaryRates">
+          <Key>
+            <PropertyRef Name="ConractCode" />
+            <PropertyRef Name="JobTitle" />
+          </Key>
+          <Property Name="ConractCode" Type="int" Nullable="false" />
+          <Property Name="JobTitle" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMinOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMaxOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="ServiceRates">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="ServiceName" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMinOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMaxOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="SubConsultantSalaryRates">
+          <Key>
+            <PropertyRef Name="ConractCode" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="JobTitle" />
+          </Key>
+          <Property Name="ConractCode" Type="int" Nullable="false" />
+          <Property Name="SubConsultantId" Type="int" Nullable="false" />
+          <Property Name="JobTitle" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMinOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMaxOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="SubConsultantServiceRates">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SubConsultantId" Type="int" Nullable="false" />
+          <Property Name="ServiceName" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMinOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMaxOrig" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="SuppAgreement">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SuppNo" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="ContractCeiling" Type="money" />
+          <Property Name="T1SvcsCeiling" Type="money" />
+          <Property Name="T1FixedFeeMax" Type="money" />
+          <Property Name="HomeOfficeOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCM" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="T2SvcsCeiling" Type="money" />
+          <Property Name="T2FixedFeeMax" Type="money" />
+          <Property Name="FieldServiceOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="Multiplier" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="SuppAgreementDate" Type="datetime2" />
+          <Property Name="CompletionDate" Type="datetime2" />
+          <Property Name="RemarkLastEditUser" Type="nchar" MaxLength="7" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+          <Property Name="RemarkLastEditDate" Type="datetime2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="SuppAllotments">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="Func" />
+            <PropertyRef Name="FAP" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SuppNo" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="Func" Type="nchar" Nullable="false" MaxLength="4" />
+          <Property Name="FAP" Type="nchar" Nullable="false" MaxLength="11" />
+          <Property Name="AllottedAmt" Type="money" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="SuppSalaryRate">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="JobTitle" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SuppNo" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="JobTitle" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="SuppServiceRate">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SuppNo" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="ServiceName" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="SuppSubConsultantInfo">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="SubConsultantId" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SuppNo" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="SubConsultantId" Type="int" Nullable="false" />
+          <Property Name="ContractCeiling" Type="money" />
+          <Property Name="T1SvcsCeiling" Type="money" />
+          <Property Name="T1FixedFeeMax" Type="money" />
+          <Property Name="HomeOfficeOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="FCCM" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="T2SvcsCeiling" Type="money" />
+          <Property Name="T2FixedFeeMax" Type="money" />
+          <Property Name="FieldServiceOverheadRateMax" Type="decimal" Precision="7" Scale="4" />
+          <Property Name="Multiplier" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="SuppSubConsultantSalaryRates">
+          <Key>
+            <PropertyRef Name="ConractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="JobTitle" />
+          </Key>
+          <Property Name="ConractCode" Type="int" Nullable="false" />
+          <Property Name="SuppNo" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="SubConsultantId" Type="int" Nullable="false" />
+          <Property Name="JobTitle" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SuppSubConsultantServiceRate">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Name="ContractCode" Type="int" Nullable="false" />
+          <Property Name="SuppNo" Type="varchar" Nullable="false" MaxLength="15" />
+          <Property Name="SubConsultantId" Type="int" Nullable="false" />
+          <Property Name="ServiceName" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="RateMin" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="RateMax" Type="decimal" Nullable="false" Scale="2" />
+          <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="LastUpdateDate" Type="datetime2" Nullable="false" />
+          <Property Name="LastUpdateUser" Type="nchar" Nullable="false" MaxLength="7" />
+        </EntityType>
+        <EntityType Name="WorkType">
+          <Key>
+            <PropertyRef Name="WorkTypeId" />
+          </Key>
+          <Property Name="WorkTypeId" Type="int" Nullable="false" />
+          <Property Name="WorkTypeName" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'AHTD_ConsultantContracts.dbo.Vw_CountryRegionNames' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Vw_CountryRegionNames">
+          <Key>
+            <PropertyRef Name="COUNTRY_CODE" />
+            <PropertyRef Name="REGION_CODE" />
+            <PropertyRef Name="COUNTRY_NAME" />
+            <PropertyRef Name="REGION_NAME" />
+          </Key>
+          <Property Name="COUNTRY_CODE" Type="char" Nullable="false" MaxLength="2" />
+          <Property Name="REGION_CODE" Type="char" Nullable="false" MaxLength="3" />
+          <Property Name="COUNTRY_NAME" Type="char" Nullable="false" MaxLength="30" />
+          <Property Name="REGION_NAME" Type="char" Nullable="false" MaxLength="30" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'AHTD_ConsultantContracts.dbo.Vw_StateNames' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Vw_StateNames">
+          <Key>
+            <PropertyRef Name="STATE_CODE" />
+            <PropertyRef Name="STATE_NAME" />
+            <PropertyRef Name="USA_FLAG" />
+          </Key>
+          <Property Name="STATE_CODE" Type="char" Nullable="false" MaxLength="2" />
+          <Property Name="STATE_NAME" Type="char" Nullable="false" MaxLength="30" />
+          <Property Name="USA_FLAG" Type="char" Nullable="false" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK_ContractDetail_Contracts">
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="1" />
+          <End Role="ContractAllotments" Type="ConsultantContractsModel.Store.ContractAllotments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="ContractAllotments">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contracts_AgreementType">
+          <End Role="AgreementType" Type="ConsultantContractsModel.Store.AgreementType" Multiplicity="1" />
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgreementType">
+              <PropertyRef Name="AgreementTypeId" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="AgreementTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contracts_Consultant">
+          <End Role="Consultant" Type="ConsultantContractsModel.Store.Consultant" Multiplicity="1" />
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="ConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contracts_ConsultantRemitTo">
+          <End Role="Consultant" Type="ConsultantContractsModel.Store.Consultant" Multiplicity="0..1" />
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="RemitTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contracts_ContractTypes">
+          <End Role="ContractTypes" Type="ConsultantContractsModel.Store.ContractTypes" Multiplicity="1" />
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContractTypes">
+              <PropertyRef Name="TypeId" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="ContractTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contracts_ResponsibleDivision">
+          <End Role="ResponsibleDivision" Type="ConsultantContractsModel.Store.ResponsibleDivision" Multiplicity="1" />
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResponsibleDivision">
+              <PropertyRef Name="DivisionId" />
+            </Principal>
+            <Dependent Role="Contracts">
+              <PropertyRef Name="ResponsibleDivisionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContractSubConsultants_Consultant">
+          <End Role="Consultant" Type="ConsultantContractsModel.Store.Consultant" Multiplicity="1" />
+          <End Role="ContractSubConsultants" Type="ConsultantContractsModel.Store.ContractSubConsultants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="ContractSubConsultants">
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContractSubConsultants_Contracts">
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="1" />
+          <End Role="ContractSubConsultants" Type="ConsultantContractsModel.Store.ContractSubConsultants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="ContractSubConsultants">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContractWorkTypes_Contracts">
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="1" />
+          <End Role="ContractWorkTypes" Type="ConsultantContractsModel.Store.ContractWorkTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="ContractWorkTypes">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContractWorkTypes_WorkType">
+          <End Role="WorkType" Type="ConsultantContractsModel.Store.WorkType" Multiplicity="1" />
+          <End Role="ContractWorkTypes" Type="ConsultantContractsModel.Store.ContractWorkTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkType">
+              <PropertyRef Name="WorkTypeId" />
+            </Principal>
+            <Dependent Role="ContractWorkTypes">
+              <PropertyRef Name="WorkTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Consultant">
+          <End Role="Consultant" Type="ConsultantContractsModel.Store.Consultant" Multiplicity="0..1" />
+          <End Role="Invoice" Type="ConsultantContractsModel.Store.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Contracts">
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="1" />
+          <End Role="Invoice" Type="ConsultantContractsModel.Store.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoiceApproval_Invoice">
+          <End Role="Invoice" Type="ConsultantContractsModel.Store.Invoice" Multiplicity="1" />
+          <End Role="InvoiceApproval" Type="ConsultantContractsModel.Store.InvoiceApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceApproval">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoicePayments_Invoice">
+          <End Role="Invoice" Type="ConsultantContractsModel.Store.Invoice" Multiplicity="1" />
+          <End Role="InvoicePayments" Type="ConsultantContractsModel.Store.InvoicePayments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoicePayments">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalaryRates_Contracts">
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="1" />
+          <End Role="SalaryRates" Type="ConsultantContractsModel.Store.SalaryRates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="SalaryRates">
+              <PropertyRef Name="ConractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceRates_Contracts">
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="1" />
+          <End Role="ServiceRates" Type="ConsultantContractsModel.Store.ServiceRates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="ServiceRates">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubConsultantSalaryRates_ContractSubConsultants">
+          <End Role="ContractSubConsultants" Type="ConsultantContractsModel.Store.ContractSubConsultants" Multiplicity="1" />
+          <End Role="SubConsultantSalaryRates" Type="ConsultantContractsModel.Store.SubConsultantSalaryRates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContractSubConsultants">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SubConsultantSalaryRates">
+              <PropertyRef Name="ConractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubConsultantServiceRates_ContractSubConsultants">
+          <End Role="ContractSubConsultants" Type="ConsultantContractsModel.Store.ContractSubConsultants" Multiplicity="1" />
+          <End Role="SubConsultantServiceRates" Type="ConsultantContractsModel.Store.SubConsultantServiceRates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContractSubConsultants">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SubConsultantServiceRates">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppAgreement_Contracts">
+          <End Role="Contracts" Type="ConsultantContractsModel.Store.Contracts" Multiplicity="1" />
+          <End Role="SuppAgreement" Type="ConsultantContractsModel.Store.SuppAgreement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contracts">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppAllotments_SuppAgreement">
+          <End Role="SuppAgreement" Type="ConsultantContractsModel.Store.SuppAgreement" Multiplicity="1" />
+          <End Role="SuppAllotments" Type="ConsultantContractsModel.Store.SuppAllotments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppAllotments">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSalaryRate_SuppAgreement">
+          <End Role="SuppAgreement" Type="ConsultantContractsModel.Store.SuppAgreement" Multiplicity="1" />
+          <End Role="SuppSalaryRate" Type="ConsultantContractsModel.Store.SuppSalaryRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppSalaryRate">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppServiceRate_SuppAgreement">
+          <End Role="SuppAgreement" Type="ConsultantContractsModel.Store.SuppAgreement" Multiplicity="1" />
+          <End Role="SuppServiceRate" Type="ConsultantContractsModel.Store.SuppServiceRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppServiceRate">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantInfo_Consultant">
+          <End Role="Consultant" Type="ConsultantContractsModel.Store.Consultant" Multiplicity="1" />
+          <End Role="SuppSubConsultantInfo" Type="ConsultantContractsModel.Store.SuppSubConsultantInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantInfo">
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantInfo_SuppAgreement">
+          <End Role="SuppAgreement" Type="ConsultantContractsModel.Store.SuppAgreement" Multiplicity="1" />
+          <End Role="SuppSubConsultantInfo" Type="ConsultantContractsModel.Store.SuppSubConsultantInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantInfo">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo">
+          <End Role="SuppSubConsultantInfo" Type="ConsultantContractsModel.Store.SuppSubConsultantInfo" Multiplicity="1" />
+          <End Role="SuppSubConsultantSalaryRates" Type="ConsultantContractsModel.Store.SuppSubConsultantSalaryRates" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppSubConsultantInfo">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantSalaryRates">
+              <PropertyRef Name="ConractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo">
+          <End Role="SuppSubConsultantInfo" Type="ConsultantContractsModel.Store.SuppSubConsultantInfo" Multiplicity="1" />
+          <End Role="SuppSubConsultantServiceRate" Type="ConsultantContractsModel.Store.SuppSubConsultantServiceRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppSubConsultantInfo">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantServiceRate">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConsultantContractsModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="ConsultantContractsEntities" annotation:LazyLoadingEnabled="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="Consultants" EntityType="ConsultantContractsModel.Consultant" />
+          <EntitySet Name="ContractAllotments" EntityType="ConsultantContractsModel.ContractAllotment" />
+          <EntitySet Name="Contracts" EntityType="ConsultantContractsModel.Contract" />
+          <EntitySet Name="ContractTypes" EntityType="ConsultantContractsModel.ContractType" />
+          <EntitySet Name="Invoices" EntityType="ConsultantContractsModel.Invoice" />
+          <EntitySet Name="SalaryRates" EntityType="ConsultantContractsModel.SalaryRate" />
+          <EntitySet Name="SuppAgreements" EntityType="ConsultantContractsModel.SuppAgreement" />
+          <EntitySet Name="SuppAllotments" EntityType="ConsultantContractsModel.SuppAllotment" />
+          <EntitySet Name="SuppSalaryRates" EntityType="ConsultantContractsModel.SuppSalaryRate" />
+          <AssociationSet Name="FK_Contracts_Consultant" Association="ConsultantContractsModel.FK_Contracts_Consultant">
+            <End Role="Consultant" EntitySet="Consultants" />
+            <End Role="Contract" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Consultant" Association="ConsultantContractsModel.FK_Invoice_Consultant">
+            <End Role="Consultant" EntitySet="Consultants" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ContractDetail_Contracts" Association="ConsultantContractsModel.FK_ContractDetail_Contracts">
+            <End Role="Contract" EntitySet="Contracts" />
+            <End Role="ContractAllotment" EntitySet="ContractAllotments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contracts_ContractTypes" Association="ConsultantContractsModel.FK_Contracts_ContractTypes">
+            <End Role="ContractType" EntitySet="ContractTypes" />
+            <End Role="Contract" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Contracts" Association="ConsultantContractsModel.FK_Invoice_Contracts">
+            <End Role="Contract" EntitySet="Contracts" />
+            <End Role="Invoice" EntitySet="Invoices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalaryRates_Contracts" Association="ConsultantContractsModel.FK_SalaryRates_Contracts">
+            <End Role="Contract" EntitySet="Contracts" />
+            <End Role="SalaryRate" EntitySet="SalaryRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppAgreement_Contracts" Association="ConsultantContractsModel.FK_SuppAgreement_Contracts">
+            <End Role="Contract" EntitySet="Contracts" />
+            <End Role="SuppAgreement" EntitySet="SuppAgreements" />
+          </AssociationSet>
+          <EntitySet Name="WorkTypes" EntityType="ConsultantContractsModel.WorkType" />
+          <AssociationSet Name="ContractWorkTypes" Association="ConsultantContractsModel.ContractWorkTypes">
+            <End Role="Contract" EntitySet="Contracts" />
+            <End Role="WorkType" EntitySet="WorkTypes" />
+          </AssociationSet>
+          <EntitySet Name="ServiceRates" EntityType="ConsultantContractsModel.ServiceRate" />
+          <EntitySet Name="SuppServiceRates" EntityType="ConsultantContractsModel.SuppServiceRate" />
+          <AssociationSet Name="FK_ServiceRates_Contracts" Association="ConsultantContractsModel.FK_ServiceRates_Contracts">
+            <End Role="Contract" EntitySet="Contracts" />
+            <End Role="ServiceRate" EntitySet="ServiceRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppAllotments_SuppAgreement" Association="ConsultantContractsModel.FK_SuppAllotments_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreements" />
+            <End Role="SuppAllotment" EntitySet="SuppAllotments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSalaryRate_SuppAgreement" Association="ConsultantContractsModel.FK_SuppSalaryRate_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreements" />
+            <End Role="SuppSalaryRate" EntitySet="SuppSalaryRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppServiceRate_SuppAgreement" Association="ConsultantContractsModel.FK_SuppServiceRate_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreements" />
+            <End Role="SuppServiceRate" EntitySet="SuppServiceRates" />
+          </AssociationSet>
+          <EntitySet Name="AgreementTypes" EntityType="ConsultantContractsModel.AgreementType" />
+          <EntitySet Name="SuppSubConsultantInfoes" EntityType="ConsultantContractsModel.SuppSubConsultantInfo" />
+          <AssociationSet Name="FK_Contracts_AgreementType" Association="ConsultantContractsModel.FK_Contracts_AgreementType">
+            <End Role="AgreementType" EntitySet="AgreementTypes" />
+            <End Role="Contract" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantInfo_Consultant" Association="ConsultantContractsModel.FK_SuppSubConsultantInfo_Consultant">
+            <End Role="Consultant" EntitySet="Consultants" />
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantInfo_SuppAgreement" Association="ConsultantContractsModel.FK_SuppSubConsultantInfo_SuppAgreement">
+            <End Role="SuppAgreement" EntitySet="SuppAgreements" />
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfoes" />
+          </AssociationSet>
+          <EntitySet Name="ContractSubConsultants" EntityType="ConsultantContractsModel.ContractSubConsultant" />
+          <AssociationSet Name="FK_ContractSubConsultants_Contracts" Association="ConsultantContractsModel.FK_ContractSubConsultants_Contracts">
+            <End Role="Contract" EntitySet="Contracts" />
+            <End Role="ContractSubConsultant" EntitySet="ContractSubConsultants" />
+          </AssociationSet>
+          <EntitySet Name="InvoicePayments" EntityType="ConsultantContractsModel.InvoicePayment" />
+          <EntitySet Name="SubConsultantSalaryRates" EntityType="ConsultantContractsModel.SubConsultantSalaryRate" />
+          <EntitySet Name="SubConsultantServiceRates" EntityType="ConsultantContractsModel.SubConsultantServiceRate" />
+          <EntitySet Name="SuppSubConsultantSalaryRates" EntityType="ConsultantContractsModel.SuppSubConsultantSalaryRate" />
+          <EntitySet Name="SuppSubConsultantServiceRates" EntityType="ConsultantContractsModel.SuppSubConsultantServiceRate" />
+          <AssociationSet Name="FK_ContractSubConsultants_Consultant" Association="ConsultantContractsModel.FK_ContractSubConsultants_Consultant">
+            <End Role="Consultant" EntitySet="Consultants" />
+            <End Role="ContractSubConsultant" EntitySet="ContractSubConsultants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubConsultantSalaryRates_ContractSubConsultants" Association="ConsultantContractsModel.FK_SubConsultantSalaryRates_ContractSubConsultants">
+            <End Role="ContractSubConsultant" EntitySet="ContractSubConsultants" />
+            <End Role="SubConsultantSalaryRate" EntitySet="SubConsultantSalaryRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubConsultantServiceRates_ContractSubConsultants" Association="ConsultantContractsModel.FK_SubConsultantServiceRates_ContractSubConsultants">
+            <End Role="ContractSubConsultant" EntitySet="ContractSubConsultants" />
+            <End Role="SubConsultantServiceRate" EntitySet="SubConsultantServiceRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo" Association="ConsultantContractsModel.FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo">
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfoes" />
+            <End Role="SuppSubConsultantSalaryRate" EntitySet="SuppSubConsultantSalaryRates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo" Association="ConsultantContractsModel.FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo">
+            <End Role="SuppSubConsultantInfo" EntitySet="SuppSubConsultantInfoes" />
+            <End Role="SuppSubConsultantServiceRate" EntitySet="SuppSubConsultantServiceRates" />
+          </AssociationSet>
+          <EntitySet Name="ResponsibleDivisions" EntityType="ConsultantContractsModel.ResponsibleDivision" />
+          <AssociationSet Name="FK_Contracts_ConsultantRemitTo" Association="ConsultantContractsModel.FK_Contracts_ConsultantRemitTo">
+            <End Role="Consultant" EntitySet="Consultants" />
+            <End Role="Contract" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Contracts_ResponsibleDivision" Association="ConsultantContractsModel.FK_Contracts_ResponsibleDivision">
+            <End Role="ResponsibleDivision" EntitySet="ResponsibleDivisions" />
+            <End Role="Contract" EntitySet="Contracts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_InvoicePayments_Invoice" Association="ConsultantContractsModel.FK_InvoicePayments_Invoice">
+            <End Role="Invoice" EntitySet="Invoices" />
+            <End Role="InvoicePayment" EntitySet="InvoicePayments" />
+          </AssociationSet>
+          <FunctionImport Name="usp_RejectInvoice">
+            <Parameter Name="InvoiceId" Mode="In" Type="Int32" />
+            <Parameter Name="Reason" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="CommentsHistories" EntityType="ConsultantContractsModel.CommentsHistory" />
+          <EntitySet Name="InvoiceApproval" EntityType="ConsultantContractsModel.InvoiceApproval" />
+          <AssociationSet Name="FK_InvoiceApproval_Invoice" Association="ConsultantContractsModel.FK_InvoiceApproval_Invoice">
+            <End Role="Invoice" EntitySet="Invoices" />
+            <End Role="InvoiceApproval" EntitySet="InvoiceApproval" />
+          </AssociationSet>
+          <EntitySet Name="USStates" EntityType="ConsultantContractsModel.USStates" />
+          <EntitySet Name="CountryRegionNames" EntityType="ConsultantContractsModel.CountryRegionNames" />
+        </EntityContainer>
+        <EntityType Name="Consultant">
+          <Key>
+            <PropertyRef Name="ConsultantId" />
+          </Key>
+          <Property Type="Int32" Name="ConsultantId" Nullable="false" />
+          <Property Type="String" Name="TaxId" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Type="Int32" Name="SeqNo" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PrimaryContactFirstName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PrimaryContactLastName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondaryContactFirstName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SecondaryContactLastName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PhysicalAddress" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="String" Name="City" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="String" Name="State" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="String" Name="CountryCode" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="String" Name="PostalCode" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Type="String" Name="EmailAddress" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Contracts" Relationship="ConsultantContractsModel.FK_Contracts_Consultant" FromRole="Consultant" ToRole="Contract" />
+          <NavigationProperty Name="SubInvoices" Relationship="ConsultantContractsModel.FK_Invoice_Consultant" FromRole="Consultant" ToRole="Invoice" />
+          <NavigationProperty Name="SuppSubConsultantInfoes" Relationship="ConsultantContractsModel.FK_SuppSubConsultantInfo_Consultant" FromRole="Consultant" ToRole="SuppSubConsultantInfo" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCM" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="Multiplier" Precision="4" Scale="2" />
+          <Property Type="Boolean" Name="Inactive" Nullable="false" />
+          <Property Type="Boolean" Name="CityOrCounty" Nullable="false" />
+          <NavigationProperty Name="Remitee" Relationship="ConsultantContractsModel.FK_Contracts_ConsultantRemitTo" FromRole="Consultant" ToRole="Contract" />
+          <NavigationProperty Name="SubConsultantInfoes" Relationship="ConsultantContractsModel.FK_ContractSubConsultants_Consultant" FromRole="Consultant" ToRole="ContractSubConsultant" />
+        </EntityType>
+        <EntityType Name="ContractAllotment">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="Func" />
+            <PropertyRef Name="FAP" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="String" Name="Func" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="FAP" Nullable="false" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Type="Decimal" Name="FundingPriority" Precision="2" Scale="0" />
+          <Property Type="Decimal" Name="FedPct" Precision="5" Scale="4" Nullable="false" />
+          <Property Type="Decimal" Name="StatePct" Precision="5" Scale="4" Nullable="false" />
+          <Property Type="Decimal" Name="StateAidPct" Precision="5" Scale="4" Nullable="false" />
+          <Property Type="Decimal" Name="AllottedAmt" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="AllottedAmtOrig" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Contract" Relationship="ConsultantContractsModel.FK_ContractDetail_Contracts" FromRole="ContractAllotment" ToRole="Contract" />
+          <Property Type="Decimal" Name="OtherPct" Nullable="false" Precision="5" Scale="4" />
+        </EntityType>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+          </Key>
+          <Property Type="String" Name="JobNo" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="Int32" Name="ConsultantId" Nullable="false" />
+          <Property Type="Int32" Name="ContractTypeId" Nullable="false" />
+          <Property Type="Int32" Name="AgreementTypeId" Nullable="false" />
+          <Property Type="String" Name="ContractStatus" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="DateTime" Name="AgreementDate" Precision="0" />
+          <Property Type="DateTime" Name="NoticeProceedDate" Precision="0" />
+          <Property Type="String" Name="ConsultantContractNo" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="ContractCeiling" Precision="19" Scale="4" />
+          <Property Type="DateTime" Name="ScheduledCompletionDate" Precision="0" />
+          <Property Type="DateTime" Name="CompletionDate" Precision="7" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Consultant" Relationship="ConsultantContractsModel.FK_Contracts_Consultant" FromRole="Contract" ToRole="Consultant" />
+          <NavigationProperty Name="ContractAllotments" Relationship="ConsultantContractsModel.FK_ContractDetail_Contracts" FromRole="Contract" ToRole="ContractAllotment" />
+          <NavigationProperty Name="ContractType" Relationship="ConsultantContractsModel.FK_Contracts_ContractTypes" FromRole="Contract" ToRole="ContractType" />
+          <NavigationProperty Name="Invoices" Relationship="ConsultantContractsModel.FK_Invoice_Contracts" FromRole="Contract" ToRole="Invoice" />
+          <NavigationProperty Name="SalaryRates" Relationship="ConsultantContractsModel.FK_SalaryRates_Contracts" FromRole="Contract" ToRole="SalaryRate" />
+          <NavigationProperty Name="SuppAgreements" Relationship="ConsultantContractsModel.FK_SuppAgreement_Contracts" FromRole="Contract" ToRole="SuppAgreement" />
+          <NavigationProperty Name="WorkTypes" Relationship="ConsultantContractsModel.ContractWorkTypes" FromRole="Contract" ToRole="WorkType" />
+          <NavigationProperty Name="ServiceRates" Relationship="ConsultantContractsModel.FK_ServiceRates_Contracts" FromRole="Contract" ToRole="ServiceRate" />
+          <NavigationProperty Name="AgreementType" Relationship="ConsultantContractsModel.FK_Contracts_AgreementType" FromRole="Contract" ToRole="AgreementType" />
+          <NavigationProperty Name="ContractSubConsultants" Relationship="ConsultantContractsModel.FK_ContractSubConsultants_Contracts" FromRole="Contract" ToRole="ContractSubConsultant" />
+          <Property Type="Decimal" Name="T1SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1SvcsCeilingOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1FixedFeeMaxOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2SvcsCeilingOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2FixedFeeMaxOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="ContractCeilingOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMaxOrig" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCM" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCMOrig" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMaxOrig" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="Multiplier" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="MultiplierOrig" Precision="4" Scale="2" />
+          <Property Type="String" Name="Remarks" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="RemarkLastEditDate" Precision="7" />
+          <Property Type="String" Name="RemarkLastEditUser" MaxLength="7" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="TaskOrderNo" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="ResponsibleDivisionId" Nullable="false" />
+          <Property Type="Int32" Name="RemitTo" />
+          <NavigationProperty Name="RemitToCon" Relationship="ConsultantContractsModel.FK_Contracts_ConsultantRemitTo" FromRole="Contract" ToRole="Consultant" />
+          <NavigationProperty Name="ResponsibleDivision" Relationship="ConsultantContractsModel.FK_Contracts_ResponsibleDivision" FromRole="Contract" ToRole="ResponsibleDivision" />
+          <Property Type="Int16" Name="TitlePhase" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContractType">
+          <Key>
+            <PropertyRef Name="TypeId" />
+          </Key>
+          <Property Type="Int32" Name="TypeId" Nullable="false" />
+          <Property Type="String" Name="TypeShortName" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TypeName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contracts" Relationship="ConsultantContractsModel.FK_Contracts_ContractTypes" FromRole="ContractType" ToRole="Contract" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="InvoiceId" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="Int32" Name="InvoiceNo" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="DateTime" Name="InvoiceDate" Nullable="false" Precision="0" />
+          <Property Type="DateTime" Name="BeginDate" Nullable="false" Precision="0" />
+          <Property Type="DateTime" Name="EndDate" Nullable="false" Precision="0" />
+          <Property Type="String" Name="ConsultantInvoiceNo" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="SubConsultantId" />
+          <Property Type="Boolean" Name="PrimeInvoice" Nullable="false" />
+          <Property Type="Decimal" Name="LumpSumPercentage" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="T1SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="String" Name="City" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="State" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="CountryCode" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalCode" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <NavigationProperty Name="SubConsultant" Relationship="ConsultantContractsModel.FK_Invoice_Consultant" FromRole="Invoice" ToRole="Consultant" />
+          <NavigationProperty Name="Contract" Relationship="ConsultantContractsModel.FK_Invoice_Contracts" FromRole="Invoice" ToRole="Contract" />
+          <Property Type="Decimal" Name="ContractCeiling" Precision="19" Scale="4" />
+          <Property Type="String" Name="PhysicalAddress" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EmailAddress" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Type="Decimal" Name="T1FixedFee" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRate" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCM" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRate" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="Multiplier" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="T1Svcs" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2Svcs" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2FixedFee" Precision="19" Scale="4" />
+          <Property Type="String" Name="Remarks" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="RemarkLastEditDate" Precision="7" />
+          <Property Type="String" Name="RemarkLastEditUser" MaxLength="7" FixedLength="true" Unicode="true" />
+          <Property Type="DateTime" Name="PrimeApproval" Precision="0" />
+          <Property Type="String" Name="PrimeApprovalBy" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="InvoiceId" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <NavigationProperty Name="InvoicePayments" Relationship="ConsultantContractsModel.FK_InvoicePayments_Invoice" FromRole="Invoice" ToRole="InvoicePayment" />
+          <Property Type="Int32" Name="RevisionNo" Nullable="false" />
+          <Property Type="DateTime" Name="SubmittedDate" Precision="0" />
+          <Property Type="Boolean" Name="IsSimple" Nullable="false" />
+          <NavigationProperty Name="InvoiceApproval" Relationship="ConsultantContractsModel.FK_InvoiceApproval_Invoice" FromRole="Invoice" ToRole="InvoiceApproval" />
+          <Property Type="String" Name="ConsultantJobNo" MaxLength="25" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SalaryRate">
+          <Key>
+            <PropertyRef Name="ConractCode" />
+            <PropertyRef Name="JobTitle" />
+          </Key>
+          <Property Type="Int32" Name="ConractCode" Nullable="false" />
+          <Property Type="String" Name="JobTitle" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMinOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMaxOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Contract" Relationship="ConsultantContractsModel.FK_SalaryRates_Contracts" FromRole="SalaryRate" ToRole="Contract" />
+        </EntityType>
+        <EntityType Name="SuppAgreement">
+          <Key>
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="ContractCode" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="String" Name="SuppNo" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Type="Decimal" Name="ContractCeiling" Precision="19" Scale="4" />
+          <Property Name="T1SvcsCeiling" Precision="19" Scale="4" Type="Decimal" />
+          <Property Type="Decimal" Name="T1FixedFeeMax" Precision="19" Scale="4" />
+          <Property Name="T2SvcsCeiling" Precision="19" Scale="4" Type="Decimal" />
+          <Property Type="Decimal" Name="T2FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="DateTime" Name="SuppAgreementDate" Precision="7" />
+          <Property Type="DateTime" Name="CompletionDate" Precision="7" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Contract" Relationship="ConsultantContractsModel.FK_SuppAgreement_Contracts" FromRole="SuppAgreement" ToRole="Contract" />
+          <NavigationProperty Name="SuppAllotments" Relationship="ConsultantContractsModel.FK_SuppAllotments_SuppAgreement" FromRole="SuppAgreement" ToRole="SuppAllotment" />
+          <NavigationProperty Name="SuppSalaryRates" Relationship="ConsultantContractsModel.FK_SuppSalaryRate_SuppAgreement" FromRole="SuppAgreement" ToRole="SuppSalaryRate" />
+          <NavigationProperty Name="SuppServiceRates" Relationship="ConsultantContractsModel.FK_SuppServiceRate_SuppAgreement" FromRole="SuppAgreement" ToRole="SuppServiceRate" />
+          <NavigationProperty Name="SuppSubConsultantInfoes" Relationship="ConsultantContractsModel.FK_SuppSubConsultantInfo_SuppAgreement" FromRole="SuppAgreement" ToRole="SuppSubConsultantInfo" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCM" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="Multiplier" Precision="4" Scale="2" />
+          <Property Type="String" Name="RemarkLastEditUser" MaxLength="7" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="Remarks" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="RemarkLastEditDate" Precision="7" />
+        </EntityType>
+        <EntityType Name="SuppAllotment">
+          <Key>
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="Func" />
+            <PropertyRef Name="FAP" />
+            <PropertyRef Name="ContractCode" />
+          </Key>
+          <Property Type="String" Name="SuppNo" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Type="String" Name="Func" Nullable="false" MaxLength="4" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="FAP" Nullable="false" MaxLength="11" FixedLength="true" Unicode="true" />
+          <Property Type="Decimal" Name="AllottedAmt" Precision="19" Scale="4" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <NavigationProperty Name="SuppAgreement" Relationship="ConsultantContractsModel.FK_SuppAllotments_SuppAgreement" FromRole="SuppAllotment" ToRole="SuppAgreement" />
+        </EntityType>
+        <EntityType Name="SuppSalaryRate">
+          <Key>
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="JobTitle" />
+            <PropertyRef Name="ContractCode" />
+          </Key>
+          <Property Type="String" Name="SuppNo" Nullable="false" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Type="String" Name="JobTitle" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <NavigationProperty Name="SuppAgreement" Relationship="ConsultantContractsModel.FK_SuppSalaryRate_SuppAgreement" FromRole="SuppSalaryRate" ToRole="SuppAgreement" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Contracts_Consultant">
+          <End Type="ConsultantContractsModel.Consultant" Role="Consultant" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="ConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Consultant">
+          <End Type="ConsultantContractsModel.Consultant" Role="Consultant" Multiplicity="0..1" />
+          <End Type="ConsultantContractsModel.Invoice" Role="Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ContractDetail_Contracts">
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.ContractAllotment" Role="ContractAllotment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contract">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="ContractAllotment">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contracts_ContractTypes">
+          <End Type="ConsultantContractsModel.ContractType" Role="ContractType" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContractType">
+              <PropertyRef Name="TypeId" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="ContractTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Contracts">
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.Invoice" Role="Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contract">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalaryRates_Contracts">
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SalaryRate" Role="SalaryRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contract">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="SalaryRate">
+              <PropertyRef Name="ConractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppAgreement_Contracts">
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppAgreement" Role="SuppAgreement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contract">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WorkType">
+          <Key>
+            <PropertyRef Name="WorkTypeId" />
+          </Key>
+          <Property Type="Int32" Name="WorkTypeId" Nullable="false" />
+          <Property Type="String" Name="WorkTypeName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Contracts" Relationship="ConsultantContractsModel.ContractWorkTypes" FromRole="WorkType" ToRole="Contract" />
+        </EntityType>
+        <Association Name="ContractWorkTypes">
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="*" />
+          <End Type="ConsultantContractsModel.WorkType" Role="WorkType" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ServiceRate">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="String" Name="ServiceName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMinOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMaxOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Contract" Relationship="ConsultantContractsModel.FK_ServiceRates_Contracts" FromRole="ServiceRate" ToRole="Contract" />
+        </EntityType>
+        <EntityType Name="SuppServiceRate">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="String" Name="SuppNo" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ServiceName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="SuppAgreement" Relationship="ConsultantContractsModel.FK_SuppServiceRate_SuppAgreement" FromRole="SuppServiceRate" ToRole="SuppAgreement" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ServiceRates_Contracts">
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.ServiceRate" Role="ServiceRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contract">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="ServiceRate">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppAllotments_SuppAgreement">
+          <End Type="ConsultantContractsModel.SuppAgreement" Role="SuppAgreement" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppAllotment" Role="SuppAllotment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppAllotment">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSalaryRate_SuppAgreement">
+          <End Type="ConsultantContractsModel.SuppAgreement" Role="SuppAgreement" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppSalaryRate" Role="SuppSalaryRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppSalaryRate">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppServiceRate_SuppAgreement">
+          <End Type="ConsultantContractsModel.SuppAgreement" Role="SuppAgreement" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppServiceRate" Role="SuppServiceRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppServiceRate">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AgreementType">
+          <Key>
+            <PropertyRef Name="AgreementTypeId" />
+          </Key>
+          <Property Type="Int32" Name="AgreementTypeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="AgreementTypeName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contracts" Relationship="ConsultantContractsModel.FK_Contracts_AgreementType" FromRole="AgreementType" ToRole="Contract" />
+        </EntityType>
+        <EntityType Name="SuppSubConsultantInfo">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="SubConsultantId" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="String" Name="SuppNo" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="ContractCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="SuppAgreement" Relationship="ConsultantContractsModel.FK_SuppSubConsultantInfo_SuppAgreement" FromRole="SuppSubConsultantInfo" ToRole="SuppAgreement" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCM" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="Multiplier" Precision="4" Scale="2" />
+          <Property Type="Int32" Name="SubConsultantId" Nullable="false" />
+          <NavigationProperty Name="SuppSubConsultantSalaryRates" Relationship="ConsultantContractsModel.FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo" FromRole="SuppSubConsultantInfo" ToRole="SuppSubConsultantSalaryRate" />
+          <NavigationProperty Name="SuppSubConsultantServiceRates" Relationship="ConsultantContractsModel.FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo" FromRole="SuppSubConsultantInfo" ToRole="SuppSubConsultantServiceRate" />
+          <NavigationProperty Name="SubConsultant" Relationship="ConsultantContractsModel.FK_SuppSubConsultantInfo_Consultant" FromRole="SuppSubConsultantInfo" ToRole="Consultant" />
+        </EntityType>
+        <Association Name="FK_Contracts_AgreementType">
+          <End Type="ConsultantContractsModel.AgreementType" Role="AgreementType" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgreementType">
+              <PropertyRef Name="AgreementTypeId" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="AgreementTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantInfo_Consultant">
+          <End Type="ConsultantContractsModel.Consultant" Role="Consultant" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppSubConsultantInfo" Role="SuppSubConsultantInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantInfo">
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantInfo_SuppAgreement">
+          <End Type="ConsultantContractsModel.SuppAgreement" Role="SuppAgreement" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppSubConsultantInfo" Role="SuppSubConsultantInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppAgreement">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantInfo">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ContractSubConsultant">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SubConsultantId" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="Decimal" Name="ContractCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1SvcsCeilingOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T1FixedFeeMaxOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2SvcsCeiling" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2SvcsCeilingOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2FixedFeeMax" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="T2FixedFeeMaxOrig" Precision="19" Scale="4" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Contract" Relationship="ConsultantContractsModel.FK_ContractSubConsultants_Contracts" FromRole="ContractSubConsultant" ToRole="Contract" />
+          <Property Type="Decimal" Name="ContractCeilingOrig" Precision="19" Scale="4" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="HomeOfficeOverheadRateMaxOrig" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCM" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FCCMOrig" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMax" Precision="7" Scale="4" />
+          <Property Type="Decimal" Name="Multiplier" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="MultiplierOrig" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="FieldServiceOverheadRateMaxOrig" Precision="7" Scale="4" />
+          <Property Type="Int32" Name="SubConsultantId" Nullable="false" />
+          <NavigationProperty Name="SubConsultant" Relationship="ConsultantContractsModel.FK_ContractSubConsultants_Consultant" FromRole="ContractSubConsultant" ToRole="Consultant" />
+          <NavigationProperty Name="SubConsultantSalaryRates" Relationship="ConsultantContractsModel.FK_SubConsultantSalaryRates_ContractSubConsultants" FromRole="ContractSubConsultant" ToRole="SubConsultantSalaryRate" />
+          <NavigationProperty Name="SubConsultantServiceRates" Relationship="ConsultantContractsModel.FK_SubConsultantServiceRates_ContractSubConsultants" FromRole="ContractSubConsultant" ToRole="SubConsultantServiceRate" />
+        </EntityType>
+        <Association Name="FK_ContractSubConsultants_Contracts">
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.ContractSubConsultant" Role="ContractSubConsultant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contract">
+              <PropertyRef Name="ContractCode" />
+            </Principal>
+            <Dependent Role="ContractSubConsultant">
+              <PropertyRef Name="ContractCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InvoicePayment">
+          <Key>
+            <PropertyRef Name="Func" />
+            <PropertyRef Name="FAP" />
+            <PropertyRef Name="InvoiceId" />
+          </Key>
+          <Property Type="String" Name="Func" Nullable="false" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="FAP" Nullable="false" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="19" Scale="4" />
+          <Property Type="Int32" Name="InvoiceId" Nullable="false" />
+          <NavigationProperty Name="Invoice" Relationship="ConsultantContractsModel.FK_InvoicePayments_Invoice" FromRole="InvoicePayment" ToRole="Invoice" />
+          <Property Type="String" Name="ObjectCode" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SubConsultantSalaryRate">
+          <Key>
+            <PropertyRef Name="ConractCode" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="JobTitle" />
+          </Key>
+          <Property Type="Int32" Name="ConractCode" Nullable="false" />
+          <Property Type="Int32" Name="SubConsultantId" Nullable="false" />
+          <Property Type="String" Name="JobTitle" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMinOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMaxOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ContractSubConsultant" Relationship="ConsultantContractsModel.FK_SubConsultantSalaryRates_ContractSubConsultants" FromRole="SubConsultantSalaryRate" ToRole="ContractSubConsultant" />
+        </EntityType>
+        <EntityType Name="SubConsultantServiceRate">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="Int32" Name="SubConsultantId" Nullable="false" />
+          <Property Type="String" Name="ServiceName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMinOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMaxOrig" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="ContractSubConsultant" Relationship="ConsultantContractsModel.FK_SubConsultantServiceRates_ContractSubConsultants" FromRole="SubConsultantServiceRate" ToRole="ContractSubConsultant" />
+        </EntityType>
+        <EntityType Name="SuppSubConsultantSalaryRate">
+          <Key>
+            <PropertyRef Name="ConractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="JobTitle" />
+          </Key>
+          <Property Type="Int32" Name="ConractCode" Nullable="false" />
+          <Property Type="String" Name="SuppNo" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="SubConsultantId" Nullable="false" />
+          <Property Type="String" Name="JobTitle" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="SuppSubConsultantInfo" Relationship="ConsultantContractsModel.FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo" FromRole="SuppSubConsultantSalaryRate" ToRole="SuppSubConsultantInfo" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SuppSubConsultantServiceRate">
+          <Key>
+            <PropertyRef Name="ContractCode" />
+            <PropertyRef Name="SuppNo" />
+            <PropertyRef Name="SubConsultantId" />
+            <PropertyRef Name="ServiceName" />
+          </Key>
+          <Property Type="Int32" Name="ContractCode" Nullable="false" />
+          <Property Type="String" Name="SuppNo" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="SubConsultantId" Nullable="false" />
+          <Property Type="String" Name="ServiceName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="Decimal" Name="RateMin" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="RateMax" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="Boolean" Name="Deleted" Nullable="false" />
+          <Property Type="DateTime" Name="LastUpdateDate" Nullable="false" Precision="7" />
+          <Property Type="String" Name="LastUpdateUser" Nullable="false" MaxLength="7" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="SuppSubConsultantInfo" Relationship="ConsultantContractsModel.FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo" FromRole="SuppSubConsultantServiceRate" ToRole="SuppSubConsultantInfo" />
+        </EntityType>
+        <Association Name="FK_ContractSubConsultants_Consultant">
+          <End Type="ConsultantContractsModel.Consultant" Role="Consultant" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.ContractSubConsultant" Role="ContractSubConsultant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="ContractSubConsultant">
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubConsultantSalaryRates_ContractSubConsultants">
+          <End Type="ConsultantContractsModel.ContractSubConsultant" Role="ContractSubConsultant" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SubConsultantSalaryRate" Role="SubConsultantSalaryRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContractSubConsultant">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SubConsultantSalaryRate">
+              <PropertyRef Name="ConractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubConsultantServiceRates_ContractSubConsultants">
+          <End Type="ConsultantContractsModel.ContractSubConsultant" Role="ContractSubConsultant" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SubConsultantServiceRate" Role="SubConsultantServiceRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContractSubConsultant">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SubConsultantServiceRate">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo">
+          <End Type="ConsultantContractsModel.SuppSubConsultantInfo" Role="SuppSubConsultantInfo" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppSubConsultantSalaryRate" Role="SuppSubConsultantSalaryRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppSubConsultantInfo">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantSalaryRate">
+              <PropertyRef Name="ConractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo">
+          <End Type="ConsultantContractsModel.SuppSubConsultantInfo" Role="SuppSubConsultantInfo" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.SuppSubConsultantServiceRate" Role="SuppSubConsultantServiceRate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SuppSubConsultantInfo">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Principal>
+            <Dependent Role="SuppSubConsultantServiceRate">
+              <PropertyRef Name="ContractCode" />
+              <PropertyRef Name="SuppNo" />
+              <PropertyRef Name="SubConsultantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ResponsibleDivision">
+          <Key>
+            <PropertyRef Name="DivisionId" />
+          </Key>
+          <Property Type="Int32" Name="DivisionId" Nullable="false" />
+          <Property Type="String" Name="DivisionName" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ShortName" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Budget" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Contracts" Relationship="ConsultantContractsModel.FK_Contracts_ResponsibleDivision" FromRole="ResponsibleDivision" ToRole="Contract" />
+        </EntityType>
+        <Association Name="FK_Contracts_ConsultantRemitTo">
+          <End Type="ConsultantContractsModel.Consultant" Role="Consultant" Multiplicity="0..1" />
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Consultant">
+              <PropertyRef Name="ConsultantId" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="RemitTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Contracts_ResponsibleDivision">
+          <End Type="ConsultantContractsModel.ResponsibleDivision" Role="ResponsibleDivision" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.Contract" Role="Contract" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResponsibleDivision">
+              <PropertyRef Name="DivisionId" />
+            </Principal>
+            <Dependent Role="Contract">
+              <PropertyRef Name="ResponsibleDivisionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_InvoicePayments_Invoice">
+          <End Type="ConsultantContractsModel.Invoice" Role="Invoice" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.InvoicePayment" Role="InvoicePayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoicePayment">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CommentsHistory">
+          <Key>
+            <PropertyRef Name="CommentId" />
+          </Key>
+          <Property Type="Int32" Name="CommentId" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="String" Name="CommentNo" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Type" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="Comment" Nullable="false" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="UserId" Nullable="false" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Type="DateTime" Name="DateEntered" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="InvoiceApproval">
+          <Key>
+            <PropertyRef Name="InvoiceApprovalID" />
+          </Key>
+          <Property Type="Int32" Name="InvoiceApprovalID" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+          <Property Type="Int32" Name="InvoiceId" Nullable="false" />
+          <Property Type="String" Name="UserID" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Type="DateTime" Name="StatusDate" Nullable="false" Precision="3" />
+          <Property Type="Boolean" Name="ActiveStatus" Nullable="false" />
+          <Property Type="Boolean" Name="AuditReview" Nullable="false" />
+          <Property Type="DateTime" Name="VoucherDate" Precision="0" />
+          <Property Type="String" Name="VoucherNo" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="RejectedReason" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Invoice" Relationship="ConsultantContractsModel.FK_InvoiceApproval_Invoice" FromRole="InvoiceApproval" ToRole="Invoice" />
+        </EntityType>
+        <Association Name="FK_InvoiceApproval_Invoice">
+          <End Type="ConsultantContractsModel.Invoice" Role="Invoice" Multiplicity="1" />
+          <End Type="ConsultantContractsModel.InvoiceApproval" Role="InvoiceApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceApproval">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="USStates">
+          <Key>
+            <PropertyRef Name="STATE_CODE" />
+            <PropertyRef Name="STATE_NAME" />
+            <PropertyRef Name="USA_FLAG" />
+          </Key>
+          <Property Type="String" Name="STATE_CODE" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="STATE_NAME" Nullable="false" MaxLength="30" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="USA_FLAG" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CountryRegionNames">
+          <Key>
+            <PropertyRef Name="COUNTRY_CODE" />
+            <PropertyRef Name="REGION_CODE" />
+            <PropertyRef Name="COUNTRY_NAME" />
+            <PropertyRef Name="REGION_NAME" />
+          </Key>
+          <Property Type="String" Name="COUNTRY_CODE" Nullable="false" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REGION_CODE" Nullable="false" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="COUNTRY_NAME" Nullable="false" MaxLength="30" FixedLength="true" Unicode="false" />
+          <Property Type="String" Name="REGION_NAME" Nullable="false" MaxLength="30" FixedLength="true" Unicode="false" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConsultantContractsModelStoreContainer" CdmEntityContainer="ConsultantContractsEntities">
+          <EntitySetMapping Name="Consultants">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.Consultant">
+              <MappingFragment StoreEntitySet="Consultant">
+                <ScalarProperty Name="CityOrCounty" ColumnName="CityOrCounty" />
+                <ScalarProperty Name="Inactive" ColumnName="Inactive" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="FieldServiceOverheadRateMax" ColumnName="FieldServiceOverheadRateMax" />
+                <ScalarProperty Name="FCCM" ColumnName="FCCM" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMax" ColumnName="HomeOfficeOverheadRateMax" />
+                <ScalarProperty Name="PrimaryContactFirstName" ColumnName="PrimaryContactFirstName" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
+                <ScalarProperty Name="SecondaryContactLastName" ColumnName="SecondaryContactLastName" />
+                <ScalarProperty Name="SecondaryContactFirstName" ColumnName="SecondaryContactFirstName" />
+                <ScalarProperty Name="PrimaryContactLastName" ColumnName="PrimaryContactLastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SeqNo" ColumnName="SeqNo" />
+                <ScalarProperty Name="TaxId" ColumnName="TaxId" />
+                <ScalarProperty Name="ConsultantId" ColumnName="ConsultantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContractAllotments">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.ContractAllotment">
+              <MappingFragment StoreEntitySet="ContractAllotments">
+                <ScalarProperty Name="OtherPct" ColumnName="OtherPct" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="AllottedAmtOrig" ColumnName="AllottedAmtOrig" />
+                <ScalarProperty Name="AllottedAmt" ColumnName="AllottedAmt" />
+                <ScalarProperty Name="StateAidPct" ColumnName="StateAidPct" />
+                <ScalarProperty Name="StatePct" ColumnName="StatePct" />
+                <ScalarProperty Name="FedPct" ColumnName="FedPct" />
+                <ScalarProperty Name="FundingPriority" ColumnName="FundingPriority" />
+                <ScalarProperty Name="FAP" ColumnName="FAP" />
+                <ScalarProperty Name="Func" ColumnName="Func" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contracts">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.Contract">
+              <MappingFragment StoreEntitySet="Contracts">
+                <ScalarProperty Name="TitlePhase" ColumnName="TitlePhase" />
+                <ScalarProperty Name="RemitTo" ColumnName="RemitTo" />
+                <ScalarProperty Name="ResponsibleDivisionId" ColumnName="ResponsibleDivisionId" />
+                <ScalarProperty Name="TaskOrderNo" ColumnName="TaskOrderNo" />
+                <ScalarProperty Name="RemarkLastEditUser" ColumnName="RemarkLastEditUser" />
+                <ScalarProperty Name="RemarkLastEditDate" ColumnName="RemarkLastEditDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="MultiplierOrig" ColumnName="MultiplierOrig" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="FieldServiceOverheadRateMaxOrig" ColumnName="FieldServiceOverheadRateMaxOrig" />
+                <ScalarProperty Name="FieldServiceOverheadRateMax" ColumnName="FieldServiceOverheadRateMax" />
+                <ScalarProperty Name="FCCMOrig" ColumnName="FCCMOrig" />
+                <ScalarProperty Name="FCCM" ColumnName="FCCM" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMaxOrig" ColumnName="HomeOfficeOverheadRateMaxOrig" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMax" ColumnName="HomeOfficeOverheadRateMax" />
+                <ScalarProperty Name="ContractCeilingOrig" ColumnName="ContractCeilingOrig" />
+                <ScalarProperty Name="T2FixedFeeMaxOrig" ColumnName="T2FixedFeeMaxOrig" />
+                <ScalarProperty Name="T2FixedFeeMax" ColumnName="T2FixedFeeMax" />
+                <ScalarProperty Name="T2SvcsCeilingOrig" ColumnName="T2SvcsCeilingOrig" />
+                <ScalarProperty Name="T2SvcsCeiling" ColumnName="T2SvcsCeiling" />
+                <ScalarProperty Name="T1FixedFeeMaxOrig" ColumnName="T1FixedFeeMaxOrig" />
+                <ScalarProperty Name="T1FixedFeeMax" ColumnName="T1FixedFeeMax" />
+                <ScalarProperty Name="T1SvcsCeilingOrig" ColumnName="T1SvcsCeilingOrig" />
+                <ScalarProperty Name="T1SvcsCeiling" ColumnName="T1SvcsCeiling" />
+                <ScalarProperty Name="AgreementTypeId" ColumnName="AgreementTypeId" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="ScheduledCompletionDate" ColumnName="ScheduledCompletionDate" />
+                <ScalarProperty Name="ContractCeiling" ColumnName="ContractCeiling" />
+                <ScalarProperty Name="ConsultantContractNo" ColumnName="ConsultantContractNo" />
+                <ScalarProperty Name="NoticeProceedDate" ColumnName="NoticeProceedDate" />
+                <ScalarProperty Name="AgreementDate" ColumnName="AgreementDate" />
+                <ScalarProperty Name="ContractStatus" ColumnName="ContractStatus" />
+                <ScalarProperty Name="ContractTypeId" ColumnName="ContractTypeId" />
+                <ScalarProperty Name="ConsultantId" ColumnName="ConsultantId" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+                <ScalarProperty Name="JobNo" ColumnName="JobNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContractTypes">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.ContractType">
+              <MappingFragment StoreEntitySet="ContractTypes">
+                <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+                <ScalarProperty Name="TypeShortName" ColumnName="TypeShortName" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoices">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="ConsultantJobNo" ColumnName="ConsultantJobNo" />
+                <ScalarProperty Name="IsSimple" ColumnName="IsSimple" />
+                <ScalarProperty Name="SubmittedDate" ColumnName="SubmittedDate" />
+                <ScalarProperty Name="RevisionNo" ColumnName="RevisionNo" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="PrimeApprovalBy" ColumnName="PrimeApprovalBy" />
+                <ScalarProperty Name="PrimeApproval" ColumnName="PrimeApproval" />
+                <ScalarProperty Name="RemarkLastEditUser" ColumnName="RemarkLastEditUser" />
+                <ScalarProperty Name="RemarkLastEditDate" ColumnName="RemarkLastEditDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="T2FixedFee" ColumnName="T2FixedFee" />
+                <ScalarProperty Name="T2Svcs" ColumnName="T2Svcs" />
+                <ScalarProperty Name="T1Svcs" ColumnName="T1Svcs" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="FieldServiceOverheadRateMax" ColumnName="FieldServiceOverheadRateMax" />
+                <ScalarProperty Name="FieldServiceOverheadRate" ColumnName="FieldServiceOverheadRate" />
+                <ScalarProperty Name="FCCM" ColumnName="FCCM" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMax" ColumnName="HomeOfficeOverheadRateMax" />
+                <ScalarProperty Name="HomeOfficeOverheadRate" ColumnName="HomeOfficeOverheadRate" />
+                <ScalarProperty Name="T1FixedFee" ColumnName="T1FixedFee" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="PhysicalAddress" ColumnName="PhysicalAddress" />
+                <ScalarProperty Name="ContractCeiling" ColumnName="ContractCeiling" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="T2FixedFeeMax" ColumnName="T2FixedFeeMax" />
+                <ScalarProperty Name="T2SvcsCeiling" ColumnName="T2SvcsCeiling" />
+                <ScalarProperty Name="T1FixedFeeMax" ColumnName="T1FixedFeeMax" />
+                <ScalarProperty Name="T1SvcsCeiling" ColumnName="T1SvcsCeiling" />
+                <ScalarProperty Name="LumpSumPercentage" ColumnName="LumpSumPercentage" />
+                <ScalarProperty Name="PrimeInvoice" ColumnName="PrimeInvoice" />
+                <ScalarProperty Name="SubConsultantId" ColumnName="SubConsultantId" />
+                <ScalarProperty Name="ConsultantInvoiceNo" ColumnName="ConsultantInvoiceNo" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="InvoiceNo" ColumnName="InvoiceNo" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalaryRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SalaryRate">
+              <MappingFragment StoreEntitySet="SalaryRates">
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="RateMaxOrig" ColumnName="RateMaxOrig" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMinOrig" ColumnName="RateMinOrig" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="ConractCode" ColumnName="ConractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuppAgreements">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SuppAgreement">
+              <MappingFragment StoreEntitySet="SuppAgreement">
+                <ScalarProperty Name="RemarkLastEditDate" ColumnName="RemarkLastEditDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="RemarkLastEditUser" ColumnName="RemarkLastEditUser" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="FieldServiceOverheadRateMax" ColumnName="FieldServiceOverheadRateMax" />
+                <ScalarProperty Name="FCCM" ColumnName="FCCM" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMax" ColumnName="HomeOfficeOverheadRateMax" />
+                <ScalarProperty Name="T2FixedFeeMax" ColumnName="T2FixedFeeMax" />
+                <ScalarProperty Name="T1FixedFeeMax" ColumnName="T1FixedFeeMax" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="SuppAgreementDate" ColumnName="SuppAgreementDate" />
+                <ScalarProperty Name="T2SvcsCeiling" ColumnName="T2SvcsCeiling" />
+                <ScalarProperty Name="T1SvcsCeiling" ColumnName="T1SvcsCeiling" />
+                <ScalarProperty Name="ContractCeiling" ColumnName="ContractCeiling" />
+                <ScalarProperty Name="SuppNo" ColumnName="SuppNo" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuppAllotments">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SuppAllotment">
+              <MappingFragment StoreEntitySet="SuppAllotments">
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="AllottedAmt" ColumnName="AllottedAmt" />
+                <ScalarProperty Name="FAP" ColumnName="FAP" />
+                <ScalarProperty Name="Func" ColumnName="Func" />
+                <ScalarProperty Name="SuppNo" ColumnName="SuppNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuppSalaryRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SuppSalaryRate">
+              <MappingFragment StoreEntitySet="SuppSalaryRate">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="SuppNo" ColumnName="SuppNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkTypes">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.WorkType">
+              <MappingFragment StoreEntitySet="WorkType">
+                <ScalarProperty Name="WorkTypeName" ColumnName="WorkTypeName" />
+                <ScalarProperty Name="WorkTypeId" ColumnName="WorkTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ContractWorkTypes" TypeName="ConsultantContractsModel.ContractWorkTypes" StoreEntitySet="ContractWorkTypes">
+            <EndProperty Name="WorkType">
+              <ScalarProperty Name="WorkTypeId" ColumnName="WorkTypeId" />
+            </EndProperty>
+            <EndProperty Name="Contract">
+              <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ServiceRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.ServiceRate">
+              <MappingFragment StoreEntitySet="ServiceRates">
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="RateMaxOrig" ColumnName="RateMaxOrig" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMinOrig" ColumnName="RateMinOrig" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuppServiceRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SuppServiceRate">
+              <MappingFragment StoreEntitySet="SuppServiceRate">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="SuppNo" ColumnName="SuppNo" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgreementTypes">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.AgreementType">
+              <MappingFragment StoreEntitySet="AgreementType">
+                <ScalarProperty Name="AgreementTypeName" ColumnName="AgreementTypeName" />
+                <ScalarProperty Name="AgreementTypeId" ColumnName="AgreementTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuppSubConsultantInfoes">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SuppSubConsultantInfo">
+              <MappingFragment StoreEntitySet="SuppSubConsultantInfo">
+                <ScalarProperty Name="SubConsultantId" ColumnName="SubConsultantId" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="FieldServiceOverheadRateMax" ColumnName="FieldServiceOverheadRateMax" />
+                <ScalarProperty Name="FCCM" ColumnName="FCCM" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMax" ColumnName="HomeOfficeOverheadRateMax" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="T2FixedFeeMax" ColumnName="T2FixedFeeMax" />
+                <ScalarProperty Name="T2SvcsCeiling" ColumnName="T2SvcsCeiling" />
+                <ScalarProperty Name="T1FixedFeeMax" ColumnName="T1FixedFeeMax" />
+                <ScalarProperty Name="T1SvcsCeiling" ColumnName="T1SvcsCeiling" />
+                <ScalarProperty Name="ContractCeiling" ColumnName="ContractCeiling" />
+                <ScalarProperty Name="SuppNo" ColumnName="SuppNo" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContractSubConsultants">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.ContractSubConsultant">
+              <MappingFragment StoreEntitySet="ContractSubConsultants">
+                <ScalarProperty Name="SubConsultantId" ColumnName="SubConsultantId" />
+                <ScalarProperty Name="FieldServiceOverheadRateMaxOrig" ColumnName="FieldServiceOverheadRateMaxOrig" />
+                <ScalarProperty Name="MultiplierOrig" ColumnName="MultiplierOrig" />
+                <ScalarProperty Name="Multiplier" ColumnName="Multiplier" />
+                <ScalarProperty Name="FieldServiceOverheadRateMax" ColumnName="FieldServiceOverheadRateMax" />
+                <ScalarProperty Name="FCCMOrig" ColumnName="FCCMOrig" />
+                <ScalarProperty Name="FCCM" ColumnName="FCCM" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMaxOrig" ColumnName="HomeOfficeOverheadRateMaxOrig" />
+                <ScalarProperty Name="HomeOfficeOverheadRateMax" ColumnName="HomeOfficeOverheadRateMax" />
+                <ScalarProperty Name="ContractCeilingOrig" ColumnName="ContractCeilingOrig" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="T2FixedFeeMaxOrig" ColumnName="T2FixedFeeMaxOrig" />
+                <ScalarProperty Name="T2FixedFeeMax" ColumnName="T2FixedFeeMax" />
+                <ScalarProperty Name="T2SvcsCeilingOrig" ColumnName="T2SvcsCeilingOrig" />
+                <ScalarProperty Name="T2SvcsCeiling" ColumnName="T2SvcsCeiling" />
+                <ScalarProperty Name="T1FixedFeeMaxOrig" ColumnName="T1FixedFeeMaxOrig" />
+                <ScalarProperty Name="T1FixedFeeMax" ColumnName="T1FixedFeeMax" />
+                <ScalarProperty Name="T1SvcsCeilingOrig" ColumnName="T1SvcsCeilingOrig" />
+                <ScalarProperty Name="T1SvcsCeiling" ColumnName="T1SvcsCeiling" />
+                <ScalarProperty Name="ContractCeiling" ColumnName="ContractCeiling" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoicePayments">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.InvoicePayment">
+              <MappingFragment StoreEntitySet="InvoicePayments">
+                <ScalarProperty Name="ObjectCode" ColumnName="ObjectCode" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="FAP" ColumnName="FAP" />
+                <ScalarProperty Name="Func" ColumnName="Func" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubConsultantSalaryRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SubConsultantSalaryRate">
+              <MappingFragment StoreEntitySet="SubConsultantSalaryRates">
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="RateMaxOrig" ColumnName="RateMaxOrig" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMinOrig" ColumnName="RateMinOrig" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="SubConsultantId" ColumnName="SubConsultantId" />
+                <ScalarProperty Name="ConractCode" ColumnName="ConractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubConsultantServiceRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SubConsultantServiceRate">
+              <MappingFragment StoreEntitySet="SubConsultantServiceRates">
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="RateMaxOrig" ColumnName="RateMaxOrig" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMinOrig" ColumnName="RateMinOrig" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="SubConsultantId" ColumnName="SubConsultantId" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuppSubConsultantSalaryRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SuppSubConsultantSalaryRate">
+              <MappingFragment StoreEntitySet="SuppSubConsultantSalaryRates">
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="SubConsultantId" ColumnName="SubConsultantId" />
+                <ScalarProperty Name="SuppNo" ColumnName="SuppNo" />
+                <ScalarProperty Name="ConractCode" ColumnName="ConractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuppSubConsultantServiceRates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.SuppSubConsultantServiceRate">
+              <MappingFragment StoreEntitySet="SuppSubConsultantServiceRate">
+                <ScalarProperty Name="LastUpdateUser" ColumnName="LastUpdateUser" />
+                <ScalarProperty Name="LastUpdateDate" ColumnName="LastUpdateDate" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="RateMax" ColumnName="RateMax" />
+                <ScalarProperty Name="RateMin" ColumnName="RateMin" />
+                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+                <ScalarProperty Name="SubConsultantId" ColumnName="SubConsultantId" />
+                <ScalarProperty Name="SuppNo" ColumnName="SuppNo" />
+                <ScalarProperty Name="ContractCode" ColumnName="ContractCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResponsibleDivisions">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.ResponsibleDivision">
+              <MappingFragment StoreEntitySet="ResponsibleDivision">
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="DivisionName" ColumnName="DivisionName" />
+                <ScalarProperty Name="DivisionId" ColumnName="DivisionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentsHistories">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.CommentsHistory">
+              <MappingFragment StoreEntitySet="CommentsHistory">
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="CommentNo" ColumnName="CommentNo" />
+                <ScalarProperty Name="CommentId" ColumnName="CommentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceApproval">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.InvoiceApproval">
+              <MappingFragment StoreEntitySet="InvoiceApproval">
+                <ScalarProperty Name="RejectedReason" ColumnName="RejectedReason" />
+                <ScalarProperty Name="VoucherNo" ColumnName="VoucherNo" />
+                <ScalarProperty Name="VoucherDate" ColumnName="VoucherDate" />
+                <ScalarProperty Name="AuditReview" ColumnName="AuditReview" />
+                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+                <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="InvoiceApprovalID" ColumnName="InvoiceApprovalID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USStates">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.USStates">
+              <MappingFragment StoreEntitySet="Vw_StateNames">
+                <ScalarProperty Name="USA_FLAG" ColumnName="USA_FLAG" />
+                <ScalarProperty Name="STATE_NAME" ColumnName="STATE_NAME" />
+                <ScalarProperty Name="STATE_CODE" ColumnName="STATE_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CountryRegionNames">
+            <EntityTypeMapping TypeName="ConsultantContractsModel.CountryRegionNames">
+              <MappingFragment StoreEntitySet="Vw_CountryRegionNames">
+                <ScalarProperty Name="REGION_NAME" ColumnName="REGION_NAME" />
+                <ScalarProperty Name="COUNTRY_NAME" ColumnName="COUNTRY_NAME" />
+                <ScalarProperty Name="REGION_CODE" ColumnName="REGION_CODE" />
+                <ScalarProperty Name="COUNTRY_CODE" ColumnName="COUNTRY_CODE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams />
+  </edmx:Designer>
+</edmx:Edmx>

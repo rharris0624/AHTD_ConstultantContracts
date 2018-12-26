@@ -1,0 +1,95 @@
+﻿@using System.Web.Mvc.Html
+@{
+    ViewBag.Title = "Consultants";
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function IndexConsultant(data) {
+            var self = this;
+
+            self.name = data.Name;
+            self.taxId = data.TaxId;
+            self.seqNo = data.SeqNo;
+            self.id = data.ConsultantId;
+
+            self.taxSeq = ko.computed(function () {
+                return '{0} - {1}'.format(self.taxId, self.seqNo);
+            });
+
+            self.url = ko.computed(function () {
+                return '@(Url.Action("Details"))/{0}'.format(self.id);
+            });
+
+        }
+
+        function ViewModel() {
+            var self = this;
+
+            self.list = ko.mapping.fromJS([]);
+
+            self.getData = function () {
+                $.getJSON("@Url.Action("Recent20")", { q: getParameterByName('q') },
+                    function (data, status, jqXHR) {
+                        self.list([]);
+                        data.forEach(function (d) {
+                            self.list.push(new IndexConsultant(d));
+                        });
+                    });
+            };
+        };
+
+        var vm = new ViewModel();
+        ko.applyBindings(vm);
+        vm.getData();
+
+        $(function () {
+
+            var q = getParameterByName('q');
+            if (q) {
+                $('#conSearch').val(q);
+            }
+
+            $('#conSearch').autocomplete({
+                delay: 0,
+                source: '@Url.Action("Search")',
+                select: function (event, ui) {
+                    window.location = '@Url.Action("Details")/' + ui.item.value;
+                }
+            }).keypress(function (e) {
+                if (e.which === 13)
+                    window.location = '@Url.Action("Index")/?q=' + this.value;
+            });
+        });
+
+    </script>
+}
+
+<h2>Consultants</h2>
+Search
+<input type="text" id="conSearch" class="searchBar" />
+@if (ViewBag.WriteAccess)
+{ 
+<span>@Html.ActionLink("New Consultant", "Create")</span>
+}
+<p />
+
+   <div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:center">Tax Id - Seq No</th>
+                <th style="text-align:left">Consultants</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: list">
+            <tr>
+                <td><a data-bind="attr: { href: url }, text: taxSeq"></a></td>
+                <td style="text-align:left" data-bind="text: name"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

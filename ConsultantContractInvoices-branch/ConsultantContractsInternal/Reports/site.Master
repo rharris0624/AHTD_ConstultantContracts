@@ -1,0 +1,71 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="site.master.cs" Inherits="ConsultantContractsInternal.Reports.site"  EnableViewState="true" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico") type="Image/x-icon" />
+    <link rel="stylesheet" href="~/Content/global-topbar.css" />
+    <link rel="stylesheet" href="~/Content/global-shared.css" />
+    <link rel="stylesheet" href="~/Content/themes/metro/dropdown.css" />
+    <link rel="stylesheet" href="~/Content/thems/metro/jquery-ui.css" />
+    <link rel="stylesheet" href="~/Content/site.css" />
+    <link rel="stylesheet" href="~/Styles/Common.css" />
+    
+    <style>
+        html,body,form{
+            height: 100%;
+        }
+
+        a.approve-button {
+            background: url("~/Content/images/tick.png") 6px 4px no-repeat #f3f3f3;
+            padding-left: 30px;
+        }
+
+        a.reject-button {
+            background: url("~/Content/images/delete_red.png") 6px 5px no-repeat #f3f3f3;
+            padding-left: 30px;
+        }
+        a.save-button {
+            background: url("~/Content/images/Save3.png") 6px 4px no-repeat #f3f3f3 ;
+            width:50px;
+            padding-left: 30px;
+        }
+
+        a.Edit-button {
+            background: url("~/Content/images/edit.png") 6px 4px no-repeat #f3f3f3 ;
+            width:40px;
+            padding-left: 30px;
+        }
+        .searchBar {
+            height: 22px;
+            background-image: url("~/Content/images/Apps-Search-Log-icon.png");
+            background-size: 35px;
+            background-repeat: no-repeat;
+            background-position: left;
+            padding-left: 35px;
+            display: inline;
+            width: 450px !important;
+            font-size: 16px;
+            border: 2px solid gray;
+            background-position: -2px;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <h1>Master Page for Site</h1>
+    <form id="form1" runat="server">
+    <div>
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+</body>
+</html>

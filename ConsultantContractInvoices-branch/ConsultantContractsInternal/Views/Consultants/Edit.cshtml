@@ -1,0 +1,367 @@
+﻿@using System.Web.Optimization
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Consultant</h2>
+@section styles{
+    <style type="text/css">
+        input[type='text'] {
+            width: 250px;
+        }
+    </style>
+}
+
+@section scripts{
+    @Scripts.Render("~/Scripts/inputmask")
+    @Scripts.Render("~/Scripts/vms")
+    <script type="text/javascript">
+        //This needs to be here to be on everypage
+        var logErrorUrl = '@Url.Action( "LogJavaScriptError", "Home" )';
+    </script>
+    <script type="text/javascript">
+
+        var submitError = function (jqXHR, textStatus, errorThrown) {
+            //alert('something went wrong');
+            throw new Error("Submit Error Status - Javascript - ERROR");
+        };
+
+        var submitSuccess = function (data, textStatus, jqXHR) {
+            if (data.status === 'OK') {
+                window.location = '@Url.Action("Details")/' + data.id;
+            } else if (data.Status === "ERROR") {
+                //alert('something went wrong');
+                throw new Error("Submit Error Status - Javascript - ERROR");
+            }
+        }
+
+        function ViewModel() {
+            var self = this;
+            self.ischeckedUS = ko.observable(true)
+            self.ischeckedNonUS = ko.observable(false);
+            self.countrycode = ko.observable('');
+            self.USstates = ko.observableArray();
+            self.CountriesList = ko.observableArray();
+            self.ISCheckedUS = ko.observable('');
+
+            self.consultant = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.consultant)))
+            self.Consultant = ko.validatedObservable(new Consultant(self.consultant));
+
+            $.ajax({
+                url: '@Url.Action("GetCountryRegionNames", "Consultants")',
+                  type: 'GET',
+                  dataType: 'json',
+              }).done(function (data) {
+                  self.CountriesList(data);
+                  if (self.consultant != undefined) {
+                      $('#regions').val(self.consultant.CountryCode.trim() + "-" + self.consultant.State.trim());
+                  }
+              });         
+          
+            if (self.Consultant().CountryCode() == "US") {
+                self.ISCheckedUS(true);
+                self.ischeckedUS(true);
+            }
+            else {
+                self.ISCheckedUS(false);
+                self.ischeckedNonUS(true);
+                self.ischeckedUS(false);               
+            }
+
+            self.selectedVendor = ko.observable();
+            self.selectedVendor.subscribe(function (newValue) {
+                $.ajax({
+                    url: '@Url.Action("VendorInfo", "VendorLookup")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { taxId: newValue.TaxId, seqNo: newValue.SeqNo }
+                }).done(function (data) {
+                    //set things here
+                    self.Consultant().TaxId(data.TaxId);
+                    self.Consultant().SeqNo(data.SeqNo);
+                    self.Consultant().Name(data.Name);
+                    self.Consultant().PhysicalAddress(data.Address);
+                    self.Consultant().City(data.City);
+                    self.Consultant().State(data.State);
+                    self.Consultant().CountryCode(data.CountryCode);
+                    self.Consultant().PostalCode(data.PostalCode);
+                    self.Consultant().BusinessPhoneNumber(data.BusinessPhone);
+                    self.Consultant().ContactPhoneNumber(data.ContactPhone);
+                });
+            });
+
+            self.Submit = function () {
+                //JL40985 2/27/2017  Removed this code since the "State" field is now a plain text box instead of a data-bound lookup.
+                //if (self.ISCheckedUS() != "true") { self.Consultant().State('TP') }
+                //else {
+                //    self.Consultant().State($('#regions option:selected').val().split("-")[1]);
+                //}
+                if (self.Consultant.isValid()) {
+                    self.state = ko.observable('Temp');
+                    if (self.ISCheckedUS() != "true") {
+                        self.state = $('#regions option:selected').text();
+                        var _state = self.state.split("-")[1];
+
+                        self.Consultant().StateName(_state);
+                    }
+                    $.ajax({
+                        url: '@Url.Action("Edit")',
+                        data: ko.toJSON(self.Consultant(), self.Consultant().StateName()),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        error: submitError,
+                        success: submitSuccess,
+                        type: 'POST'
+                    });
+                }
+                else {
+                    self.Consultant.errors.showAllMessages();
+                }
+            };        
+
+            self.countrycode.subscribe(function (newvalue) {
+                if (newvalue != undefined) {
+                    var _countrycode = $('#regions option:selected').val().split('-');
+                    if (_countrycode.length > 0) {
+                        self.Consultant().CountryCode(_countrycode[0]);
+                        self.Consultant().State(_countrycode[1]);
+                    }
+                }
+            });
+
+            self.Consultant().State.subscribe(function (newvalue) {
+                self.Consultant().State(newvalue);
+            });
+
+            self.ISCheckedUS = ko.computed({
+                read: function () {
+                    return self.ischeckedUS().toString();
+                },
+                write: function (newValue) {
+                    if (newValue == "true") {
+                        self.ischeckedUS(true);
+                        self.ischeckedNonUS(false);
+                        $('#postalcode').mask('99999?-9999');
+                        jQuery(zipcode());
+                        $('#regions').val("US-AR");
+                        self.Consultant().CountryCode('US');
+                    }
+                    else {
+                        $('#regions').val("AR-00");
+                        self.Consultant().CountryCode('AR');
+                        self.ischeckedUS(false);
+                        self.ischeckedNonUS(true);
+                        $('#postalcode').mask("9?9999999999");
+                    }
+                }, owner: self
+            });
+        };
+
+        var vm = new ViewModel();
+        ko.applyBindings(vm);
+
+        $('#reset').on('click', function () {
+            $(this.parentNode).find('[data-bind*="value:"]').each(function (index, item) {
+                var itemValue = item.attributes['data-bind'].textContent.substr(7);
+                var oldValue = $(vm)[0].Consultant();
+                $(item).val('').change();
+            });
+        });
+
+        $('[data-mask]').each(function () {
+            console.log('mask');
+            $this = $(this);
+            var mask = $this.attr('data-mask') || 'error...', mask_placeholder = $this.attr('data-mask-placeholder') || 'X';
+
+            $this.mask(mask, {
+                placeholder: mask_placeholder
+            });
+        })
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+@*Html.AntiForgeryToken()*@
+    <fieldset data-bind="with: Consultant">
+
+        <table>
+            <tr>
+                <td class="TDRightStyle">TaxId:</td>
+                <td>
+                    <span data-bind="text: TaxId"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Sequence No:</td>
+                <td>
+                    <span data-bind="text: SeqNo"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Name:</td>
+                <td>
+                    @* JL40985 2/10/2017  Do not allow the Consultant Name to be editable per user request.
+                    <input type="text" data-bind="value: Name" maxlength="50"/>
+                    <span class="validationMessage">*</span>*@
+                    <span data-bind="text: Name"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Primary Contact First Name:</td>
+                <td>
+                    <input type="text" data-bind="value: PrimaryContactFirstName" maxlength="50"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Primary Contact Last Name:</td>
+                <td>
+                    <input type="text" data-bind="value: PrimaryContactLastName" maxlength="50"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Secondary Contact First Name:</td>
+                <td>
+                    <input type="text" data-bind="value: SecondaryContactFirstName" maxlength="50"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Secondary Contact Last Name:</td>
+                <td>
+                    <input type="text" data-bind="value: SecondaryContactLastName" maxlength="50"/>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Physical Address:</td>
+                <td>
+                    <input type="text" data-bind="value: PhysicalAddress" maxlength="50"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Is Consultant U.S.?:</td>
+                <td>
+                    <label>
+                        <input type="radio" name="state" value="true" data-bind="checked: $parent.ISCheckedUS" />Yes</label>
+                    <label>
+                        <input type="radio" name="state" value="false" data-bind="checked: $parent.ISCheckedUS" />No</label>
+                </td>
+            </tr>
+
+            @*<tr>
+                <td class="TDRightStyle">State:</td>
+                <td>
+                    --<select data-bind="options: $parent.USstates, visible: $parent.ischeckedUS, optionsText: 'Statename', optionsValue: 'State', value: State "></select>
+
+                    <select id="regions" data-bind="options: $parent.CountriesList, optionsText: 'countries', optionsValue: 'Countrycode', value: $parent.countrycode "></select>
+                    <span class="validationMessage">*</span>
+            </tr>*@
+
+            <tr>
+                <td class="TDRightStyle">City:</td>
+                <td>
+                    <input type="text" data-bind="value: City" maxlength="50"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">State:</td>
+                <td>
+                    <input type="text" data-bind="value: State" maxlength="50"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDRightStyle">Country Code:</td>
+                <td>
+                    <input type="text" data-bind="value: CountryCode" maxlength="50"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDRightStyle">Postal Code:</td>
+                <td>
+                    <input type="text" data-bind="value: PostalCode" maxlength="50"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDRightStyle">Email Address:</td>
+                <td>
+                    <input type="text" data-bind="value: EmailAddress" maxlength="200"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDRightStyle">Contact Phone:</td>
+                <td>
+                    <input type="tel" data-bind="value: ContactPhoneNumber" data-mask="(999) 999-9999"/>
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDRightStyle">Businesss Phone:</td>
+                <td>
+                    <input type="tel" data-bind="value: BusinessPhoneNumber" data-mask="(999) 999-9999" />
+                    <span class="validationMessage">*</span>
+                </td>
+            </tr>
+            @*<tr>
+                <td class="TDRightStyle">Home Office Overhead Rate Max:</td>
+                <td>
+                    <input type="text" class="rateAmount" data-bind="percentvalue: HomeOfficeOverheadRateMax" />
+                      
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">FCCM:</td>
+                <td>
+                    <input type="text" class="rateAmount" data-bind="percentvalue: FCCM" />
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Field Service Overhead Rate Max:</td>
+                <td>
+                    <input type="text" class="rateAmount" data-bind="percentvalue: FieldServiceOverheadRateMax" />
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDRightStyle">Multiplier:</td>
+                <td>
+                    <input type="text" class="numericAmount" data-bind="numeralvalue: Multiplier" />
+                </td>
+            </tr>*@
+            <tr>
+                <td style="height: 23px;"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center">
+                    <div>
+                        <a id="reject" href="#" class="button save-button" data-bind="click: $parent.Submit">Save</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <a id="reset" class="button">Reset</a>
+        <br />
+        <div>
+            <div>@Html.ActionLink("Home", "Index", "Home", new {}, new { @class = "hyperlink" })</div>
+            <a href="javascript:void(0);" onclick="history.go(-1);") class="hyperlink">Back</a>
+        </div>
+    </fieldset>
+}

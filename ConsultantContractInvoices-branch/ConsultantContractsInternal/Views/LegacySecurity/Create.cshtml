@@ -1,0 +1,184 @@
+﻿@model ConsultantContractsInternal.ViewModels.UserRoleBudgetVM
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script type="text/javascript">
+        var applicationLoaded = false;
+
+        
+
+        var submitError = function (jqXHR, textStatus, errorThrown) {
+            //alert('bad things happened');
+            //alert("Submit Error");
+            $('#budgetData').html(jqXHR.responseText);
+            //alert(jqXHR.responseText);
+        };
+
+        var submitSuccess = function (data, textStatus, jqXHR) {
+            if (data.Status === 'OK') {
+                //  window.location = '@Url.Action("Details")/{0}'.format(data.id);
+                        window.location.href = '@Url.Action("Index")';
+                    } else if (data.Status === "ERROR") {
+                        //alert('something went wrong');
+                        throw new Error("Submit Error");
+                    }
+                }
+
+        function LegacySecurity () {
+            var ApplicationId = '0';
+            var UserId = '0';
+            var RoleId = '0';
+            var PermissionId = '0';
+            var RequestId = '0';
+        };
+
+        function UserRoleBudgetVM () {
+            var ApplicationId = '0';
+            var UserId = '0';
+            var RoleId = '0';
+            var PermissionId = '0';
+            var LegacySecurity = [];
+        };
+
+        $(
+            $("#SelectAll").click(function ($jsReturnArgs) {
+                var allCB = document.querySelectorAll("input[name^='BudgetList[']");
+                for (var i = 0; i < allCB.length; i++) {
+                    if ($jsReturnArgs.target.checked)
+                        allCB[i].checked = true;
+                    else
+                        allCB[i].checked = false;
+                }
+            })
+        )
+        function gettoken(){
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        };
+
+        $(document).ready(function (e) {
+
+            $.ajaxSettings.traditional = true;
+
+            $('#submitData').on("submit", function processSubmit(event) {
+                event.preventDefault();
+                var applicationId = '@Model.ApplicationId.ToString()';
+                var userId = '@Model.UserList[0].ID.ToString()';
+                var roleId = '@Model.RoleList[0].ID.ToString()';
+                var antiForgeryTokenVal = $("input[name ='__RequestVerificationToken']").val();
+                var permissionId = '@Model.PermissionId.ToString()';
+                var tableControl = $(".datagrid");
+                var legacySecurities = [];
+                var headers = {};
+                headers['__RequestVerificationToken'] = antiForgeryTokenVal;
+
+                $("#unassignedBudgetsTable input[type='checkbox']:checked:not('#SelectAll')").closest("tr").each(function(){
+                    legacySecurities.push({
+                        ApplicationId: $('#ApplicationId').val(),
+                        UserId: $('#UserId').val(),
+                        RoleId: $('#RoleId').val(),
+                        PermissionId: permissionId,
+                        ResourceId: $(this).find("td.ResourceId").text().replace('\n', '').trim()
+                    });
+                })
+                var legacySecurity = { ApplicationId: applicationId, UserId: userId, RoleId: roleId, PermissionId: permissionId, LegacySecurities: legacySecurities };
+                $.ajax({
+                    url: '@Url.Action("Create")',
+                    type: 'POST',
+                    cache: false,
+                    headers: headers,
+                    data: JSON.stringify({ userRoleBudget: legacySecurity }),
+                    //data: { userRoleBudget: legacySecurity },
+                    contentType: "application/json; charset=utf-8",
+                    datatype: 'json',
+                    error: submitError,
+                    encode: true,
+                    success: function (data) {
+                        window.location.href = '@Url.Action("Index","LegacySecurity")?userId=' + data.userId + "&roleId=" + data.roleId;
+                        if (data.returnArgs.Status != 200)
+                            showPopup("Error saving Legacy Security data");
+                   }
+                });
+            })
+        });
+    </script>
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm("Create","LegacySecurity",FormMethod.Post,new {id = "submitData"}))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend class="display-title">Available Budget List</legend>
+        <br />
+        <table>
+            <tr>
+                <td class="leftJustify display-label">User: </td>
+                <td id="userName" class="display-field">@Model.UserList[0].Name</td>
+            </tr>
+            <tr>
+                <td class="leftJustify display-label">Role: </td>
+                <td id="roleName" class="display-field">@Model.RoleList[0].Name</td>
+            </tr>
+        </table>
+        <br />
+        <div>
+            @Html.HiddenFor(model => model.ApplicationId, new { id = "ApplicationId", Value = @Model.ApplicationId })
+            @Html.HiddenFor(model => model.RoleId, new { id = "RoleId", Value = @Model.RoleId })
+            @Html.HiddenFor(model => model.UserId, new { id = "UserId", Value = @Model.UserId })
+        </div>
+        <div>
+               <input class="submitData" type="submit" value="Create"/>
+            <br />
+            <br />
+        </div>
+        <div class="ui-widget-content ui-corner-bottom">
+            <div class="datagrid">
+                <table class="homepagetable" id="unassignedBudgetsTable">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="SelectAll" name="allChk" /></th>
+                            <th class="display-label">Name</th>
+                            <th class="display-label">Description</th>
+                        </tr>
+                    </thead>
+                @for (var rowIndex = 0; rowIndex < Model.BudgetList.Count(); rowIndex++)
+                {
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(m => m.BudgetList[rowIndex].Selected, htmlAttributes: new { @class = "display-field" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => m.BudgetList[rowIndex].Name)
+                        </td>    
+                        <td>
+                            @Html.DisplayFor(m => m.BudgetList[rowIndex].Description)
+                        </td>
+                        <td hidden="hidden" class="ResourceId">@Html.DisplayFor(m => m.BudgetList[rowIndex].ID)</td>
+                        <td hidden="hidden">@Html.DisplayFor(m => m.BudgetList[rowIndex].Name)</td>
+                        <td hidden="hidden">@Html.DisplayFor(m => m.BudgetList[rowIndex].Description)</td>
+                    </tr>
+                }
+                </table>
+            </div>
+        </div>
+        <div>
+            <br />
+               <input class="submitData" type="submit" value="Create"/>
+        </div>
+    </fieldset>
+}
+
+<div>
+    <div>@Html.ActionLink("Home", "Index", "Home", new {}, new { @class = "hyperlink" })</div>
+    <a href="javascript:void(0);" onclick="history.go(-1);") class="hyperlink">Back to List</a>
+</div>

@@ -1,0 +1,295 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<style>
+    .header {
+        padding-right: 15px;
+        text-align: left;
+    }
+
+    .amount, th, td {
+        padding-right: 15px;
+        text-align: right;
+    }
+
+    #panel {
+        display: inline;
+    }
+
+    #header {
+        padding: 40px;
+    }
+
+    .approve-color {
+        background: #11d47c;
+        background: rgba(17, 212, 124, .5);
+    }
+
+    .reject-color {
+        background: #d4117c;
+        background: rgba(212, 17, 124, .5);
+    }
+</style>
+
+@section scripts{
+
+  @*  @System.Web.Optimization.Scripts.Render("~/scripts/jqueryui")
+    @System.Web.Optimization.Scripts.Render("~/scripts/knockout")*@
+
+    <script type="text/javascript">
+
+        $(function () {
+            $.fn.scrollView = function () {
+                return this.each(function () {
+                    $('html, body').animate({
+                        scrollTop: $(this).offset().top
+                    }, 1000);
+                });
+            }
+            $('.tab-me').tabs({
+                activate: function (event, ui) {
+                    ui.newTab.scrollView();
+                }
+            });
+        });
+
+        var Invoices = function (d) {
+            var self = this;
+            var serviceUrl = '@Url.Content("~/Invoices")';
+
+            self.InvoiceId = d.InvoiceId;
+            self.JobNo = d.JobNo;
+            self.ConsultantName = d.Name;
+            self.ConsultantId = d.ConsultantId;
+            self.ContractCode = d.ContractCode;
+            self.InvoiceNo = d.InvoiceNo;
+            self.InvoiceDate = d.InvoiceDate;
+            self.RejectedReason = d.RejectedReason;
+            self.RejectedDate = d.RejectedDate;
+            self.Allotments = ko.observableArray([]);
+            self.ContractLink = ko.pureComputed(function () {
+                return '@Url.Action("Details", "Contracts")' + '/' + self.ContractCode; // /Contracts/Details/{0}'.format(self.ContractCode);
+            });
+            self.ConsultantLink = ko.pureComputed(function () {
+                return '@Url.Action("Details", "Consultants")' + '/' + self.ConsultantId + (self.name == null ? "" : self.name); // /Consultants/Details/{0}'.format(self.ConsultantId, self.name);
+            });
+            self.InvoiceLink = ko.pureComputed(function () {
+                return '@Url.Action("Details","Invoices")' + '/' + self.InvoiceId; // /Invoices/Details/{0}'.format(self.InvoiceId);
+            });
+            self.InvoiceEditLink = ko.pureComputed(function () {
+                return '@Url.Action("ReviseSimpleInvoice","Invoices")' + '/' + self.InvoiceId; // /Invoices/"ReviseSimpleInvoice/{0}'.format(self.InvoiceId);
+            });
+
+            var submitError = function (jqXHR, textStatus, errorThrown) {
+                throw new Error("Submit Error");
+            };
+
+            self.Recomend = function () {
+                $.ajax({
+                    url: serviceUrl + "/RecommendInvoice/{0}".format(self.InvoiceId),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    error: submitError,
+                    type: 'POST'
+                }).done(function (data) {
+                    if (data.Status === 'OK') {
+                        var r = $('#' + self.InvoiceId);
+                        var n = r.nextAll('[id]');
+                        var a = r.nextUntil(n);
+                        a = $.merge(r, a);
+                        a.addClass('approve-color', 150).fadeOut(200);
+                    } else if (data.Status === "ERROR") {
+                        alert('something went wrong');
+                    }
+                });
+            };
+            self.Approve = function () {
+                $.ajax({
+                    url: serviceUrl + "/ApproveInvoice/{0}".format(self.InvoiceId),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    error: submitError,
+                    type: 'POST'
+                }).done(function (data) {
+                    if (data.Status === 'OK') {
+                        var r = $('#' + self.InvoiceId);
+                        var n = r.nextAll('[id]');
+                        var a = r.nextUntil(n);
+                        a = $.merge(r, a);
+                        a.addClass('approve-color', 150).fadeOut(200);
+                    } else if (data.Status === "ERROR") {
+                        alert('something went wrong');
+                    }
+                });
+            };
+
+            self.Reject = function () {
+
+                var reason = prompt('Enter a reason for rejection:', 'Not Recommended');
+
+                if (reason === null)
+                    return;
+
+                $.ajax({
+                    url: serviceUrl + '/RejectInvoice/{0}'.format(self.InvoiceId),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    error: submitError,
+                    data: JSON.stringify({ 'source': 'list', 'reason': reason }),
+                    type: 'POST'
+                }).done(function (data) {
+                    if (data.Status === 'OK') {
+                        var r = $('#' + self.InvoiceId);
+                        var n = r.nextAll('[id]');
+                        var a = r.nextUntil(n);
+                        a = $.merge(r, a);
+                        a.addClass('reject-color', 150).fadeOut(200);
+
+                    } else if (data.Status === "ERROR") {
+                        alert('something went wrong');
+                    }
+                });
+            };
+
+            d.Allotments.forEach(function (e, a, i) {
+                self.Allotments.push(new Allotment(e));
+            });
+
+            self.Total = ko.pureComputed(function () {
+                var t = self.Allotments().reduce(function (p, c) {
+                    return p + c.Amount;
+                }, 0);
+                return accounting.formatMoney(t);
+            });
+        }
+
+        var Allotment = function (d) {
+            var self = this;
+            self.Func = d.Func;
+            self.FAP = d.FAP;
+            self.Amount = d.Amount;
+        }
+
+        var PageVM = function () {
+            var self = this;
+
+            self.RejectedInvoices = ko.observableArray([]);
+            self.RecomendedInvoices = ko.observableArray([]);
+            self.ApprovalInvoices = ko.observableArray([]);
+            self.WaitingtobePaid = ko.observableArray([]);
+
+            self.getRecommendInvoices = function () {
+                $.ajax({
+                    url: '@Url.Action("GetInvoicesToRecommend", "Invoices")',
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json'
+                }).done(function (data) {
+                    self.RecomendedInvoices.removeAll();
+                    data.forEach(function (e, a, i) {
+                        self.RecomendedInvoices.push(new Invoices(e));
+                    });
+                });
+            }
+
+            self.getApproveInvoices = function () {
+                $.ajax({
+                    url: '@Url.Action("GetInvoicesToApprove", "Invoices")',
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json'
+                }).done(function (data) {
+                    self.ApprovalInvoices.removeAll();
+                    data.forEach(function (e, a, i) {
+                        self.ApprovalInvoices.push(new Invoices(e));
+                    });
+                });
+            }
+
+            self.getWaitingToBePaid = function () {
+                $.ajax({
+                    url: '@Url.Action("GetWaitingToBePaid", "Invoices")',
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json'
+                }).done(function (data) {
+                    self.WaitingtobePaid.removeAll();
+                    data.forEach(function (e, a, i) {
+                        self.WaitingtobePaid.push(new Invoices(e));
+                    });
+                });
+            }
+
+            self.getrejectedInvoices = function () {
+                $.ajax({
+                    url: '@Url.Action("GetRejectedInvoices", "Invoices")',
+                    type: 'GET',
+                    cache: false,
+                    dataType: 'json'
+                }).done(function (data) {
+                    self.RejectedInvoices.removeAll();
+                    data.forEach(function (e, a, i) {
+                        self.RejectedInvoices.push(new Invoices(e));
+                    });
+                });
+            }
+        }
+        var vm = new PageVM;
+        ko.applyBindings(vm);
+    </script>
+}
+
+<br />
+<div class="tab-me">
+
+    <ul>
+        <li><a href="#InvoicetoReview">Invoices to Review</a></li>
+
+        <li><a data-bind="click: getRecommendInvoices" href="#Recommended">Invoices to Recommend</a></li>
+
+        <li><a data-bind="click: getApproveInvoices" href="#Approval">Invoices to Approve</a></li>
+
+        <li><a data-bind="click: getWaitingToBePaid" href="#WaitingtoPaid">Waiting to be paid</a></li>
+
+        <li><a href="#Paid">Paid</a></li>
+
+        <li><a data-bind="click: getrejectedInvoices" href="#Rejected">Rejected</a></li>
+    </ul>
+
+    <div id="InvoicetoReview">
+        <div class="datagrid">
+            @Html.Action("InvoicesToReview", "Invoices")
+        </div>
+    </div>
+
+    <div id="Recommended">
+        <div class="datagrid">
+            @Html.Action("RecommendInvoicesForHomePage", "Invoices")
+        </div>
+    </div>
+
+    <div id="Approval">
+        <div class="datagrid">
+            @Html.Action("ApprovalInvoicesForHomePage", "Invoices")
+        </div>
+    </div>
+
+    <div id="WaitingtoPaid">
+        <div class="datagrid">
+            @Html.Action("WaitingTobePaidForHomePage", "Invoices")
+        </div>
+    </div>
+
+    <div id="Paid">
+        <div class="datagrid">
+            @Html.Action("GetPaidList", "Invoices", new { simpleView = true })
+        </div>
+    </div>
+
+    <div id="Rejected">
+        <div class="datagrid">
+            @Html.Action("RejectedInvoicesForHomePage", "Invoices")
+        </div>
+    </div>
+</div>

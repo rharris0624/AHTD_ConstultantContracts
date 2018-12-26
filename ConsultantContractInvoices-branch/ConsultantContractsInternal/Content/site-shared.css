@@ -1,0 +1,108 @@
+﻿.tableDescription
+{
+	color: #999999;
+	font-size: 14px;
+	margin: 8px 0;
+}
+
+nav.dropdown
+{
+	float: right;
+	margin-right: 60px;
+}
+nav.dropdown ul li .subNav span
+{
+	color: #999999;
+}
+
+#content .linkList
+{
+	float: left;
+}
+
+.jtable-dialog-form fieldset legend
+{
+	display: none;
+}
+
+div.jtable-child-table-container table.jtable thead
+{
+	font-size: 16px;
+}
+div.jtable-child-table-container table.jtable tbody
+{
+	font-size: 12px;
+}
+div.jtable-child-table-container div.jtable-bottom-panel
+{
+	font-size: 11px;
+}
+
+#table.compact table.jtable thead
+{
+	font-size: 16px;
+}
+#table.compact table.jtable tbody
+{
+	font-size: 12px;
+}
+#table.compact div.jtable-bottom-panel
+{
+	font-size: 11px;
+}
+#table.compact div.jtable-child-table-container table.jtable thead
+{
+	font-size: 12px;
+}
+#table.compact div.jtable-child-table-container table.jtable tbody
+{
+	font-size: 10px;
+}
+#table.compact div.jtable-child-table-container div.jtable-bottom-panel
+{
+	font-size: 10px;
+}
+.formLoading
+{
+	text-align:center;
+	width:100%;
+	height:100%;
+	margin-top: 2em;
+}
+
+#filters.compact .ui-datepicker
+{
+	font-size: 14px;
+}
+#filters.compact .select2-container
+{
+	margin-top: 2px;
+}
+#filters.compact .select2-container .select2-choice
+{
+	font-size: 12px;
+	height: 20px;
+	line-height: 20px;
+	padding: 0 0 0 4px;
+}
+#filters.compact .select2-container .select2-choice abbr
+{
+	top: 4px;
+}
+#filters.compact .select2-container .select2-choice div b
+{
+	background-position: 0 -1px;
+}
+#filters.compact .select2-dropdown-open .select2-choice div b
+{
+	background-position: -18px -1px;
+}
+#filters.compact .select2-search input
+{
+	font-size: 12px;
+	padding: 2px 20px 2px 2px;
+}
+#filters.compact .select2-results
+{
+	font-size: 12px;
+}

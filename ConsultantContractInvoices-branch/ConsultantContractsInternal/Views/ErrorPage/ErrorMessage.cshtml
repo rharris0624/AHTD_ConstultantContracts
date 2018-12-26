@@ -1,0 +1,12 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "ErrorMessage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ErrorMessage</h2>
+
+<h1 class="error">this is the default error page</h1>
+
+<div><p>@Html.Raw(ViewBag.status)</p></div>
+<div><p>@Html.Raw(ViewBag.message)</p></div>

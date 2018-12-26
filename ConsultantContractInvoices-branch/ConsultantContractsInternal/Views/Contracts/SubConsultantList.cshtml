@@ -1,0 +1,172 @@
+﻿@model List<ConsultantContractsInternal.Models.ContractSubConsultant>
+@{
+	Func<decimal?, string> formatNullMoney = d => d.HasValue ? d.Value.ToString("C2") : String.Empty;
+	Func<decimal?, string> formatNullPercent = d => d.HasValue ? d.Value.ToString("0.0###") + "%" : "None";
+	Func<decimal?, string> formatNullMultiplier = d => d.HasValue ? d.Value.ToString("0.0###") : "None";
+}
+@functions{
+
+	private string ResolveDate(DateTime? dt)
+	{
+		if (dt.HasValue)
+		{
+			return dt.Value.ToShortDateString();
+		}
+		return String.Empty;
+	}
+
+	//write money fields
+	private string ResolveMoney(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("C2");
+		}
+		return "0.00";
+	}
+	
+	private string ResolvePercent(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("P", System.Globalization.CultureInfo.InvariantCulture);
+		}
+		return "0.000";
+	}
+}
+
+@if (Model.Count > 0)
+{
+
+	<div class="tab-me">
+		<ul>
+			@foreach (var sc in Model)
+   {
+				<li><a href="#SubCon@(sc.SubConsultantId)">@sc.SubConsultant.Name</a></li>
+   }
+		</ul>
+		@{int i = 0;}
+		@foreach (var sc in Model)
+		{
+			i++;
+			<div id="SubCon@(sc.SubConsultantId)" class="sub-con-container">
+				<h3>
+					<a href="@Url.Action("Details", "Consultants", new {id = sc.SubConsultantId})">@sc.SubConsultant.Name</a>
+				</h3>
+				<div class="tab-me">
+					<ul>
+						<li><a href="#SubConRates@(sc.SubConsultantId)">Rates</a></li>
+						<li><a href="#SubConSalaryRates@(sc.SubConsultantId)">Salary Rates</a></li>
+						<li><a href="#SubConServiceRates@(sc.SubConsultantId)">Service Rates</a></li>
+					</ul>
+					<div id="SubConRates@(sc.SubConsultantId)">
+						<div>
+							<div>Contract Ceiling: @ResolveMoney(sc.ContractCeiling)</div>
+							<h4>Title I</h4>
+							<div>
+								<div>Title I Services Ceiling: @ResolveMoney(sc.T1SvcsCeiling)</div>
+								<div>Title I Fixed Fee Max: @ResolveMoney(sc.T1FixedFeeMax)</div>
+							</div>
+						<div>
+							<h4>Contract Indirect Cost Rate</h4>
+						</div>
+						</div>
+						<div>
+							<h4>Title II</h4>
+							<div>
+								<div>Title II Services Ceiling: @ResolveMoney(sc.T2SvcsCeiling)</div>
+								<div>Title II Fixed Fee Max: @ResolveMoney(sc.T2FixedFeeMax)</div>
+							</div>
+						</div>
+						<div>
+							<h4>Contract Indirect Cost Rate</h4>
+							<div>
+								@if (@ViewBag.Permission.Equals("Write")){
+								<table>
+									<tr>
+										<td class="rightJustify">Home Office Overhead Rate Max: </td>
+										<td><input id="@string.Format("homeOfficeRateMax_{0}",i)" class="rateAmt" type="text" value="@formatNullPercent(sc.HomeOfficeOverheadRateMax*100)" /></td>
+									</tr>
+									<tr>
+										<td class="rightJustify">FCCM: </td>
+										<td><input id="@string.Format("FCCMRate_{0}",i)" class="rateAmt" type="text" value="@formatNullPercent(sc.FCCM*100)" /></td>
+									</tr>
+									<tr>
+										<td class="rightJustify">Field Service Overhead Rate Max: </td>
+										<td><input id="@string.Format("fieldServiceRateMax_{0}",i)" class="rateAmt" type="text" value="@formatNullPercent(sc.FieldServiceOverheadRateMax*100)" /></td>
+									</tr>
+									<tr>
+										<td class="rightJustify">Multiplier: </td>
+										<td><input id="@string.Format("multiplier_{0}",i)" value="@formatNullMultiplier(sc.Multiplier)" /></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><input hidden id="@string.Format("subConId_{0}",i)" value="@sc.SubConsultantId" /></td>
+									</tr>
+								</table> 
+								<button id="@string.Format("btnUpdateRates_{0}",i)" class="updtSubConRates">Update</button><br />
+								}
+								else{
+								<div>Home Office Overhead Rate Max: @ResolvePercent(sc.HomeOfficeOverheadRateMax*100)</div>
+								<div>FCCM: @ResolvePercent(sc.FCCM)</div>
+								<div>Field Service Overhead Rate Max: @ResolvePercent(sc.FieldServiceOverheadRateMax*100)</div>
+								<div>Multiplier: @formatNullMultiplier(sc.Multiplier)</div>
+								}
+							</div>
+						</div>
+					</div>
+					<div id="SubConSalaryRates@(sc.SubConsultantId)">
+						<h4>Salary Rates</h4>
+						<table>
+							<thead>
+								<tr>
+									<th>Job Title</th>
+									<th>Min</th>
+									<th>Max</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var salaryRate in sc.SubConsultantSalaryRates.OrderByDescending(r => r.RateMin))
+							{
+									<tr>
+										<td>@salaryRate.JobTitle</td>
+										<td class="rightJustify">@ResolveMoney(salaryRate.RateMin)</td>
+										<td class="rightJustify">@ResolveMoney(salaryRate.RateMax)</td>
+									</tr>
+							}
+							</tbody>
+						</table>
+					</div>
+					<div id="SubConServiceRates@(sc.SubConsultantId)">
+						<h4>Service Rates</h4>
+						<table>
+							<thead>
+								<tr>
+									<th>Service Name</th>
+									<th>Min</th>
+									<th>Max</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var serviceRate in sc.SubConsultantServiceRates.OrderByDescending(r => r.RateMin))
+							{
+									<tr>
+										<td>@serviceRate.ServiceName</td>
+										<td class="rightJustify">@ResolveMoney(serviceRate.RateMin)</td>
+										<td class="rightJustify">@ResolveMoney(serviceRate.RateMax)</td>
+									</tr>
+							}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+}
+else
+{
+	<div>
+		None
+	</div>
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d387de07d42c45c7b7b221d22a4a4e7d" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="ConsultantContractsModel.Consultant" Width="2.125" PointX="0.5" PointY="23.125" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.ContractAllotment" Width="2" PointX="1.125" PointY="33.625" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.Contract" Width="1.875" PointX="3.375" PointY="21.375" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.ContractType" Width="1.5" PointX="1.125" PointY="20.25" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.Invoice" Width="2.125" PointX="6" PointY="22.625" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SalaryRate" Width="1.5" PointX="6" PointY="33.625" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SuppAgreement" Width="2.125" PointX="3.625" PointY="39.875" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SuppAllotment" Width="1.75" PointX="10" PointY="41.25" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SuppSalaryRate" Width="1.5" PointX="8.25" PointY="44.75" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_Contracts_Consultant" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_Invoice_Consultant" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_ContractDetail_Contracts" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_Contracts_ContractTypes" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_Invoice_Contracts" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SalaryRates_Contracts" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppAgreement_Contracts" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.WorkType" Width="1.5" PointX="6" PointY="37.125" />
+        <AssociationConnector Association="ConsultantContractsModel.ContractWorkTypes" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.ServiceRate" Width="1.5" PointX="6" PointY="14.625" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SuppServiceRate" Width="1.5" PointX="6.5" PointY="41.375" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_ServiceRates_Contracts" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppAllotments_SuppAgreement" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppSalaryRate_SuppAgreement" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppServiceRate_SuppAgreement" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.AgreementType" Width="1.5" PointX="2.125" PointY="17.875" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SuppSubConsultantInfo" Width="2.75" PointX="8.875" PointY="32.625" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_Contracts_AgreementType" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppSubConsultantInfo_Consultant" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppSubConsultantInfo_SuppAgreement" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.ContractSubConsultant" Width="2.25" PointX="9" PointY="23" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_ContractSubConsultants_Contracts" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.InvoicePayment" Width="1.5" PointX="8.875" PointY="38.25" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SubConsultantSalaryRate" Width="2" PointX="12" PointY="23" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SubConsultantServiceRate" Width="2.375" PointX="12" PointY="26.625" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SuppSubConsultantSalaryRate" Width="3.125" PointX="12.375" PointY="31.625" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.SuppSubConsultantServiceRate" Width="2.875" PointX="12.375" PointY="35.5" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_ContractSubConsultants_Consultant" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SubConsultantSalaryRates_ContractSubConsultants" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SubConsultantServiceRates_ContractSubConsultants" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppSubConsultantSalaryRates_SuppSubConsultantInfo" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_SuppSubConsultantServiceRate_SuppSubConsultantInfo" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.ResponsibleDivision" Width="1.5" PointX="7.5" PointY="18.25" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_Contracts_ConsultantRemitTo" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_Contracts_ResponsibleDivision" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_InvoicePayments_Invoice" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.CommentsHistory" Width="1.5" PointX="17.125" PointY="33.125" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.InvoiceApproval" Width="2.625" PointX="15" PointY="28.125" />
+        <AssociationConnector Association="ConsultantContractsModel.FK_InvoiceApproval_Invoice" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.USStates" Width="1.5" PointX="15.625" PointY="25.25" />
+        <EntityTypeShape EntityType="ConsultantContractsModel.CountryRegionNames" Width="1.5" PointX="15.625" PointY="23.125" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,33 @@
+﻿CREATE TABLE [dbo].[COUNTRIES] (
+    [COUNTRY_CODE] CHAR (2)  NOT NULL,
+    [REGION_CODE]  CHAR (3)  NOT NULL,
+    [COUNTRY_NAME] CHAR (30) NOT NULL,
+    [REGION_NAME]  CHAR (30) NOT NULL,
+    [LAST_DATE]    CHAR (8)  NOT NULL,
+    [LAST_TIME]    CHAR (6)  NOT NULL,
+    [LAST_USERID]  CHAR (7)  NOT NULL
+);
+
+
+GO
+CREATE UNIQUE CLUSTERED INDEX [PK_COUNTRIES]
+    ON [dbo].[COUNTRIES]([COUNTRY_CODE] ASC, [REGION_CODE] ASC);
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[COUNTRIES] TO [ConsultantContracts]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[COUNTRIES] TO [VoucherVendors]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[COUNTRIES] TO [JournalEntry]
+    AS [dbo];
+

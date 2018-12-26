@@ -1,0 +1,30 @@
+@model ConsultantContractsInternal.Models.Role
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Role</legend>
+
+    <div class="display-label">RoleName</div>
+    <div class="display-field">@Model.RoleName</div>
+
+    <div class="display-label">RoleDesc</div>
+    <div class="display-field">@Model.RoleDesc</div>
+
+    <div class="display-label">ApplicationSecurities</div>
+    <div class="display-field">@(Model.ApplicationSecurities == null ? "None" : Model.ApplicationSecurities.Count.ToString())</div>
+
+    <div class="display-label">RolePermissions</div>
+    <div class="display-field">@(Model.RolePermissions == null ? "None" : Model.RolePermissions.Count.ToString())</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.RoleId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

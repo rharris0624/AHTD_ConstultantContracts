@@ -1,0 +1,324 @@
+﻿@using System.Web.Optimization
+@using System.Web.Services.Description
+@model ConsultantContractsInternal.ViewModels.InvoiceSearchVM
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    @Scripts.Render("~/scripts/inputmask")
+
+    <script type="text/javascript">
+        //var submitError = function(jqXHR, textStatus, errorThrown) {
+        //    alert('bad things happened');
+        //};
+        var submitError = function (jqXHR, textStatus, errorThrown) {
+            //alert('bad things happened');
+            //alert("Submit Error");
+            $('#roleData').html(jqXHR.responseText);
+            //alert(jqXHR.responseText);
+        };
+        
+        var submitSuccess = function(data, textStatus, jqXHR) {
+            if (data.Status === 'OK') {
+                window.location = '@Url.Action("Search")/' + data.ContractCode;
+                } else if (data.Status === "ERROR") {
+                    alert('something went wrong');
+                }
+            }
+
+        function fdate(dateString) {
+            if (dateString === null)
+                return "";
+            return moment(dateString).format('MM/DD/YYYY');
+        }
+
+        //Date Fields
+        var datefields = [
+            "#invoiceToDate",
+            "#invoiceFromDate"
+        ];
+        var datemaskdisplay = "99/99/9999";
+        var dateunmaskdisplay = "99999999";
+        var dateformat = "mm/dd/yyyy";
+        //Store the formData so that changing the form doesnt affect the data.
+        var formData;
+        var PageNumber = 1;
+        //Disables the popup for unsaved changes on forms.
+        var DISABLE_UNSAVED_CHANGE_SCRIPT = true;
+
+        function setInputMasks() {
+            for (var i = 0; i < datefields.length; i++) {
+                $(datefields[i]).mask(datemaskdisplay);
+            }
+        }
+
+        function removeInputMasks() {
+            for (var i = 0; i < datefields.length; i++) {
+                $(datefields[i]).mask(dateunmaskdisplay);
+            }
+        }
+        
+        function InvoiceSearch(data) {
+            var self = this;
+            self.sortOrder = ko.observable(data ? data.SortOrder : '');
+            self.orderBy = ko.observable(data ? data.OrderBy : '');
+            //var fromDate = data ? fdate(data.InvoiceFromDate) : '';
+            self.invoiceFromDate = ko.observable(data ? fdate(data.InvoiceFromDate) : '').extend({
+                date: true,
+                required: false,
+                properDateFormat: true,
+                properDateRange: true,
+            });
+            self.invoiceFromDate.subscribe(function (newValue) {
+                $('#invoiceFromDate').datepicker('option', 'minDate', new Date(newValue));
+            });
+            //var toDate = data ? fdate(data.InvoiceToDate) : '';
+            self.invoiceToDate = ko.observable(data ? fdate(data.InvoiceToDate) : '').extend({
+                date: true,
+                required: false,
+                properDateFormat: true,
+                properDateRange: true,
+                greaterThanDate: {
+                    params: self.invoiceFromDate,
+                    message: 'Invoice To Date must be after Invoice From Date'
+                }
+            });
+            self.invoiceToDate.subscribe(function (newValue) {
+                $('#invoiceToDate').datepicker('option', 'minDate', new Date(newValue));
+            });
+            self.consultantId = ko.observable(data ? data.ConsultantId : '');
+            self.contractCode = ko.observable(data ? data.ContractCode : '');
+            self.consultantId2 = ko.observable(data ? data.ConsultantId : '');
+            self.consultantId.subscribe(function(newValue){
+                self.consultantId2(newValue);
+            });
+            self.contractCode2 = ko.observable(data ? data.ContractCode : '');
+            self.contractCode.subscribe(function(newValue){
+                self.contractCode2(newValue);
+            });
+            self.page = ko.observable(data ? data.page : '');
+            self.errors = ko.validation.group(this, { deep: true, observable: false });
+            self.isValid = function () {
+                return self.errors().length < 1; 
+            };
+        };
+
+        function ViewModel(data) {
+            var self = this;
+            self.invoiceSearch = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)));
+            self.InvoiceSearch =  ko.validatedObservable(new InvoiceSearch(self.invoiceSearch));
+            self.consultants = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ConsultantList)));
+            self.contracts = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.ContractList)));
+            self.sortOrderList = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.SortOrderList)));
+            self.orderByFields = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.OrderByList)));
+
+        };
+        var vm = new ViewModel();
+        ko.applyBindings(vm);
+        
+        $(document).ready( function (){
+            $(".date").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                maxDate: "+10Y"
+            })
+
+            //$("#Search").on("click", function (event) {
+            //    event.preventDefault();
+            //    //removeInputMasks();
+            //    //Work around for IE 8 because it dosen't like form.submit();
+            //});
+
+            $('#clickSub').click( function (event) {
+                $('#submit3').click();
+            });
+
+@*            $('#ReportViewer').click( function (event) {
+            event.preventDefault();
+            var formData = { InvoiceFromDate: vm.InvoiceSearch().invoiceFromDate(),
+                InvoiceToDate: vm.InvoiceSearch().invoiceToDate(),
+                ConsultantId: vm.InvoiceSearch().consultantId(),
+                ContractCode: vm.InvoiceSearch().contractCode(),
+                SortBy: vm.InvoiceSearch().sortOrder(),
+                OrderBy: vm.InvoiceSearch().orderBy() };
+            if (formData.InvoiceFromDate || formData.InvoiceToDate || formData.ConsultantId || formData.ContractCode || formData.SortBy || formData.OrderBy)
+            {
+                var parmData = '?';
+                if(formData.InvoiceFromDate){
+                    var date = formData.InvoiceFromDate;
+                    parmData += 'fromDate=' + date + '&';
+                }
+                if(formData.InvoiceToDate){
+                    var date = formData.InvoiceToDate;
+                    parmData += 'toDate=' + date +  '&';
+                }
+                if(formData.ConsultantId)
+                    parmData += 'consultantId=' + formData.ConsultantId + '&';
+                if(formData.ContractCode)
+                    parmData += 'contractCode=' + formData.ContractCode + '&';
+                if(formData.SortBy)
+                    parmData += 'sortBy=' + formData.SortBy + '&';
+                if(formData.OrderBy)
+                    parmData += 'orderBy=' + formData.OrderBy + '&';
+                if(parmData.length === 1)
+                    parmData = '';
+                if(parmData.lastIndexOf('&') === parmData.length - 1)
+                    parmData = parmData.slice(0,parmData.lastIndexOf('&'));
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("ReportPage")' + parmData,
+                    contentType: 'application/json; charset=utf-8',
+                    //data: JSON.stringify({ invoiceVm: formData }),
+                    dataType: 'json',
+                    error: submitError
+                });
+            }
+            });*@
+
+        setInputMasks();
+    });
+
+    </script>
+}
+
+<link href="~/Content/InvoiceSearch.css" rel="stylesheet" />
+<style>
+        .inlineTableTitle * {
+        display: inline-block;
+    }
+
+    .inlineTableTitle > a {
+        font-size: .7em;
+    }
+
+    .TableFormat label {
+        padding-right: 1em;
+        display: table-cell;
+        text-align: right;
+
+    }
+
+    .TableFormat > div > div {
+        display: table-cell;
+        padding: 1px;
+    }
+
+    .TableFormat > div {
+        display: table-row;
+    }
+
+    .generalData2 .cell {
+        padding-right: 1em;
+        display: table-cell;
+        text-align: right;
+    }
+
+    .generalData2 .row {
+        display: table-row;
+    }
+
+    .linkButton {
+     background:none!important;
+     color:blue;
+     border:none; 
+     padding:0!important;
+     font: inherit;
+     /*border is optional*/
+     border-bottom:1px solid #444; 
+     cursor: pointer;
+}
+</style>
+<h2>Report Search</h2>
+@using( Html.BeginForm("Search","Report", null, FormMethod.Post, new {@class = "unsavedchanges-exclude"}))
+{
+<fieldset>
+    <div class="TableFormat">
+        <div>
+            @Html.LabelFor(model => model.OrderBy, new { @class = "Label" })
+            <div>
+                <select id="OrderBy" name="OrderBy" data-bind="value: InvoiceSearch().sortBy, options: orderByFields, optionsValue: 'value', optionsText: 'label', optionsCaption: 'Sort By'"></select>
+            </div>
+        </div>
+        <div>
+            @Html.LabelFor(model => model.SortOrder)
+            <div>
+                <select id="SortOrder" name="SortOrder" data-bind="value: InvoiceSearch().sortOrder, options: sortOrderList, optionsValue: 'value', optionsText: 'label', optionsCaption: 'Sort Order'"></select>
+            </div>
+        </div>
+        <div>
+            @Html.LabelFor(model => model.ContractCode)
+            <div>
+                <select id="ContractCode" name="ContractCode" data-bind="value: InvoiceSearch().contractCode, options: contracts, optionsValue: 'value', optionsText: 'label', optionsCaption: 'Contract'"></select>
+                <span class="validationMessage" data-bind="validationMessage: InvoiceSearch().contractCode"></span>
+            </div>
+        </div>
+        <div>
+            @Html.LabelFor(model => model.ConsultantId)
+            <div>
+                <select id="ConsultantId" name="ConsultantId" data-bind="value: InvoiceSearch().consultantId, options: consultants, optionsValue: 'value', optionsText: 'label', optionsCaption: 'Consultant'"></select>
+                <span class="validationMessage" data-bind="validationMessage: InvoiceSearch().consultantId"></span>
+            </div>
+        </div>
+        <div>
+            @Html.LabelFor(model => model.InvoiceFromDate)
+            <div>
+                <input type="text" id="invoiceFromDate" name="invoiceFromDate" class="date" data-bind="value: InvoiceSearch().invoiceFromDate" />
+            </div>
+        </div>
+        <div>
+            @Html.LabelFor(model => model.InvoiceToDate)
+            <div>
+                <input type="text" id="invoiceToDate" name="invoiceToDate" class="date" data-bind="value: InvoiceSearch().invoiceToDate" />
+                <span class="validationMessage">*</span>
+                <span class="validationMessage" data-bind="validationMessage: InvoiceSearch().invoiceToDate"></span>
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <button type="submit">Submit</button>
+</fieldset>
+}
+@*jquery modal*@
+<div id="nav">
+    <button id="clickSub" class="linkButton">Report</button>
+</div>
+<div class="datagrid" id="invoiceData">
+</div>
+<br />
+<div id="reportData">
+</div>
+
+<br />
+<form style="display: none;" action="@Url.Action("ReportPage", "Report")" method="Post">
+    <input type="text" name="ConsultantId" id="ConsultantId" data-bind="value: InvoiceSearch().consultantId" />
+    <input type="text" name="ContractCode" id="ContractCode" data-bind="value: InvoiceSearch().contractCode"/>
+    <input type="text" id="invoiceFromDate" name="invoiceFromDate" class="date" data-bind="value: InvoiceSearch().invoiceFromDate" />
+    <input type="text" id="invoiceToDate" name="invoiceToDate" class="date" data-bind="value: InvoiceSearch().invoiceToDate" />
+    <input type="submit" name="submit3" id="submit3" />
+</form>
+<div id="SearchResults">
+    @if (Model.UnpaidInvoices == null)
+    {
+        <p>
+            <strong>NOTE:</strong>
+            Be Specific in your search.
+                The system will only search for what has been filled out, 
+                else will pull all the records from the database.
+        </p>   
+    }
+    else if (Model.UnpaidInvoices.Count > 0)
+    {        
+        @Html.Partial("~/Views/Shared/_paging.cshtml", (string[][])ViewBag.PagingList)<br />
+        @Html.Partial("~/Views/Report/_UnpaidInvoicesReportList.cshtml", Model)<br />
+        @Html.Partial("~/Views/Shared/_paging.cshtml", (string[][])ViewBag.PagingList)
+    }
+    else
+    {
+        <p>There are no unpaid invoices that meet your search criteria.</p>
+    }
+</div>
+
+

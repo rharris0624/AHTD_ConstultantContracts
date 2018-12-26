@@ -1,0 +1,50 @@
+﻿CREATE TABLE [dbo].[SPECIAL_PROJECT] (
+    [JOB_NUM]      CHAR (6)  NOT NULL,
+    [STATUS]       CHAR (1)  NOT NULL,
+    [DESCRIPTION]  CHAR (30) NOT NULL,
+    [COUNTY]       CHAR (2)  NOT NULL,
+    [ROUTE]        CHAR (3)  NOT NULL,
+    [SECTION_NUM]  CHAR (2)  NOT NULL,
+    [ALT_SECTION]  CHAR (1)  NOT NULL,
+    [SURFACE_TYPE] CHAR (1)  NOT NULL,
+    [BUDGET]       CHAR (3)  NOT NULL,
+    [TYPE_CODE]    CHAR (1)  NOT NULL,
+    [FUNCTION1]    CHAR (4)  NOT NULL,
+    [FUNCTION2]    CHAR (4)  NOT NULL,
+    [FUNCTION3]    CHAR (4)  NOT NULL,
+    [FUNCTION4]    CHAR (4)  NOT NULL,
+    [FUNCTION5]    CHAR (4)  NOT NULL,
+    [FUNCTION6]    CHAR (4)  NOT NULL,
+    CONSTRAINT [PK_SPECIAL_PROJECT] PRIMARY KEY CLUSTERED ([JOB_NUM] ASC)
+);
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[dbo].[SPECIAL_PROJECT] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[SPECIAL_PROJECT] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[dbo].[SPECIAL_PROJECT] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[dbo].[SPECIAL_PROJECT] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[SPECIAL_PROJECT] TO [VoucherVendors]
+    AS [dbo];
+

@@ -1,0 +1,2485 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/6/2015 11:00:45 AM"
+  DTS:CreationName="SSIS.Package.3"
+  DTS:CreatorComputerName="290-APP-CK"
+  DTS:CreatorName="AHTD\db38033"
+  DTS:DTSID="{02B191EF-6C55-4CA1-8156-F3EAC4F5AC3F}"
+  DTS:ExecutableType="SSIS.Package.3"
+  DTS:LastModifiedProductVersion="11.0.5058.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="49"
+  DTS:VersionGUID="{97E66073-6D6F-429C-A5E1-38AE14F61E1C}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">6</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[Invoice CSV]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{3D91B8D3-C549-4368-9864-AA3EFFAE88E6}"
+      DTS:ObjectName="Invoice CSV">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="\\csd1\appdev\Brown\Invoices.csv">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="TaxId"
+              DTS:DTSID="{FB3C05E4-AD68-45E3-8C3C-2BAE13689299}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="SeqNo"
+              DTS:DTSID="{C1BF3CBB-141E-4082-B5E2-FD2A33329406}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="2"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="PURCH-CODE"
+              DTS:DTSID="{FA71C8F3-D699-434F-9157-1302D5F04D1E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="EXP-CODE"
+              DTS:DTSID="{64650DB9-E543-48F8-8CF6-00919915AF31}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="4"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Func"
+              DTS:DTSID="{7F51B1A7-AEA0-408E-96E4-22AD1DDA4362}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ObjectCode"
+              DTS:DTSID="{4BA2E42D-76B7-426B-A180-D96367B45BD8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="GL-CODE"
+              DTS:DTSID="{F004E2A4-CC3E-4C82-A5EC-58A75FDAB102}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="10"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="JobNo"
+              DTS:DTSID="{1B191DCC-BB5D-4EB2-8C39-1A2AA4AA32EB}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Budget"
+              DTS:DTSID="{FC75E2EE-B589-47F1-B96D-8BCB2513DA27}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="11"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="FAP"
+              DTS:DTSID="{C7AF7895-AAAA-4A86-8CCC-F9E5C82A53A2}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="6"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Amount"
+              DTS:DTSID="{DBB991A5-9278-4AC9-98F8-B3337B3586E9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ContractCode"
+              DTS:DTSID="{8C082D76-AAD2-49C2-AFAA-C237FBDFBB91}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="130"
+              DTS:TextQualified="True"
+              DTS:ObjectName="ConsultantInvoiceNo"
+              DTS:DTSID="{1D515ED1-B25A-4DC1-A0BE-E8425C25B586}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x002C_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="InvoiceNo"
+              DTS:DTSID="{ABF092BB-0128-4187-AD3A-75C6D08DC830}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000D__x000A_"
+              DTS:DataType="3"
+              DTS:TextQualified="True"
+              DTS:ObjectName="InvoiceId"
+              DTS:DTSID="{35DC23CC-FFBB-47A3-B985-4957BBAEA6B9}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.NewConsultantContracts]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{3267A7D6-3484-4480-ACDA-D1D24850430A}"
+      DTS:ObjectName="localhost.NewConsultantContracts">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=290-APP-CL;Initial Catalog=AHTD_ConsultantContracts;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Data Flow Task"
+      DTS:CreationName="SSIS.Pipeline.3"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{2B17EDD8-BF8F-47CC-8404-8F8E045FA455}"
+      DTS:ExecutableType="SSIS.Pipeline.3"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Data Flow Task"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Data Flow Task\Column Orderer"
+              componentClassID="{49928E82-9C4E-49F0-AABE-3812B82707EC}"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Column Orderer"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[TaxId]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="TaxId"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[TaxId]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[TaxId]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">TaxId</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[SeqNo]"
+                      cachedDataType="i4"
+                      cachedName="SeqNo"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[SeqNo]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[SeqNo]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">SeqNo</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[ContractCode]"
+                      cachedDataType="i4"
+                      cachedName="ContractCode"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ContractCode]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ContractCode]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ContractCode</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[Func]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="4"
+                      cachedName="Func"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Func]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Func]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">Func</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[ObjectCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="3"
+                      cachedName="ObjectCode"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ObjectCode]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ObjectCode]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ObjectCode</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[JobNo]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="JobNo"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[JobNo]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[JobNo]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">JobNo</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[FAP]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="11"
+                      cachedName="FAP"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[FAP]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[FAP]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">FAP</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[Amount]"
+                      cachedDataType="cy"
+                      cachedName="Amount"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Amount]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Amount]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">Amount</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[Budget]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="3"
+                      cachedName="Budget"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Budget]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Budget]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">Budget</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[ConsultantInvoiceNo]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="ConsultantInvoiceNo"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ConsultantInvoiceNo]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ConsultantInvoiceNo]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">ConsultantInvoiceNo</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[InvoiceNo]"
+                      cachedDataType="i4"
+                      cachedName="InvoiceNo"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceNo]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceNo]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">InvoiceNo</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[InvoiceId]"
+                      cachedDataType="i4"
+                      cachedName="InvoiceId"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceId]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceId]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">InvoiceId</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[PURCH-CODE]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="PURCH-CODE"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[PURCH-CODE]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[PURCH-CODE]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">[PURCH-CODE]</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[EXP-CODE]"
+                      cachedDataType="i4"
+                      cachedName="EXP-CODE"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[EXP-CODE]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[EXP-CODE]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">[EXP-CODE]</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input].Columns[GL-CODE]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="GL-CODE"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\GL-CODE Generator.Outputs[Output 0].Columns[GL-CODE]"
+                      truncationRowDisposition="FailComponent"
+                      usageType="readWrite">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">#{Package\Data Flow Task\GL-CODE Generator.Outputs[Output 0].Columns[GL-CODE]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">[GL-CODE]</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\Column Orderer.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\Column Orderer.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Column Orderer.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Column Orderer.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Column Orderer.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\Derived Column"
+              componentClassID="{49928E82-9C4E-49F0-AABE-3812B82707EC}"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[PURCH-CODE]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      length="2"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[PURCH-CODE]"
+                      name="PURCH-CODE"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">"EL"</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">"EL"</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[EXP-CODE]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[EXP-CODE]"
+                      name="EXP-CODE"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">4141</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">4141</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\GL-CODE Generator"
+              componentClassID="{874F7595-FB5F-40FF-96AF-FBFF8250E3EF}"
+              contactInfo="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum.;Microsoft Corporation; Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;8"
+              description="Includes and runs custom script code. For example, apply a business rule that limits the range of valid values in an &quot;income&quot; column or add values in two columns and calculate the average of the sum."
+              name="GL-CODE Generator"
+              version="8">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Stores the source code of the component"
+                  isArray="true"
+                  name="SourceCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="30">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[ComponentWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services component wrapper
+*  This module defines the base class for your component
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+
+public class UserComponent: ScriptComponent
+{
+    public Connections Connections;
+    public Variables Variables;
+    public UserComponent()
+    {
+        Connections = new Connections(this);
+        Variables = new Variables(this);
+    }
+
+    public override void ProcessInput(int InputID, string InputName, PipelineBuffer Buffer, OutputNameMap OutputMap)
+    {
+
+        if (InputName.Equals(@"Input 0", StringComparison.Ordinal))
+        {
+            Input0_ProcessInput(new Input0Buffer(Buffer, GetColumnIndexes(InputID), OutputMap));
+        }
+
+    }
+
+    public virtual void Input0_ProcessInput(Input0Buffer Buffer)
+    {
+        while (Buffer.NextRow())
+        {
+            Input0_ProcessInputRow(Buffer);
+        }
+    }
+
+    public virtual void Input0_ProcessInputRow(Input0Buffer Row)
+    {
+    }
+
+}
+
+public class Connections
+{
+    ScriptComponent ParentComponent;
+
+    public Connections(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+
+public class Variables
+{
+    ScriptComponent ParentComponent;
+
+    public Variables(ScriptComponent Component)
+    {
+        ParentComponent = Component;
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.resx]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[main.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[#region Help:  Introduction to the Script Component
+/* The Script Component allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services data flow.
+ *
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script component. */
+#endregion
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime.Wrapper;
+#endregion
+
+/// <summary>
+/// This is the class to which to add your code.  Do not change the name, attributes, or parent
+/// of this class.
+/// </summary>
+[Microsoft.SqlServer.Dts.Pipeline.SSISScriptComponentEntryPointAttribute]
+public class ScriptMain : UserComponent
+{
+	#region Help:  Using Integration Services variables and parameters
+	/* To use a variable in this script, first ensure that the variable has been added to
+	 * either the list contained in the ReadOnlyVariables property or the list contained in
+	 * the ReadWriteVariables property of this script component, according to whether or not your
+	 * code needs to write into the variable.  To do so, save this script, close this instance of
+	 * Visual Studio, and update the ReadOnlyVariables and ReadWriteVariables properties in the
+	 * Script Transformation Editor window.
+	 * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+	 *
+	 * Example of reading from a variable or parameter:
+	 *  DateTime startTime = Variables.MyStartTime;
+	 *
+	 * Example of writing to a variable:
+	 *  Variables.myStringVariable = "new value";
+	 */
+	#endregion
+
+	#region Help:  Using Integration Services Connnection Managers
+	/* Some types of connection managers can be used in this script component.  See the help topic
+	 * "Working with Connection Managers Programatically" for details.
+	 *
+	 * To use a connection manager in this script, first ensure that the connection manager has
+	 * been added to either the list of connection managers on the Connection Managers page of the
+	 * script component editor.  To add the connection manager, save this script, close this instance of
+	 * Visual Studio, and add the Connection Manager to the list.
+	 *
+	 * If the component needs to hold a connection open while processing rows, override the
+	 * AcquireConnections and ReleaseConnections methods.
+	 * 
+	 * Example of using an ADO.Net connection manager to acquire a SqlConnection:
+	 *  object rawConnection = Connections.SalesDB.AcquireConnection(transaction);
+	 *  SqlConnection salesDBConn = (SqlConnection)rawConnection;
+	 *
+	 * Example of using a File connection manager to acquire a file path:
+	 *  object rawConnection = Connections.Prices_zip.AcquireConnection(transaction);
+	 *  string filePath = (string)rawConnection;
+	 *
+	 * Example of releasing a connection manager:
+	 *  Connections.SalesDB.ReleaseConnection(rawConnection);
+	 */
+	#endregion
+
+	#region Help:  Firing Integration Services Events
+	/* This script component can fire events.
+	 *
+	 * Example of firing an error event:
+	 *  ComponentMetaData.FireError(10, "Process Values", "Bad value", "", 0, out cancel);
+	 *
+	 * Example of firing an information event:
+	 *  ComponentMetaData.FireInformation(10, "Process Values", "Processing has started", "", 0, fireAgain);
+	 *
+	 * Example of firing a warning event:
+	 *  ComponentMetaData.FireWarning(10, "Process Values", "No rows were received", "", 0);
+	 */
+	#endregion
+
+	/// <summary>
+	/// This method is called once, before rows begin to be processed in the data flow.
+	///
+	/// You can remove this method if you don't need to do anything here.
+	/// </summary>
+	public override void PreExecute()
+	{
+		base.PreExecute();
+		/*
+		 * Add your code here
+		 */
+	}
+
+	/// <summary>
+	/// This method is called after all the rows have passed through this component.
+	///
+	/// You can delete this method if you don't need to do anything here.
+	/// </summary>
+	public override void PostExecute()
+	{
+		base.PostExecute();
+		/*
+		 * Add your code here
+		 */
+	}
+
+	/// <summary>
+	/// This method is called once for every row that passes through the component from Input0.
+	///
+	/// Example of reading a value from a column in the the row:
+	///  string zipCode = Row.ZipCode
+	///
+	/// Example of writing a value to a column in the row:
+	///  Row.ZipCode = zipCode
+	/// </summary>
+	/// <param name="Row">The row that is currently passing through the component</param>
+	public override void Input0_ProcessInputRow(Input0Buffer Row)
+	{
+		if (Row.ObjectCode == "281")
+		{
+			Row.GLCODE = "5060002000";
+		} 
+		else if (Row.ObjectCode == "285")
+		{
+			Row.GLCODE = "5060004000";
+		}
+		else if (Row.ObjectCode == "288")
+		{
+			Row.GLCODE = "5060003000";
+		}
+		else if (Row.ObjectCode == "289")
+		{
+			Row.GLCODE = "5060001000";
+		}
+	}
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[BufferWrapper.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[/* THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT!
+*  Microsoft SQL Server Integration Services buffer wrappers
+*  This module defines classes for accessing data flow buffers
+*  THIS IS AUTO-GENERATED CODE THAT WILL BE OVERWRITTEN! DO NOT EDIT! */
+
+
+
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Pipeline;
+using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+
+public class Input0Buffer: ScriptBuffer
+
+{
+    public Input0Buffer(PipelineBuffer Buffer, int[] BufferColumnIndexes, OutputNameMap OutputMap)
+        : base(Buffer, BufferColumnIndexes, OutputMap)
+    {
+    }
+
+    public String ObjectCode
+    {
+        get
+        {
+            return Buffer.GetString(BufferColumnIndexes[0]);
+        }
+    }
+    public bool ObjectCode_IsNull
+    {
+        get
+        {
+            return IsNull(0);
+        }
+    }
+
+    public String GLCODE
+    {
+        set
+        {
+            this[1] = value;
+        }
+    }
+    public bool GLCODE_IsNull
+    {
+        set
+        {
+            if (value)
+            {
+                SetNull(1);
+            }
+            else
+            {
+                throw new InvalidOperationException("IsNull property cannot be set to False. Assign a value to the column instead.");
+            }
+        }
+    }
+
+    new public bool NextRow()
+    {
+        return base.NextRow();
+    }
+
+    new public bool EndOfRowset()
+    {
+        return base.EndOfRowset();
+    }
+
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties.Settings.get_Default():SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties.Sett" +
+    "ings")]
+
+namespace SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_04a7bbfb3b6245ba8316373ad9e1f5bb.csproj]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{b6c059d1-8024-4ed9-8c2f-3900cacfea10}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SC_04a7bbfb3b6245ba8316373ad9e1f5bb</RootNamespace>
+    <AssemblyName>SC_04a7bbfb3b6245ba8316373ad9e1f5bb</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.TxScript, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSRuntimeWrap, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.DTSPipelineWrap, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.PipelineHost, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Compile Include="main.cs" />
+    <Compile Include="BufferWrapper.cs" />
+    <Compile Include="ComponentWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- This section defines VSTA properties that describe the host-changable project properties. -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptComponent" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" DebugInfoExeName="" DebugInfoCommandLine="" DebugInfoWorkingDir="" IconImageList="" />
+        <Host Name="ScriptComponent" GeneratedNamespace="SC_04a7bbfb3b6245ba8316373ad9e1f5bb" IconIndex="0"></Host>
+        <ProjectClient>
+          <HostIdentifier>SSIS_SC110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Project]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF16LE]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
+	<msb:PropertyGroup>
+		<msb:CodeName>SC_04a7bbfb3b6245ba8316373ad9e1f5bb</msb:CodeName>
+		<msb:Language>msBuild</msb:Language>
+		<msb:DisplayName>SC_04a7bbfb3b6245ba8316373ad9e1f5bb</msb:DisplayName>
+		<msb:ProjectId>{15F89755-CC3E-44E0-B7F0-3B8B1B7CEBED}</msb:ProjectId>
+	</msb:PropertyGroup>
+	<msb:ItemGroup>
+		<msb:Project Include="SC_04a7bbfb3b6245ba8316373ad9e1f5bb.csproj"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\Resources.resx"/>
+		<msb:File Include="Properties\Resources.Designer.cs"/>
+		<msb:File Include="Properties\Settings.Designer.cs"/>
+		<msb:File Include="main.cs"/>
+		<msb:File Include="BufferWrapper.cs"/>
+		<msb:File Include="ComponentWrapper.cs"/>
+	</msb:ItemGroup>
+</c:Project>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\AssemblyInfo.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("SC_04a7bbfb3b6245ba8316373ad9e1f5bb")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("SC_04a7bbfb3b6245ba8316373ad9e1f5bb")]
+[assembly: AssemblyCopyright("Copyright @  2015")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]
+]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Settings.settings]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[Properties\Resources.Designer.cs]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[UTF8]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SC_04a7bbfb3b6245ba8316373ad9e1f5bb.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}
+]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Stores the binary representation of the component"
+                  isArray="true"
+                  name="BinaryCode"
+                  state="cdata">
+                  <arrayElements
+                    arrayElementCount="2">
+                    <arrayElement
+                      dataType="System.String"><![CDATA[SC_04a7bbfb3b6245ba8316373ad9e1f5bb.dll]]></arrayElement>
+                    <arrayElement
+                      dataType="System.String"><![CDATA[TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAK8ZHFYAAAAAAAAAAOAAAiELAQsAABQAAAAIAAAAAAAATjMA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAPgyAABTAAAAAEAAAAgEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAVBMAAAAgAAAAFAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAAgEAAAAQAAAAAYAAAAWAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAHAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAw
+MwAAAAAAAEgAAAACAAUA6CIAABAQAAABAAAAAAAAADAiAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH4CKA0AAAoCAnMQAAAGfQEAAAQCAnMRAAAGfQIAAAQqkgRy
+AQAAcBpvDgAACiwVAgUCAygPAAAKDgRzCQAABm8DAAAGKkorBwIDbwQAAAYDbw4AAAYt8SoGKh4C
+KBEAAAoqHgIoEgAACioAAAMwAgB4AAAAAAAAAANvCgAABnIRAABwKBMAAAosDANyGQAAcG8MAAAG
+KgNvCgAABnIvAABwKBMAAAosDANyNwAAcG8MAAAGKgNvCgAABnJNAABwKBMAAAosDANyVQAAcG8M
+AAAGKgNvCgAABnJrAABwKBMAAAosCwNycwAAcG8MAAAGKh4CKAEAAAYqKgIDBAUoFAAACipSAnsV
+AAAKAnsWAAAKFpRvFwAACioiAhYoGAAACiomAhcDKBkAAAoqWgMsCAIXKBoAAAoqcokAAHBzGwAA
+CnoeAigcAAAKKh4CKB0AAAoqOgIoHgAACgIDfQMAAAQqOgIoHgAACgIDfQQAAAQqHgIoHgAACioT
+MAIALQAAAAEAABF+BQAABC0gciYBAHDQBwAAAiggAAAKbyEAAApzIgAACgoGgAUAAAR+BQAABCoa
+fgYAAAQqHgKABgAABCoafgcAAAQqLnMXAAAGgAcAAAQqHgIoJQAACioAAAAAALQAAADOyu++AQAA
+AJEAAABsU3lzdGVtLlJlc291cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNjb3JsaWIsIFZlcnNpb249
+NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5
+I1N5c3RlbS5SZXNvdXJjZXMuUnVudGltZVJlc291cmNlU2V0AgAAAAAAAAAAAAAAUEFEUEFEULQA
+AABCU0pCAQABAAAAAAAMAAAAdjQuMC4zMDMxOQAAAAAFAGwAAABwBQAAI34AANwFAADoBgAAI1N0
+cmluZ3MAAAAAxAwAAJgBAAAjVVMAXA4AABAAAAAjR1VJRAAAAGwOAACkAQAAI0Jsb2IAAAAAAAAA
+AgAAAVcVogEJAQAAAPolMwAWAAABAAAAHwAAAAgAAAAHAAAAGAAAAA8AAAAlAAAADwAAAAEAAAAD
+AAAABwAAAAgAAAABAAAABAAAAAEAAAAAAAoAAQAAAAAABgDuAM0ABgD+AM0ACgAbARQBDgA3ASIB
+EgB2Ac0ABgCFAc0ACgCLAnoCCgC8AqcCCgCVA3sDCgDAA64DCgDXA64DCgD0A64DCgATBK4DCgAs
+BK4DCgBFBK4DCgBgBK4DCgB7BK4DCgCUBK4DCgDNBK0ECgDtBK0ECgAvBRQBCgA2BRQBBgBfBc0A
+CgC0BRQBCgDhBc4FCgD+BRQBCgADBhQBCgAnBq4DDgBTBj0GDgBsBj0GCgCBBq0EAAAAAAEAAAAA
+AAEAAQABABAAMgAAAAUAAQABAAEAEABAAAAACAADAAUAAQAQAEsAAAAJAAMACQABABAAWAAAAA0A
+AwAQAAEAEABkAAAADQAEABEAAAAQAG4AeAANAAUAEgAAARAApwB4ABEABwAWAAYAWAATAAYAZAAX
+AAEAagJTAAEAagJTABEAmwJdABEAyAJhABEADAN/AFAgAAAAAIYYTwEbAAEAcCAAAAAAxgCTAR8A
+AQCVIAAAAADGAaABKQAFAKggAAAAAMYBtAEpAAYAqiAAAAAAxgDLARsABwCyIAAAAADGANYBGwAH
+ALwgAAAAAMYAtAEpAAcAQCEAAAAAhhhPARsACABIIQAAAACGGE8BLwAIAFMhAAAAAIYI4gE5AAsA
+aCEAAAAAhgjxAT0ACwBxIQAAAACGCAcCQQALAHshAAAAAIYIEgJGAAwAkiEAAAAAhgAkAj0ADQCa
+IQAAAACGACwCPQANAKIhAAAAAIYYTwFXAA0AsSEAAAAAhhhPAVcADgDAIQAAAACDGE8BGwAPAMgh
+AAAAAJMI2AJlAA8AASIAAAAAkwjsAmoADwAIIgAAAACTCPgCbwAPABAiAAAAAJYIHAODABAAIyIA
+AAAAhhhPARsAEAAXIgAAAACRGJwG6QAQAAAAAQAwAwAAAgA4AwAAAwBCAwAABABJAwAAAQBCAwAA
+AQBTAwAAAQBTAwAAAQBCAwAAAgBXAwAAAwBJAwAAAQBrAwAAAQBrAwAAAQBxAwAAAQBxAwAAAQBr
+A0kATwFBAFEATwFBAFkATwFBAGEATwFBAGkATwFBAHEATwFBAHkATwFBAIEATwFBAIkATwFBAJEA
+TwFBAJkATwGNAKEATwEbAAkATwEbAKkARwWSAAkATgWZALkATwEbAAkAywEbAAkA1gEbAKkAhgWk
+ABEATwEvABEAQgOqABEAVwOuACkAkgWyABEAnAW3ABEAowW8ABEArAWNAMEATwFBABEAJAI9ABEA
+LAI9ABkATwEbAMkATwEbANEAFQbCANEAMAbJADkATwHOAOkATwHaAPkATwEbACEATwEbAC4AGwBe
+AS4AYwCEAS4ACwDtAC4AEwA1AS4AIwBeAS4AKwBeAS4AMwA1AS4AOwBkAS4AQwBeAS4AWwB7AWMA
+gwCfAKkAGwHgAMkAGwHgAOEAIwGfAOMA+wCfANUABAABAAcABQAIAAcAAAA4AksAAABDAk8AAABV
+AksAAABcAk8AAACLAnUAAAAEA3oAAAAoA4gAAgAKAAMAAgALAAUAAQAMAAcAAQANAAkAAgATAAsA
+AgAUAA0AAQAVAA0AAgAWAA8ABIAAAAEAAACDFqdmAAAAAAAACwUAAAsAAAAAAAAAAAAAAAEAsAAA
+AAAABAAAAAAAAAAAAAAACgALAQAAAAAEAAAAAAAAAAAAAAAKABQBAAAAAAsAAAAAAAAAAAAAAAEA
+VQEAAAAAAAAAAAEAAACjBgAAAAAAPE1vZHVsZT4AU0NfMDRhN2JiZmIzYjYyNDViYTgzMTYzNzNh
+ZDllMWY1YmIuZGxsAFVzZXJDb21wb25lbnQAU2NyaXB0TWFpbgBJbnB1dDBCdWZmZXIAQ29ubmVj
+dGlvbnMAVmFyaWFibGVzAFJlc291cmNlcwBTQ18wNGE3YmJmYjNiNjI0NWJhODMxNjM3M2FkOWUx
+ZjViYi5Qcm9wZXJ0aWVzAFNldHRpbmdzAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuVHhTY3JpcHQATWlj
+cm9zb2Z0LlNxbFNlcnZlci5EdHMuUGlwZWxpbmUAU2NyaXB0Q29tcG9uZW50AFNjcmlwdEJ1ZmZl
+cgBtc2NvcmxpYgBTeXN0ZW0AT2JqZWN0AFN5c3RlbS5Db25maWd1cmF0aW9uAEFwcGxpY2F0aW9u
+U2V0dGluZ3NCYXNlAC5jdG9yAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuUGlwZWxpbmVIb3N0AFBpcGVs
+aW5lQnVmZmVyAE91dHB1dE5hbWVNYXAAUHJvY2Vzc0lucHV0AElucHV0MF9Qcm9jZXNzSW5wdXQA
+SW5wdXQwX1Byb2Nlc3NJbnB1dFJvdwBQcmVFeGVjdXRlAFBvc3RFeGVjdXRlAGdldF9PYmplY3RD
+b2RlAGdldF9PYmplY3RDb2RlX0lzTnVsbABzZXRfR0xDT0RFAHNldF9HTENPREVfSXNOdWxsAE5l
+eHRSb3cARW5kT2ZSb3dzZXQAT2JqZWN0Q29kZQBPYmplY3RDb2RlX0lzTnVsbABHTENPREUAR0xD
+T0RFX0lzTnVsbABQYXJlbnRDb21wb25lbnQAU3lzdGVtLlJlc291cmNlcwBSZXNvdXJjZU1hbmFn
+ZXIAcmVzb3VyY2VNYW4AU3lzdGVtLkdsb2JhbGl6YXRpb24AQ3VsdHVyZUluZm8AcmVzb3VyY2VD
+dWx0dXJlAGdldF9SZXNvdXJjZU1hbmFnZXIAZ2V0X0N1bHR1cmUAc2V0X0N1bHR1cmUAQ3VsdHVy
+ZQBkZWZhdWx0SW5zdGFuY2UAZ2V0X0RlZmF1bHQARGVmYXVsdABJbnB1dElEAElucHV0TmFtZQBC
+dWZmZXIAT3V0cHV0TWFwAFJvdwBCdWZmZXJDb2x1bW5JbmRleGVzAHZhbHVlAENvbXBvbmVudABT
+eXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFRhcmdldEZyYW1ld29ya0F0dHJpYnV0ZQBTeXN0ZW0u
+UmVmbGVjdGlvbgBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRpb25BdHRy
+aWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5Q29tcGFueUF0dHJp
+YnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUA
+QXNzZW1ibHlUcmFkZW1hcmtBdHRyaWJ1dGUAQXNzZW1ibHlDdWx0dXJlQXR0cmlidXRlAEFzc2Vt
+Ymx5VmVyc2lvbkF0dHJpYnV0ZQBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzAENvbXBp
+bGF0aW9uUmVsYXhhdGlvbnNBdHRyaWJ1dGUAUnVudGltZUNvbXBhdGliaWxpdHlBdHRyaWJ1dGUA
+U0NfMDRhN2JiZmIzYjYyNDViYTgzMTYzNzNhZDllMWY1YmIAU3RyaW5nAFN0cmluZ0NvbXBhcmlz
+b24ARXF1YWxzAEdldENvbHVtbkluZGV4ZXMAU1NJU1NjcmlwdENvbXBvbmVudEVudHJ5UG9pbnRB
+dHRyaWJ1dGUAb3BfRXF1YWxpdHkAR2V0U3RyaW5nAElzTnVsbABzZXRfSXRlbQBTZXROdWxsAElu
+dmFsaWRPcGVyYXRpb25FeGNlcHRpb24AU3lzdGVtLkRpYWdub3N0aWNzAERlYnVnZ2VyTm9uVXNl
+ckNvZGVBdHRyaWJ1dGUAVHlwZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhhbmRsZQBB
+c3NlbWJseQBnZXRfQXNzZW1ibHkAU3lzdGVtLkNvbXBvbmVudE1vZGVsAEVkaXRvckJyb3dzYWJs
+ZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVTdGF0ZQBDb21waWxlckdlbmVyYXRlZEF0dHJpYnV0
+ZQAuY2N0b3IAU0NfMDRhN2JiZmIzYjYyNDViYTgzMTYzNzNhZDllMWY1YmIuUHJvcGVydGllcy5S
+ZXNvdXJjZXMucmVzb3VyY2VzAAAAAA9JAG4AcAB1AHQAIAAwAAAHMgA4ADEAABU1ADAANgAwADAA
+MAAyADAAMAAwAAAHMgA4ADUAABU1ADAANgAwADAAMAA0ADAAMAAwAAAHMgA4ADgAABU1ADAANgAw
+ADAAMAAzADAAMAAwAAAHMgA4ADkAABU1ADAANgAwADAAMAAxADAAMAAwAACAm0kAcwBOAHUAbABs
+ACAAcAByAG8AcABlAHIAdAB5ACAAYwBhAG4AbgBvAHQAIABiAGUAIABzAGUAdAAgAHQAbwAgAEYA
+YQBsAHMAZQAuACAAQQBzAHMAaQBnAG4AIABhACAAdgBhAGwAdQBlACAAdABvACAAdABoAGUAIABj
+AG8AbAB1AG0AbgAgAGkAbgBzAHQAZQBhAGQALgAAcVMAQwBfADAANABhADcAYgBiAGYAYgAzAGIA
+NgAyADQANQBiAGEAOAAzADEANgAzADcAMwBhAGQAOQBlADEAZgA1AGIAYgAuAFAAcgBvAHAAZQBy
+AHQAaQBlAHMALgBSAGUAcwBvAHUAcgBjAGUAcwAAXr6k3lYotEO4Pr41b0x7bAAIiYRdzYCAzJEI
+t3pcVhk04IkDBhIUAwYSGAMgAAEJIAQBCA4SFRIZBSABARIQCSADARIVHQgSGQMgAA4DIAACBCAB
+AQ4EIAEBAgMoAA4DKAACAwYSBQUgAQESBQMGEh0DBhIhBAAAEh0EAAASIQUAAQESIQQIABIdBAgA
+EiEDBhIgBAAAEiAECAASIAQgAQEIBiACAg4RWQUgAR0ICAQBAAAABQACAg4OAwYSFQMGHQgEIAEO
+CAQgAQIIBSACAQgcBgABEmkRbQQgABJxBiACAQ4ScQQHARIdBSABARF5CAEAAgAAAAAAAwAAAUcB
+ABouTkVURnJhbWV3b3JrLFZlcnNpb249djQuMAEAVA4URnJhbWV3b3JrRGlzcGxheU5hbWUQLk5F
+VCBGcmFtZXdvcmsgNCgBACNTQ18wNGE3YmJmYjNiNjI0NWJhODMxNjM3M2FkOWUxZjViYgAABQEA
+AAAAFgEAEUNvcHlyaWdodCBAICAyMDE1AAAIAQAIAAAAAAAeAQABAFQCFldyYXBOb25FeGNlcHRp
+b25UaHJvd3MBACAzAAAAAAAAAAAAAD4zAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwMwAAAAAA
+AAAAAAAAAAAAAABfQ29yRGxsTWFpbgBtc2NvcmVlLmRsbAAAAAAA/yUAIAAQAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAQAQAAAAGAAAgAAAAAAAAAAAAAAAAAAAAQABAAAAMAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAA
+SAAAAFhAAACwAwAAAAAAAAAAAACwAzQAAABWAFMAXwBWAEUAUgBTAEkATwBOAF8ASQBOAEYATwAA
+AAAAvQTv/gAAAQAAAAEAp2aDFgAAAQCnZoMWPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQA
+AAABAFYAYQByAEYAaQBsAGUASQBuAGYAbwAAAAAAJAAEAAAAVAByAGEAbgBzAGwAYQB0AGkAbwBu
+AAAAAAAAALAEEAMAAAEAUwB0AHIAaQBuAGcARgBpAGwAZQBJAG4AZgBvAAAA7AIAAAEAMAAwADAA
+MAAwADQAYgAwAAAAcAAkAAEARgBpAGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAAAFMAQwBf
+ADAANABhADcAYgBiAGYAYgAzAGIANgAyADQANQBiAGEAOAAzADEANgAzADcAMwBhAGQAOQBlADEA
+ZgA1AGIAYgAAAEAADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA1ADcANgAz
+AC4AMgA2ADIANwA5AAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAQwBfADAA
+NABhADcAYgBiAGYAYgAzAGIANgAyADQANQBiAGEAOAAzADEANgAzADcAMwBhAGQAOQBlADEAZgA1
+AGIAYgAuAGQAbABsAAAASAASAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAQwBvAHAA
+eQByAGkAZwBoAHQAIABAACAAIAAyADAAMQA1AAAAeAAoAAEATwByAGkAZwBpAG4AYQBsAEYAaQBs
+AGUAbgBhAG0AZQAAAFMAQwBfADAANABhADcAYgBiAGYAYgAzAGIANgAyADQANQBiAGEAOAAzADEA
+NgAzADcAMwBhAGQAOQBlADEAZgA1AGIAYgAuAGQAbABsAAAAaAAkAAEAUAByAG8AZAB1AGMAdABO
+AGEAbQBlAAAAAABTAEMAXwAwADQAYQA3AGIAYgBmAGIAMwBiADYAMgA0ADUAYgBhADgAMwAxADYA
+MwA3ADMAYQBkADkAZQAxAGYANQBiAGIAAABEAA8AAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBv
+AG4AAAAxAC4AMAAuADUANwA2ADMALgAyADYAMgA3ADkAAAAAAEgADwABAEEAcwBzAGUAbQBiAGwA
+eQAgAFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADUANwA2ADMALgAyADYAMgA3ADkAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAMAAAAUDMAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA]]></arrayElement>
+                  </arrayElements>
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the Microsoft Visual Studio Tools for Applications project. Project names must be unique within a package."
+                  name="VSTAProjectName"
+                  typeConverter="NOTBROWSABLE">SC_04a7bbfb3b6245ba8316373ad9e1f5bb</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the programming language used by the script."
+                  name="ScriptLanguage"
+                  typeConverter="Microsoft.SqlServer.VSTAHosting.ScriptingLanguages, Microsoft.SqlServer.VSTAScriptingLib, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">CSharp</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read-only variables."
+                  name="ReadOnlyVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIVariablePickerDlg, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a comma-separated list of read/write variables."
+                  name="ReadWriteVariables"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ScriptUIWriteableVariablePickerDlg, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.String"
+                  description="List of breakpoints present on the script."
+                  isArray="true"
+                  name="BreakpointCollection"
+                  typeConverter="NOTBROWSABLE">
+                  <arrayElements
+                    arrayElementCount="0" />
+                </property>
+                <property
+                  dataType="System.String"
+                  description="Checksum to match component metedata against compiled codes."
+                  name="MetadataChecksum"
+                  typeConverter="NOTBROWSABLE">22cc0c0f047a9f228179f01efd119c2c</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.SqlServer.Dts.Pipeline.ScriptComponentHost, Microsoft.SqlServer.TxScript, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\GL-CODE Generator.Inputs[Input 0]"
+                  hasSideEffects="true"
+                  name="Input 0">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\GL-CODE Generator.Inputs[Input 0].Columns[ObjectCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="3"
+                      cachedName="ObjectCode"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ObjectCode]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\GL-CODE Generator.Outputs[Output 0]"
+                  name="Output 0"
+                  synchronousInputId="Package\Data Flow Task\GL-CODE Generator.Inputs[Input 0]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\GL-CODE Generator.Outputs[Output 0].Columns[GL-CODE]"
+                      codePage="1252"
+                      dataType="str"
+                      description="GL-CODE"
+                      length="50"
+                      lineageId="Package\Data Flow Task\GL-CODE Generator.Outputs[Output 0].Columns[GL-CODE]"
+                      name="GL-CODE" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\Multicast"
+              componentClassID="{EC139FBC-694E-490B-8EA7-35690FB0F445}"
+              contactInfo="Multicast;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Distributes every input row to every row in one or more outputs. For example, branch your data flow to make a copy of data so that some values can be masked before sharing with external partners."
+              name="Multicast">
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\Multicast.Inputs[Multicast Input 1]"
+                  name="Multicast Input 1">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\Multicast.Outputs[Multicast Output 1]"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 1"
+                  synchronousInputId="Package\Data Flow Task\Multicast.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Data Flow Task\Multicast.Outputs[Multicast Output 4]"
+                  dangling="true"
+                  deleteOutputOnPathDetached="true"
+                  name="Multicast Output 4"
+                  synchronousInputId="Package\Data Flow Task\Multicast.Inputs[Multicast Input 1]">
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\NewConsultantContracts"
+              componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="NewConsultantContracts"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[ContractSubConsultants]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT        Consultant.TaxId, Consultant.SeqNo, Consultant_1.TaxId AS RemitTaxID, Consultant_1.SeqNo AS RemitSeqNo, InvoicePayments.Func, InvoicePayments.ObjectCode, Contracts.JobNo, InvoicePayments.FAP, 
+                         InvoicePayments.Amount, ResponsibleDivision.Budget, Invoice.ConsultantInvoiceNo, Invoice.InvoiceNo, Invoice.InvoiceId, Invoice.ContractCode,
+						 /*InvoiceApproval.BatchPrintDate,*/RemitTo
+FROM            Invoice INNER JOIN
+                         InvoiceApproval ON Invoice.InvoiceId = InvoiceApproval.InvoiceId INNER JOIN
+                         InvoicePayments ON Invoice.InvoiceId = InvoicePayments.InvoiceId INNER JOIN
+                         Contracts ON Invoice.ContractCode = Contracts.ContractCode INNER JOIN
+                         Consultant ON Contracts.ConsultantId = Consultant.ConsultantId LEFT OUTER JOIN
+                         Consultant AS Consultant_1 ON Contracts.RemitTo = Consultant.ConsultantId INNER JOIN
+                         ResponsibleDivision ON Contracts.ResponsibleDivisionId = ResponsibleDivision.DivisionId
+/*WHERE        (InvoiceApproval.BatchPrintDate IS NULL) AND (InvoiceApproval.ApprovedDate IS NOT NULL)*/</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\NewConsultantContracts.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.NewConsultantContracts]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.NewConsultantContracts]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[TaxId]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[TaxId]"
+                      length="10"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[TaxId]"
+                      name="TaxId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[SeqNo]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[SeqNo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[SeqNo]"
+                      name="SeqNo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ContractCode]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[ContractCode]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ContractCode]"
+                      name="ContractCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Func]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[Func]"
+                      length="4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Func]"
+                      name="Func"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ObjectCode]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[ObjectCode]"
+                      length="3"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ObjectCode]"
+                      name="ObjectCode"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[JobNo]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[JobNo]"
+                      length="10"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[JobNo]"
+                      name="JobNo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[FAP]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[FAP]"
+                      length="11"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[FAP]"
+                      name="FAP"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Amount]"
+                      dataType="cy"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[Amount]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Amount]"
+                      name="Amount"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Budget]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[Budget]"
+                      length="3"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Budget]"
+                      name="Budget"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ConsultantInvoiceNo]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[ConsultantInvoiceNo]"
+                      length="50"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ConsultantInvoiceNo]"
+                      name="ConsultantInvoiceNo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceNo]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[InvoiceNo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceNo]"
+                      name="InvoiceNo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceId]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[InvoiceId]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceId]"
+                      name="InvoiceId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[RemitTaxID]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[RemitTaxID]"
+                      length="10"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[RemitTaxID]"
+                      name="RemitTaxID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[RemitSeqNo]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[RemitSeqNo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[RemitSeqNo]"
+                      name="RemitSeqNo"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[RemitTo]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[RemitTo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[RemitTo]"
+                      name="RemitTo"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[ContractCode]"
+                      dataType="i4"
+                      name="ContractCode" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[TaxId]"
+                      dataType="wstr"
+                      length="10"
+                      name="TaxId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[SeqNo]"
+                      dataType="i4"
+                      name="SeqNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[Func]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4"
+                      name="Func" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[ObjectCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="ObjectCode" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[JobNo]"
+                      dataType="wstr"
+                      length="10"
+                      name="JobNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[FAP]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      name="FAP" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[Amount]"
+                      dataType="cy"
+                      name="Amount" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[Budget]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="Budget" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[ConsultantInvoiceNo]"
+                      dataType="wstr"
+                      length="50"
+                      name="ConsultantInvoiceNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[InvoiceNo]"
+                      dataType="i4"
+                      name="InvoiceNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[InvoiceId]"
+                      dataType="i4"
+                      name="InvoiceId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[RemitTaxID]"
+                      dataType="wstr"
+                      length="10"
+                      name="RemitTaxID" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[RemitSeqNo]"
+                      dataType="i4"
+                      name="RemitSeqNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].ExternalColumns[RemitTo]"
+                      dataType="i4"
+                      name="RemitTo" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[TaxId]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[TaxId]"
+                      name="TaxId" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[SeqNo]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[SeqNo]"
+                      name="SeqNo" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ContractCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ContractCode]"
+                      name="ContractCode" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[Func]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[Func]"
+                      name="Func" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ObjectCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ObjectCode]"
+                      name="ObjectCode" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[JobNo]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[JobNo]"
+                      name="JobNo" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[FAP]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[FAP]"
+                      name="FAP" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[Amount]"
+                      dataType="cy"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[Amount]"
+                      name="Amount" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[Budget]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[Budget]"
+                      name="Budget" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ConsultantInvoiceNo]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[ConsultantInvoiceNo]"
+                      name="ConsultantInvoiceNo" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[InvoiceNo]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[InvoiceNo]"
+                      name="InvoiceNo" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[InvoiceId]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[InvoiceId]"
+                      name="InvoiceId" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[RemitTo]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[RemitTo]"
+                      name="RemitTo" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[RemitTaxID]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[RemitTaxID]"
+                      name="RemitTaxID" />
+                    <outputColumn
+                      refId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[RemitSeqNo]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Error Output].Columns[RemitSeqNo]"
+                      name="RemitSeqNo" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task\Output"
+              componentClassID="{8DA75FED-1B7C-407D-B2AD-2B24209CCCA4}"
+              contactInfo="Flat File Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Flat File Destination"
+              localeId="1033"
+              name="Output">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Specifies whether the data will overwrite or append to the destination file."
+                  name="Overwrite">true</property>
+                <property
+                  dataType="System.Null"
+                  description="Specifies the text to write to the destination file before any data is written."
+                  expressionType="Notify"
+                  name="Header" />
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task\Output.Connections[FlatFileConnection]"
+                  connectionManagerID="Package.ConnectionManagers[Invoice CSV]"
+                  connectionManagerRefId="Package.ConnectionManagers[Invoice CSV]"
+                  name="FlatFileConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input]"
+                  hasSideEffects="true"
+                  name="Flat File Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[FAP]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="11"
+                      cachedName="FAP"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[FAP]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[FAP]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[PURCH-CODE]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="PURCH-CODE"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[PURCH-CODE]"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[PURCH-CODE]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[EXP-CODE]"
+                      cachedDataType="i4"
+                      cachedName="EXP-CODE"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[EXP-CODE]"
+                      lineageId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output].Columns[EXP-CODE]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[GL-CODE]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="GL-CODE"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[GL-CODE]"
+                      lineageId="Package\Data Flow Task\GL-CODE Generator.Outputs[Output 0].Columns[GL-CODE]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[ContractCode]"
+                      cachedDataType="i4"
+                      cachedName="ContractCode"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[ContractCode]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ContractCode]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[TaxId]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="TaxId"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[TaxId]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[TaxId]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[SeqNo]"
+                      cachedDataType="i4"
+                      cachedName="SeqNo"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[SeqNo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[SeqNo]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[Func]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="4"
+                      cachedName="Func"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[Func]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Func]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[ObjectCode]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="3"
+                      cachedName="ObjectCode"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[ObjectCode]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ObjectCode]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[JobNo]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="JobNo"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[JobNo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[JobNo]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[Amount]"
+                      cachedDataType="cy"
+                      cachedName="Amount"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[Amount]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Amount]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[Budget]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="3"
+                      cachedName="Budget"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[Budget]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[Budget]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[ConsultantInvoiceNo]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="ConsultantInvoiceNo"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[ConsultantInvoiceNo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[ConsultantInvoiceNo]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[InvoiceNo]"
+                      cachedDataType="i4"
+                      cachedName="InvoiceNo"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[InvoiceNo]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceNo]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].Columns[InvoiceId]"
+                      cachedDataType="i4"
+                      cachedName="InvoiceId"
+                      externalMetadataColumnId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[InvoiceId]"
+                      lineageId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output].Columns[InvoiceId]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[PURCH-CODE]"
+                      dataType="wstr"
+                      length="2"
+                      name="PURCH-CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[EXP-CODE]"
+                      dataType="i4"
+                      name="EXP-CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[GL-CODE]"
+                      dataType="wstr"
+                      length="10"
+                      name="GL-CODE" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[FAP]"
+                      codePage="1252"
+                      dataType="str"
+                      length="11"
+                      name="FAP" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[ContractCode]"
+                      dataType="i4"
+                      name="ContractCode" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[TaxId]"
+                      dataType="wstr"
+                      length="10"
+                      name="TaxId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[SeqNo]"
+                      dataType="i4"
+                      name="SeqNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[Func]"
+                      codePage="1252"
+                      dataType="str"
+                      length="4"
+                      name="Func" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[ObjectCode]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="ObjectCode" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[JobNo]"
+                      dataType="wstr"
+                      length="10"
+                      name="JobNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[Amount]"
+                      dataType="cy"
+                      name="Amount" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[Budget]"
+                      codePage="1252"
+                      dataType="str"
+                      length="3"
+                      name="Budget" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[ConsultantInvoiceNo]"
+                      dataType="wstr"
+                      length="50"
+                      name="ConsultantInvoiceNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[InvoiceNo]"
+                      dataType="i4"
+                      name="InvoiceNo" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input].ExternalColumns[InvoiceId]"
+                      dataType="i4"
+                      name="InvoiceId" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Data Flow Task.Paths[Derived Column Output]"
+              endId="Package\Data Flow Task\Output.Inputs[Flat File Destination Input]"
+              name="Derived Column Output"
+              startId="Package\Data Flow Task\Column Orderer.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Data Flow Task.Paths[Derived Column Output1]"
+              endId="Package\Data Flow Task\GL-CODE Generator.Inputs[Input 0]"
+              name="Derived Column Output"
+              startId="Package\Data Flow Task\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Data Flow Task.Paths[Multicast Output 1]"
+              endId="Package\Data Flow Task\Column Orderer.Inputs[Derived Column Input]"
+              name="Multicast Output 1"
+              startId="Package\Data Flow Task\Multicast.Outputs[Multicast Output 1]" />
+            <path
+              refId="Package\Data Flow Task.Paths[OLE DB Source Output]"
+              endId="Package\Data Flow Task\Derived Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task\NewConsultantContracts.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Data Flow Task.Paths[Output 0]"
+              endId="Package\Data Flow Task\Multicast.Inputs[Multicast Input 1]"
+              name="Output 0"
+              startId="Package\Data Flow Task\GL-CODE Generator.Outputs[Output 0]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql11">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Data Flow Task"
+          TopLeft="394.5,138.5" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Data Flow Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Data Flow Task\Column Orderer"
+          TopLeft="143,372" />
+        <NodeLayout
+          Size="194,42"
+          Id="Package\Data Flow Task\NewConsultantContracts"
+          TopLeft="297.5,7.5" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\Data Flow Task\GL-CODE Generator"
+          TopLeft="309.5,169.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Data Flow Task\Derived Column"
+          TopLeft="320,103" />
+        <NodeLayout
+          Size="120,42"
+          Id="Package\Data Flow Task\Multicast"
+          TopLeft="333,271" />
+        <NodeLayout
+          Size="111,42"
+          Id="Package\Data Flow Task\Output"
+          TopLeft="158,477" />
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Output 0]"
+          TopLeft="394.5,211.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59.5"
+              Start="0,0"
+              End="0,52">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[OLE DB Source Output]"
+          TopLeft="395.75,49.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,53.5"
+              Start="0,0"
+              End="0,46">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Multicast Output 1]"
+          TopLeft="374.333333333333,313">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-154.333333333333,59"
+              Start="0,0"
+              End="-154.333333333333,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.0657894736842" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.0657894736842"
+                    Point2="0,24.0657894736842"
+                    Point3="-4,24.0657894736842" />
+                  <mssgle:LineSegment
+                    End="-150.333333333333,24.0657894736842" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-150.333333333333,24.0657894736842"
+                    Point2="-154.333333333333,24.0657894736842"
+                    Point3="-154.333333333333,28.0657894736842" />
+                  <mssgle:LineSegment
+                    End="-154.333333333333,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Derived Column Output1]"
+          TopLeft="396.5,145">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,24.5"
+              Start="0,0"
+              End="0,17">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Data Flow Task.Paths[Derived Column Output]"
+          TopLeft="216.75,414">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63"
+              Start="0,0"
+              End="0,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Data Flow Task\NewConsultantContracts">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

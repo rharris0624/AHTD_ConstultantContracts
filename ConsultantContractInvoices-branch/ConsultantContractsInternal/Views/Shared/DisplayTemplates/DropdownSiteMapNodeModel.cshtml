@@ -1,0 +1,26 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapNodeModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+
+@if (Model.IsClickable)
+{
+	if (Model.Children.Any() && ViewData.ContainsKey("IsTopLevel") && ViewBag.IsTopLevel)
+	{
+	<a href="@Model.Url">@Model.Title ▾</a>
+	}
+	else
+	{
+	<a href="@Model.Url">@Model.Title</a>
+	}
+}
+else
+{
+	if (Model.Children.Any() && ViewData.ContainsKey("IsTopLevel") && ViewBag.IsTopLevel)
+	{
+	<span>@Model.Title ▾</span>
+	}
+	else
+	{
+	<span>@Model.Title</span>
+	}
+}

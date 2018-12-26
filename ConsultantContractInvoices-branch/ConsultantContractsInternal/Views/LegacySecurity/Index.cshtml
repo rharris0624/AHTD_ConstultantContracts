@@ -1,0 +1,293 @@
+﻿@model ConsultantContractsInternal.ViewModels.UserRoleBudgetVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    @using ConsultantContractsInternal.Helpers
+
+    <script type="text/javascript">
+        var applicationLoaded = false;
+        var userDict = [];
+        
+        var loadNameArray = function () {
+            userDict = @JavaScriptConvert.SerializeObject(Model.UserList);
+        };
+
+        var getUserName = function (userId) {
+            for (var x = 0; x < userDict.length; x++) {
+                if (userId === userDict[x].id)
+                    return userDict[x].name;
+            }
+            return null;
+        };
+
+        var submitError = function (jqXHR, textStatus, errorThrown) {
+            //alert('bad things happened');
+            //alert("Submit Error");
+            $('#budgetData').html(jqXHR.responseText);
+            //alert(jqXHR.responseText);
+        };
+
+        var selectedUserId = function () {
+            return $("#SelectedUserId").val();
+        };
+
+        var submitSuccess = function (data, textStatus, jqXHR) {
+            if (data.Status === 'OK') {
+                //  window.location = '@Url.Action("Details")/{0}'.format(data.id);
+                    window.location.href = '@Url.Action("Index", "Home")';
+            } 
+            else if (data.Status === "ERROR") {
+                    //alert('something went wrong');
+                    throw new Error("Submit Error");
+                 }
+        }
+
+        var roleViewModel = function () {
+            var someVariable = "Hello";
+        };
+
+        var populateRoleDropDownList = function (userId) {
+            $.ajax({
+                url: '@Url.Action("GetUsersInRoles")?userId=' + userId,
+                    cache: false,
+                    type: "GET",
+                    success: function (data) {
+                        var markup = "<option value='0'> Select a role</option>";
+                        for (var x = 0; x < data.length; x++) {
+                            markup += "<option value=" + data[x].Text + ">" + data[x].Value + "</option>";
+                        }
+                        $("#ddlRole").html(markup).show();
+                    },
+                    error: function (response) {
+                        //alert("error : " + response);
+                    }
+                });
+        };
+
+        var setForCurrentUserAndRole = function (userId, roleId) {
+            var elemUser = $("#currentUserId");
+            var userIdVal = userId != null ? userId : $("#currentUserId").val();
+            var roleIdVal = roleId != null ? roleId : $("#currentRoleId").val();
+            if (userIdVal.length > 3 && roleIdVal.length > 3) {  // 3 value is kind of arbitrary
+                $("#contextUserId").text(userIdVal);
+                $("#contextRoleId").text(roleIdVal);
+                var userName = getUserName(userIdVal);
+                $("#contextUserName").text(userName);
+                $("#currentUserRoleContext").show();
+                elemUser.val(userIdVal);
+                populateRoleDropDownList(userIdVal);
+                getAssignedBudgets(userIdVal, roleIdVal);
+                $('#currentRoleId').val(roleIdVal);
+                $('#ddlRole').val(roleIdVal);
+            }
+            else {
+                $("#currentUserRoleContext").hide();
+            }
+        }
+
+        $(
+            $("#UserId").change(function (jsReturnArgs) {
+                $("#ddlRole").empty();
+                $("#budgetData").empty();
+                var userId = $("#SelectedUserId").val();
+                if (userId.length > 3) {
+                    populateRoleDropDownList(userId);
+                }
+            })
+        )
+        var getAssignedBudgets = function (userId, roleId) {
+            if (userId != '0' && roleId != '0') {
+                var href = '@(@Url.Action("Create","LegacySecurity"))?userId={0}&roleId={1}'.format(userId, roleId);
+                $("#Create").prop("href", href);
+            }
+            $("#budgetData").empty();
+            $.ajax({
+                url: '@Url.Action("GetAssignedBudgets")',
+                    cache: false,
+                    data: { userId: userId, roleId: roleId },
+                    type: 'POST',
+                    success: function (jsReturnArgs) {
+                        if (jsReturnArgs.Status === 300) { //300 is an arbitrary value I just made up right now
+                            showPopup("You do not have access to that");
+                        }
+                        $('#budgetData').html(jsReturnArgs.ViewString);
+                        $('#Create').show();
+                    },
+                    error: function (response) {
+                        //      alert("error : " + response);
+                    }
+                });
+        };
+        $(
+            $("#ddlRole").change(function (jsReturnArgs) {
+                var roleId = $("#ddlRole option:selected").val();
+                var userId = $("#SelectedUserId").val();
+                getAssignedBudgets(userId, roleId);
+                if (userId.length > 3 && roleId.length > 3) {
+                    $("#currentUserId").val(userId);
+                    $("#currentRoleId").val(roleId);
+                    $("#contextUserId").text(userId);
+                    $("#contextRoleId").text(roleId);
+                    var userName = getUserName(userId);
+                    $("#contextUserName").text(userName);
+                    $("#currentUserRoleContext").show();
+                }
+            })
+        )
+
+        $("#cmdCreate").click(function (jsReturnArgs) {
+            var roleId = $("#ddlRole option:selected").val();
+            var userId = $("#SelectedUserId").val();
+            $.ajax({
+                url: '@Url.Action("Create")?userId=' + userId + '&roleId=' + roleId,
+                cache: false,
+                success: function (jsReturnArgs) {
+                    if (jsReturnArgs.Status === 300)
+                        showPopup("You do not have access to that");
+                },
+                error: function (response) {
+                    alert("error : " + response);
+                }
+            });
+        });
+        
+        $(document).on("click", "#toggleCheckBox", function ($jsReturnArgs) {
+            var allCB = document.querySelectorAll("input[name^='Mark']");
+            for (var i = 0; i < allCB.length; i++) {
+                if ($jsReturnArgs.target.checked)
+                    allCB[i].checked = true;
+                else
+                    allCB[i].checked = false;
+            }
+        });
+
+        $(document).on("click", '#deleteSelectedBudgets', function (jsReturnArgs) {
+            var budgetsToDelete = new Array();
+            var applicationId = '@Model.ApplicationId';
+            var userId = '@Model.UserId';
+            var roleId = '@Model.RoleId';
+            var antiForgeryTokenVal = $("input[name ='__RequestVerificationToken']").val();
+            var headers = {};
+            headers['__RequestVerificationToken'] = antiForgeryTokenVal;
+
+            $("#assignedBudgetsTable input[type='checkbox']:checked:not('#toggleCheckBox')").closest("tr").each(function(){
+                var appId = $(this).find("td.ApplicationId").text().replace('\n','').trim();
+                var userId = $(this).find("td.UserId").text().replace('\n','').trim();
+                var roleId = $(this).find("td.RoleId").text().replace('\n','').trim();
+                var sequence = $(this).find("td.Sequence").text().replace('\n','').trim();
+                var resourceId = $(this).find("td.ResourceId").text().replace('\n','').trim();
+                budgetsToDelete.push({
+                        ApplicationId: appId,
+                        UserId: userId,
+                        RoleId: roleId,
+                        Sequence: sequence,
+                        ResourceId: resourceId
+                });
+            });
+            if(budgetsToDelete.length > 0){
+                var legacySecurity = { ApplicationId: applicationId, UserId: userId, RoleId: roleId, LegacySecurities: budgetsToDelete };
+                
+                $.ajax({
+                    url: '@Url.Action("DeleteRange")',
+                    type: 'POST',
+                    headers: headers,
+                    cache: false,
+                    data: JSON.stringify({  userRoleBudget: legacySecurity }),
+                    contentType: "application/json; charset=utf-8",
+                    datatype: 'json',
+                    error: submitError,
+                    encode: true,
+                    success: function (data) {
+                        setForCurrentUserAndRole(data.userId, data.roleId);
+                        if (data.Status === 300)
+                            showPopup(data.msg);
+                    }
+                });
+            }
+        });
+       
+        $(document).ready(function () {
+            loadNameArray();
+            setForCurrentUserAndRole();
+        });
+
+        $( function(){
+            $('#UserId').autocomplete({
+                delay: 0,
+                source: '@Url.Action("GetUserList","User")',
+                minLength: 2,
+                select: function (event, ui) {
+                    if (ui.item.data.UserId != '0') {
+                        $('#SelectedUserId').val(ui.item.data.UserId);
+                        populateRoleDropDownList(ui.item.data.UserId);
+                    }
+                }
+            }).keypress(function (e) {
+                if (e.which === 13)
+                    window.location = '@Url.Action("Index")?q=' + this.value;
+            });
+        });
+    </script>
+}
+<h2>Index</h2>
+@using (Html.BeginForm("Create","LegacySecurity",FormMethod.Post,new {id = "submitData"}))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+<fieldset>
+    <legend class="display-title">Assigned Budgets</legend>
+    @Html.HiddenFor(model => model.UserId,new {id = "currentUserId"})
+    @Html.HiddenFor(model => model.RoleId, new {id = "currentRoleId"})
+    @Html.HiddenFor(model => model.UserName, new { id = "currentUserName"})
+    <br />
+    <div id="currentUserRoleContext">
+        @Html.ActionLink("Create","Create", null, new {id="Create"})
+        <br />
+        <table>
+            <tr>
+                <td class="leftJustify display-label">UserId: </td>
+                <td>
+                    <label id="contextUserId" class="display-field"></label>
+                </td>
+            </tr>
+            <tr>
+                <td class="leftJustify display-label">Role: </td>
+                <td>
+                    <label id="contextRoleId" class="display-field"></label>
+                </td>
+            </tr>
+            <tr>
+                <td class="leftJustify display-label">User: </td>
+                <td>
+                    <label id="contextUserName" class="display-field"></label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="editor-field">
+       @* @Html.DropDownListFor(x => x.UserId, new SelectList(Model.UserList, "ID", "Name"),"Select a user")
+        @Html.ValidationMessageFor(model => model.LegacySecurities)*@
+        <label for="UserId">User: </label>
+        <input type="text" id="UserId" class="searchBar" />
+        <input type="hidden" id="SelectedUserId" />
+    </div>
+    <div class="editor-field" id="roleData">
+        <select id="ddlRole" name="ddlRole" style="width: 200px">
+
+        </select> 
+        <br /> <br />
+    </div>
+    <div class="datagrid" id="budgetData">
+    </div>
+<div>
+    <div>@Html.ActionLink("Home", "Index", "Home", new {}, new { @class = "hyperlink" })</div>
+    <a href="javascript:void(0);" onclick="history.go(-1);") class="hyperlink">Back</a>
+</div>
+</fieldset>
+}
+

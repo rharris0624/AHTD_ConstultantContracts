@@ -1,0 +1,1891 @@
+﻿@using System.Web.Optimization
+
+@{
+    ViewBag.Title = "New Contract";
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+}
+
+<link href="~/Styles/Common.css" rel="stylesheet" />
+<link href="~/Content/themes/metro/jquery-ui.css" rel="stylesheet" />
+
+<style>
+    .titlediv div {
+        color: black;
+    }
+
+    .vert_space {
+        padding-top: 15px;
+    }
+    #content {
+        /*min-height: 1100px;*/
+    }
+
+    .inlineTableTitle * {
+        display: inline-block;
+    }
+
+    .inlineTableTitle > a {
+        font-size: .7em;
+    }
+
+    .TableFormat label {
+        padding-right: 1em;
+        display: table-cell;
+        text-align: right;
+
+    }
+
+    .TableFormat > div > div {
+        display: table-cell;
+        padding: 1px;
+    }
+
+    .TableFormat > div {
+        display: table-row;
+    }
+
+    .generalData2 .cell {
+        padding-right: 1em;
+        display: table-cell;
+        text-align: right;
+    }
+
+    .generalData2 .row {
+        display: table-row;
+    }
+
+    #subConList {
+        list-style: none;
+    }
+
+    textarea {
+        height: 5.2em;
+        width: 70em;
+    }
+
+    .validationMessageWidth {
+        width: 500px;
+    }
+
+    .highlighted {
+        color: #a52a2a;
+        font-weight: bold;
+    }
+
+    .tab-nav {
+        border: 1px solid #808080;
+        border-radius: 5px;
+        background-color: #dedbdb;
+        color: #dedbdb;
+        font-weight: normal;
+        text-decoration: none;
+        margin: 5px;
+        padding: 10px 10px 10px 10px;
+        display: inline-block;
+    }
+
+    .ErrorTab {
+        color: red;
+        font-weight: bold;
+    }
+
+    .allotmentTableRightAlignDataCol {
+        text-align: right;
+        padding-left: 2em;
+    }
+
+    .allotmentTableRightAlignHeader {
+        text-align: right;
+        padding-left: 2em;
+        font-weight: bold;
+    }
+
+    .allotmentTableLeftAlignDataCol {
+        text-align: left;
+        padding-left: 2em;
+    }
+
+    .allotmentTableLeftAlignHeader {
+        text-align: left;
+        padding-left: 2em;
+        font-weight: bold;
+    }
+
+    .allotmentTableCenterAlignDataCol {
+        text-align: center;
+        padding-left: 2em;
+    }
+
+    .allotmentTableCenterAlignHeader {
+        text-align: center;
+        padding-left: 2em;
+        font-weight: bold;
+    }
+</style>
+
+@section scripts
+{
+    @Scripts.Render("~/scripts/vms")
+
+    <script type="text/javascript">
+
+        var accumContent = new String("");
+        
+        ko.validation.init({ insertMessages: false });
+        var filterflag;
+        filterflag = '0';
+        var flagnumber;
+        flagnumber = 0;
+
+        var ContractData = function () {
+            var self = this;
+            self.JobNo = ko.observable().extend({ required: { params: true } });
+            self.Consultant = ko.observable().extend({ required: { params: true } });
+            self.ConsultantId = ko.computed(function () {
+                if (self.Consultant()) {
+                    return self.Consultant().ConId;
+                } else return undefined;
+            });
+            filterflag = self.ConsultantId();
+            self.HasConsultant = ko.computed(function () {
+                if (self.Consultant())
+                    return true;
+                else return false;
+            });
+            self.RemitToCon = ko.observable().extend({ required: { params: true } });
+            self.RemitTo = ko.computed(function () {
+                if (self.RemitToCon()) {
+                    return self.RemitToCon().ConId;
+                } else return undefined;
+            });
+            self.ContractType = ko.observable('3').extend({ required: { params: true } }); // 3 is Cost Plus
+            self.ContractStatus = ko.observable('A').extend({ required: { params: true } });
+            self.AgreementDate = ko.observable().extend({
+                date: true,
+                required: true,
+                properDateFormat: true,
+                properDateRange: true,
+            });
+
+            self.AgreementDate.subscribe(function (newValue) {
+                $('#NoticeProceedDate').datepicker('option', 'minDate', new Date(newValue));
+            });
+            self.NoticeProceedDate = ko.observable().extend({
+                date: true,
+                required: true,
+                properDateFormat: true,
+                properDateRange: true,
+                greaterThanDate: {
+                    params: self.AgreementDate,
+                    message: 'Notice Proceed Date must be after Agreement Date'
+                }
+            });
+            self.NoticeProceedDate.subscribe(function (newValue) {
+                $('#ScheduledCompletionDate').datepicker('option', 'minDate', new Date(newValue));
+            });
+
+            self.AgreementType = ko.observable().extend({ required: { params: true } });
+            self.TaskOrderNo = ko.observable().extend({
+                required: {
+                    onlyIf: function () {
+                        return self.AgreementType() === 3;
+                    },
+                    message: "Task Order required on Task Order Agreement"
+                },
+                maxLength: 4,
+                pattern: /\w?\d{3}/
+            });
+            self.ResponsibleDivision = ko.observable().extend({ required: { params: true } });
+            self.ContractCeiling = ko.observable(); //validations called a bit further down
+            self.T1SvcsCeiling = ko.observable().extend({ number: true });
+            self.T1FixedFeeMax = ko.observable().extend({
+                number: true,
+                lessThan: {
+                    params: self.T1SvcsCeiling,
+                    message: "Fixed Fee Max must be less than Services Ceiling"
+                }
+            });
+            self.T1FixedFeeMax = ko.observable(0);
+            self.T2SvcsCeiling = ko.observable().extend({ number: true });
+            self.T2FixedFeeMax = ko.observable().extend({
+                number: true,
+                lessThan: {
+                    params: self.T2SvcsCeiling,
+                    message: "Fixed Fee Max must be less than Services Ceiling"
+                }
+            });
+            self.T2FixedFeeMax = ko.observable(0);
+            self.HomeOfficeOverheadRateMax = ko.observable(); // validations called further down
+            self.FieldServiceOverheadRateMax = ko.observable(); // validations called further down
+            self.FCCM = ko.observable().extend({ number: true, max: 999 });
+            self.Multiplier = ko.observable(); //validations called further down
+            self.ScheduledCompletionDate = ko.observable().extend({
+                date: true,
+                required: true,
+                properDateFormat: true,
+                properDateRange: true,
+                greaterThanDate: {
+                    params: self.NoticeProceedDate,
+                    message: 'Scheduled Completion Date must be after Notice Proceed Date'
+                }
+            });
+
+            self.WorkTypes = ko.observableArray();
+            self.SalaryRates = ko.observableArray();
+
+            self.ServiceRates = ko.observableArray();
+
+            self.T1Allotments = ko.observableArray();
+            self.T2Allotments = ko.observableArray();
+            self.SubConsultants = ko.observableArray();
+            self.Remarks = ko.observable();
+
+            //added a few validators later to delay first evaluation
+
+            self.TitleSum = ko.computed(function () { // called down here to let T1 & T2 SvcCeilings initilize
+
+                var t1 = Number(self.T1SvcsCeiling());
+                var t2 = Number(self.T2SvcsCeiling());
+
+                if (!isNaN(t1) && !isNaN(t2)) {
+                    return t1 + t2 + "";
+                } else if ((!isNaN(t1)) && (isNaN(t2))) {
+                    return self.T1SvcsCeiling() + "";
+                } else if (isNaN(t1) && (!isNaN(t2))) {
+                    return self.T2SvcsCeiling() + "";
+                } else return "0";
+            });
+
+            self.ContractCeiling.extend({ //called down here because TitleSum
+                number: true,
+                required: { params: true },
+                equalNumbers: {
+                    params: self.TitleSum,
+                    onlyIf: function () {
+                        return ((self.T1SvcsCeiling() !== '' && self.T1SvcsCeiling() !== undefined) || (self.T2SvcsCeiling() !== '' && self.T2SvcsCeiling() !== undefined));
+                    },
+                    message: "Title Ceilings must add up to Contract Ceiling"
+                }
+            });
+
+            self.HomeOfficeOverheadRateMax.extend({
+                number: true,
+                max: 999,
+                required: {
+                    onlyIf:
+                      function () {
+                          return self.ContractType === 3 && (self.FieldServiceOverheadRateMax() === '' || self.FieldServiceOverheadRateMax() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+                      },
+                    message: 'Home Office Overhead, Field Service Overhead, or Multiplier required'
+                }
+            });
+
+            self.FieldServiceOverheadRateMax.extend({
+                number: true,
+                max: 999,
+                required: {
+                    onlyIf:
+                     function () {
+                         return self.ContractType === 3 && (self.HomeOfficeOverheadRateMax() === '' || self.HomeOfficeOverheadRateMax() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+                     },
+                    message: 'Home Office Overhead, Field Service Overhead, or Multiplier required'
+                }
+            });
+            self.Multiplier.extend({
+                number: true,
+                max: 99,
+                required: {
+                    onlyIf:
+                       function () {
+                           return self.ContractType === 3 && (self.HomeOfficeOverheadRateMax() === '' || self.HomeOfficeOverheadRateMax() === undefined) && (self.FieldServiceOverheadRateMax() === '' || self.FieldServiceOverheadRateMax() === undefined);
+                       },
+                    message: 'Home Office Overhead, Field Service Overhead, or Multiplier required'
+                }
+            });
+
+            self.SubConT1CeilingTotal = ko.computed(function () {
+                var subConTotals = self.SubConsultants().map(function (c) {
+                    return Number(c.T1Services());
+                });
+                var grandTotal = 0;
+                subConTotals.forEach(function (e, i, a) {
+                    if (!isNaN(e)) {
+                        grandTotal += e;
+                    }
+                });
+                return grandTotal;
+            });
+
+            self.SubConT2CeilingTotal = ko.computed(function () {
+                var subConTotals = self.SubConsultants().map(function (c) {
+                    return Number(c.T2Services());
+                });
+                var grandTotal = 0;
+                subConTotals.forEach(function (e, i, a) {
+                    if (!isNaN(e)) {
+                        grandTotal += e;
+                    }
+                });
+
+                return grandTotal;
+            });
+
+            //Buttons and default value stuff
+
+            self.ConsultantHOOverhead = ko.observable();
+            self.ConsultantHOOverheadExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().HOOverhead) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantHOOverhead = function (newValue) {
+                if (newValue) {
+                    self.HomeOfficeOverheadRateMax(self.Consultant().HOOverhead);
+                }
+            };
+            self.ConsultantFCCM = ko.observable();
+            self.ConsultantFCCMExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().FCCM) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantFCCM = function (newValue) {
+                if (newValue) {
+                    self.FCCM(self.Consultant().FCCM);
+                }
+            };
+            self.ConsultantFSOverhead = ko.observable();
+            self.ConsultantFSOverheadExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().FSOverhead) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantFSOverhead = function (newValue) {
+                if (newValue) {
+                    self.FieldServiceOverheadRateMax(self.Consultant().FSOverhead);
+                }
+            };
+            self.ConsultantMultiplier = ko.observable();
+            self.ConsultantMultiplierExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().Multiplier) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantMultiplier = function (newValue) {
+                if (newValue) {
+                    self.Multiplier(self.Consultant().Multiplier);
+                }
+            };
+
+            self.errors = ko.validation.group(this, { deep: true, observable: false });
+            self.isValid = function () {
+                return self.errors().length < 1;
+            };
+        };
+
+        var WorkType = function (data) {
+            var self = this;
+            self.WorkTypeId = data.WorkTypeId;
+            self.WorkTypeName = data.WorkTypeName;
+        };
+
+        var SalaryRate = function () {
+            var self = this;
+            self.JobTitle = ko.observable().extend({ required: { params: true } });
+            self.RateMin = ko.observable().extend({
+                number: true,
+                min: 0,
+                required: { params: true }
+            });
+            self.RateMax = ko.observable().extend({
+                number: true,
+                greaterThan: { params: self.RateMin, message: 'RateMax must be larger than RateMin' },
+                required: { params: true }
+            });
+        };
+
+        var ServiceRate = function () {
+            var self = this;
+            self.ServiceName = ko.observable().extend({ required: { params: true } });
+            self.RateMin = ko.observable().extend({
+                number: true,
+                min: 0,
+                required: { params: true }
+            });
+            self.RateMax = ko.observable().extend({
+                number: true,
+                greaterThan: { params: self.RateMin, message: 'RateMax must be larger than RateMin' },
+                required: { params: true }
+            });
+        };
+
+        var Allotment = function (data) {
+            var self = this;
+            self.Func = ko.observable(data ? data.FunctionNumber : '');
+            self.FAP = ko.observable(data ? data.FederalAidProjectNumber : '');
+            self.FundingPriority = ko.observable('').extend({ number: true });
+            self.FedPct = ko.observable(data ? (data.FederalPercent * 100).toFixed(2) : '');
+            self.StatePct = ko.observable(data ? (data.StatePercent * 100).toFixed(2) : '');
+            self.StateAidPct = ko.observable(data ? (data.StateAidPercent * 100).toFixed(2) : '');
+            self.OtherPct = ko.observable(data ? (data.OtherPercent * 100).toFixed(2) : '');
+            self.AllottedAmount = ko.observable(data ? data.LastAmount : '').extend({ number: true, required: { params: true }, min: 0 });
+        };
+
+        var SubCon = function (data) {
+            var self = this;
+
+            self.TaxID = ko.observable(data ? data.TaxId : '').extend({
+                required: true
+            });
+            self.Name = ko.observable(data ? data.Name : '').extend({
+                required: true
+            });
+            self.Consultant = ko.observable(data ? data : '').extend({
+                required: true
+            });
+            self.ConsultantId = ko.computed(function () {
+                if (self.Consultant()) {
+                    return self.Consultant().ConId;
+                } else return undefined;
+            });
+            filterflag = self.ConsultantId();
+            self.HasConsultant = ko.computed(function () {
+                if (self.Consultant())
+                    return true;
+                else return false;
+            });
+            self.T1Services = ko.observable().extend({ number: true });
+            self.T1FixedFee = ko.observable().extend({ number: true });
+            self.HomeOfficeOverhead = ko.observable();
+            self.FCCM = ko.observable().extend({ number: true, max: 999 });
+            self.T2Services = ko.observable().extend({ number: true });
+            self.T2FixedFee = ko.observable().extend({ number: true });
+            self.FieldServiceOverhead = ko.observable();
+            self.Multiplier = ko.observable();
+            self.ContactPhoneNumber = ko.observable();
+            self.BusinessPhoneNumber = ko.observable();
+            self.TitleSum = ko.computed(function () { // called down here to let T1 & T2 SvcCeilings initilize
+
+                var t1 = Number(self.T1Services());
+                var t2 = Number(self.T2Services());
+
+                if (!isNaN(t1) && !isNaN(t2)) {
+                    return t1 + t2 + "";
+                } else if ((!isNaN(t1)) && (isNaN(t2))) {
+                    return self.T1Services() + "";
+                } else if (isNaN(t1) && (!isNaN(t2))) {
+                    return self.T2Services() + "";
+                } else return "0";
+            });
+            self.ContractCeiling = ko.observable().extend({
+                number: true,
+                required: { params: true },
+                equalNumbers: {
+                    params: self.TitleSum,
+                    onlyIf: function () {
+                        return ((self.T1Services() !== '' && self.T1Services() !== undefined) || (self.T2Services() !== '' && self.T2Services() !== undefined));
+                    },
+                    message: "Title Ceilings must add up to Contract Ceiling"
+                },
+                max: {
+                    params: function () {
+                        return vm.contractData.ContractCeiling();
+                    }
+                }
+            });
+
+            self.SalaryRates = ko.observableArray();
+            self.ServiceRates = ko.observableArray();
+
+            //called down here to let things initialize
+            self.HomeOfficeOverhead.extend({
+                number: true,
+                max: 999,
+                required: {
+                    onlyIf:
+                    function () { // 3 is ContractType ID ~ Cost Plus
+                        return vm.contractData.ContractType() === 3 && (self.FieldServiceOverhead() === '' || self.FieldServiceOverhead() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+                    },
+                    message: 'Home Office Overhead, Field Service Overhead, or Multiplier required'
+                }
+            });
+            self.FieldServiceOverhead.extend({
+                number: true,
+                max: 999,
+                required: {
+                    onlyIf:
+                        function () {
+                            return vm.contractData.ContractType() === 3 && (self.HomeOfficeOverhead() === '' || self.HomeOfficeOverhead() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+                        },
+                    message: 'Home Office Overhead, Field Service Overhead, or Multiplier required'
+                }
+            });
+            self.Multiplier.extend({
+                number: true,
+                max: 999,
+                required: {
+                    onlyIf:
+                    function () {
+                        return vm.contractData.ContractType() === 3 && (self.FieldServiceOverhead() === '' || self.FieldServiceOverhead() === undefined) && (self.HomeOfficeOverhead() === '' || self.HomeOfficeOverhead() === undefined);
+                    },
+                    message: 'Home Office Overhead, Field Service Overhead, or Multiplier required'
+                }
+            });
+
+            //Checkboxes and default value stuff
+            self.ConsultantHOOverhead = ko.observable();
+            self.ConsultantHOOverheadExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().HOOverhead) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantHOOverhead = function (newValue) {
+                if (newValue) {
+                    self.HomeOfficeOverhead(self.Consultant().HOOverhead);
+                }
+            };
+            self.ConsultantFCCM = ko.observable();
+            self.ConsultantFCCMExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().FCCM) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantFCCM = function (newValue) {
+                if (newValue) {
+                    self.FCCM(self.Consultant().FCCM);
+                }
+            };
+            self.ConsultantFSOverhead = ko.observable();
+            self.ConsultantFSOverheadExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().FSOverhead) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantFSOverhead = function (newValue) {
+                if (newValue) {
+                    self.FieldServiceOverhead(self.Consultant().FSOverhead);
+                }
+            };
+            self.ConsultantMultiplier = ko.observable();
+            self.ConsultantMultiplierExists = ko.computed(
+                           function () {
+                               if (self.HasConsultant() && self.Consultant().Multiplier) {
+                                   return true;
+                               }
+                               return false;
+                           }
+                     );
+            self.UseConsultantMultiplier = function (newValue) {
+                if (newValue) {
+                    self.Multiplier(self.Consultant().Multiplier);
+                }
+            };
+
+            self.addSalaryRate = function () {
+                self.SalaryRates.push(ko.validatedObservable(new SalaryRate()));
+            };
+
+            self.addServiceRate = function () {
+                self.ServiceRates.push(ko.validatedObservable(new ServiceRate()));
+            };
+
+            self.removeSalary = function (line) {
+                self.SalaryRates.remove(function (i) {
+                    return i().JobTitle === line.JobTitle;
+                });
+            };
+            self.removeService = function (line) {
+                self.ServiceRates.remove(function (i) {
+                    return i().ServiceName === line.ServiceName;
+                });
+            };
+
+        }
+
+        var NewContractVM = function () {
+            var self = this;
+            self.contractData = new ContractData();
+            self.selectedSubCon = ko.observable();
+            self.newCon = ko.observable(null);
+            self.newSubCon = function () {
+                self.newCon(new Consultant());
+                self.newCon().errors = ko.validation.group(self.newCon, { deep: true, observable: false });
+                self.newCon().isValid = function () {
+                    return self.newCon().errors().length < 1;
+                };
+                $('#quickAddConsultantDialog').dialog('open');
+            };
+
+            var submitError = function (jqXHR, textStatus, errorThrown) {
+                //alert('bad things happened');
+                $.ajax({
+                    url: '@Url.Action("ErrorMessage","ErrorPage")',
+                    data: {status: textStatus, message: errorThrown.message},
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'Get'
+                });
+            };
+            var submitSuccess = function (data, textStatus, jqXHR) {
+                if (data.Status === 'OK') {
+                    window.location = '@Url.Action("Details")/' + data.newContractCode;
+                } else if (data.Status === "ERROR") {
+                    //alert('something went wrong');
+                    $.ajax({
+                        url: '@Url.Action("ErrorMessage","Not Found")',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        type: 'Get'
+                    });
+                }
+            }
+
+            //check if an allotment has funding priority
+            function allotmentPriority(e, i, a) {
+                var n = Number(e.FundingPriority());
+
+                if (Math.floor(n) === n && n < 100 && n > 0) {
+                    return true;
+                }
+                return false;
+            }
+
+            self.generalErrorTab = ko.observable('');
+            self.salaryratesErrorTab = ko.observable('');
+            self.servicesratesErrorTab = ko.observable('');
+            self.titleIErrorTab = ko.observable('');
+            self.titleIIErrorTab = ko.observable('');
+            self.subconsultantErrorTab = ko.observable('');
+
+            self.SalaryOrServicesVisibleDiv = ko.observable(false);
+            self.TitleIVisibleDiv = ko.observable(false);
+            self.TitleIIVisibleDiv = ko.observable(false);
+            self.subconsultantdiv = ko.observable('');
+
+            function generalTabValidation() {
+                if (!self.contractData.JobNo.isValid()) { return false; }
+                if (!self.contractData.Consultant.isValid()) { return false; }
+                if (!self.contractData.ContractType.isValid()) { return false; }
+                if (!self.contractData.ContractStatus.isValid()) { return false; }
+                if (!self.contractData.AgreementDate.isValid()) { return false; }
+                if (!self.contractData.NoticeProceedDate.isValid()) { return false; }
+                if (!self.contractData.AgreementType.isValid()) { return false; }
+                if (!self.contractData.TaskOrderNo.isValid()) { return false; }
+                if (!self.contractData.ResponsibleDivision.isValid()) { return false; }
+                if (!self.contractData.ContractCeiling.isValid()) { return false; }
+                if (!self.contractData.T1SvcsCeiling.isValid()) { return false; }
+                //if (self.contractData.T1FixedFeeMax > 0 && !self.contractData.T1FixedFeeMax.isValid()) { return false; }
+                if (!self.contractData.T2SvcsCeiling.isValid()) { return false; }
+                //if (self.contractData.T2FixedFeeMax > 0 && !self.contractData.T2FixedFeeMax.isValid()) { return false; }
+                if (!self.contractData.HomeOfficeOverheadRateMax.isValid()) { return false; }
+                if (!self.contractData.FieldServiceOverheadRateMax.isValid()) { return false; }
+                if (!self.contractData.FCCM.isValid()) { return false; }
+                if (!self.contractData.Multiplier.isValid()) { return false; }
+                if (!self.contractData.ScheduledCompletionDate.isValid()) { return false; }
+
+                return true;
+            }
+
+            function salaryratesTabValidation() {
+
+                if (generalTabValidation() == true && !(self.contractData.SalaryRates().length > 0 || self.contractData.ServiceRates().length > 0)) { self.SalaryOrServicesVisibleDiv(true); return false; }
+                else { self.SalaryOrServicesVisibleDiv(false); }
+
+                if (self.contractData.SalaryRates().length > 0) {
+                    self.errors = ko.observable();
+                    self.errors(ko.validation.group(self.contractData.SalaryRates(), { deep: true }));
+                    if (self.errors()().length > 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function servicesratesTabValidation() {
+
+                if (generalTabValidation() == true && !(self.contractData.SalaryRates().length > 0 || self.contractData.ServiceRates().length > 0)) { self.SalaryOrServicesVisibleDiv(true); return false; }
+                else { self.SalaryOrServicesVisibleDiv(false); }
+
+                if (self.contractData.ServiceRates().length > 0) {
+                    self.errors = ko.observable();
+                    self.errors(ko.validation.group(self.contractData.ServiceRates(), { deep: true }));
+                    if (self.errors()().length > 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function titleITabValidation() {
+                if (self.contractData.T1Allotments().length > 0) {
+                    if (!self.contractData.T1Allotments().find(allotmentPriority))
+                    { self.TitleIVisibleDiv(true); return false }
+                    else { self.TitleIVisibleDiv(false); }
+                }
+                return true;
+            }
+
+            function titleIITabValidation() {
+                if (self.contractData.T2Allotments().length > 0) {
+                    if (!self.contractData.T2Allotments().find(allotmentPriority)) { self.TitleIIVisibleDiv(true); return false; }
+                    else { self.TitleIIVisibleDiv(false); }
+                }
+                return true;
+            }
+
+            function subconsultantTabValidation() {
+                if (self.contractData.SubConsultants().length > 0) {
+                    self.errors = ko.observable();
+                    self.errors(ko.validation.group(self.contractData.SubConsultants(), { deep: true }));
+                    if (self.errors()().length > 0) {
+                        for (var i = 0; i < self.contractData.SubConsultants().length ; i++) {
+                            self.suberrors = ko.observable();
+                            self.suberrors(ko.validation.group(self.contractData.SubConsultants()[i], { deep: true }));
+                            if (self.suberrors()().length > 0) {
+                                var j = self.contractData.SubConsultants()[i].TaxID()//.css('color:red');
+                                $('#div-' + j).css({"color": "red", 'font-weight': 'bold'});
+                            }
+                            else{self.subconsultantdiv('');}
+                        }
+                        return false;
+                    }
+                }
+            }
+
+            self.submit = function () {
+                var c = self.contractData;
+                var _result = 1;
+
+                if (generalTabValidation() == false) { _result = 0; self.generalErrorTab('ErrorTab'); } else { self.generalErrorTab(''); }
+                if (salaryratesTabValidation() == false) { _result = 0; self.salaryratesErrorTab('ErrorTab'); } else { self.salaryratesErrorTab(''); }
+                if (servicesratesTabValidation() == false) { _result = 0; self.servicesratesErrorTab('ErrorTab'); } else { self.servicesratesErrorTab(''); }
+                if (titleITabValidation() == false) { _result = 0; self.titleIErrorTab('ErrorTab'); } else { self.titleIErrorTab(''); }
+                if (titleIITabValidation() == false) { _result = 0; self.titleIIErrorTab('ErrorTab'); } else { self.titleIIErrorTab(''); }
+                if (subconsultantTabValidation(c.SubConsultants) == false) { _result = 0; self.subconsultantErrorTab('ErrorTab'); } else { self.subconsultantErrorTab(''); }
+
+                if (_result == 1) {
+                    if (!(c.SubConT1CeilingTotal() <= (Number(c.T1SvcsCeiling()) || 0) && c.SubConT2CeilingTotal() <= (Number(c.T2SvcsCeiling()) || 0))) {
+                        alert('Subconsultant service ceilings higher than Prime\'s service ceilings');
+                        return;
+                    }
+                    else {
+                        $.ajax({
+                            url: '@Url.Action("Create")',
+                            data: ko.toJSON(self.contractData),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            error: submitError,
+                            success: submitSuccess,
+                            type: 'POST'
+                        });
+                    }
+                }
+                self.contractData.errors.showAllMessages();
+            };
+
+            self.RateImport = ko.observable().extend({ digit: true });
+
+            self.RateImportClick = function () {
+                if (!self.RateImport) return;
+                if (!self.RateImport.length === 0) {
+                    alert('Contract Code required');
+                    return;
+                }
+                else {
+                    $.get("@Url.Action("GetRates")", { contractCode: self.RateImport },
+                                      function (data) {
+                                          self.contractData.SalaryRates([]);
+                                          self.contractData.ServiceRates([]);
+
+                                          if (data.salaryRates) {
+                                              data.salaryRates.forEach(function (e, i, a) {
+                                                  var sr = new SalaryRate();
+                                                  sr.JobTitle(e.name);
+                                                  sr.RateMin(e.min);
+                                                  sr.RateMax(e.max);
+
+                                                  self.contractData.SalaryRates.push(ko.validatedObservable(sr));
+                                              });
+                                          }
+                                          if (data.serviceRates) {
+                                              data.serviceRates.forEach(function (e, i, a) {
+                                                  var sr = new ServiceRate();
+                                                  sr.ServiceName(e.name);
+                                                  sr.RateMin(e.min);
+                                                  sr.RateMax(e.max);
+
+                                                  self.contractData.ServiceRates.push(ko.validatedObservable(sr));
+                                              });
+                                          }
+                                      });
+                }
+            };
+
+            self.addSalaryRate = function () {
+                self.contractData.SalaryRates.push(ko.validatedObservable(new SalaryRate()));
+            };
+
+            self.addServiceRate = function () {
+                self.contractData.ServiceRates.push(ko.validatedObservable(new ServiceRate()));
+            };
+
+            self.removeSalary = function (line) {
+                self.contractData.SalaryRates.remove(function (i) {
+                    return i().JobTitle === line.JobTitle;
+                });
+            };
+
+            self.removeService = function (line) {
+                self.contractData.ServiceRates.remove(function (i) {
+                    return i().ServiceName === line.ServiceName;
+                });
+            };
+
+            self.selectedSubCon.subscribe(function (newValue) {
+                if (newValue) {
+                    self.addSubCon();
+                    $('#selectSubCon').focus().select();
+                }
+            });
+
+            self.contractData.JobNo.subscribe(function (newValue) {
+                self.getAllotments();
+            });
+
+            self.addSubCon = function () {
+                if (!self.selectedSubCon())
+                    return;
+
+                var dup = self.contractData.SubConsultants().find(function (e) {
+                    if (e.ConsultantId() === self.selectedSubCon().ConId)
+                        return true;
+                    else
+                        return false;
+                });
+                if (dup === undefined) {
+                    self.contractData.SubConsultants.push(new SubCon(self.selectedSubCon()));
+                    filterflag = self.selectedSubCon().ConId;
+                    self.selectedSubCon('');
+                }
+            };
+
+            self.removeAllotment = function (line) {
+                self.contractData.T1Allotments.remove(function (i) {
+                    return i.Func === line.Func
+                                         && i.FAP === line.FAP;
+                });
+                self.contractData.T2Allotments.remove(function (i) {
+                    return i.Func === line.Func
+                                         && i.FAP === line.FAP;
+                });
+            };
+
+            self.removeSub = function (line) {
+                self.contractData.SubConsultants.remove(function (i) {
+                    return i.ConsultantId() === line.ConsultantId();
+                });
+            };
+
+            // two new functions to allow filtering of subconsultants to display only one screen per consultant
+            self.filter = function (conId) {
+                filterflag = conId.ConsultantId();
+                var changedIdx = self.contractData.SubConsultants.indexOf(conId);
+                self.contractData.SubConsultants.splice(changedIdx, 1); // removes the item from the array
+                self.contractData.SubConsultants.splice(changedIdx, 0, conId); //re adds it
+            };
+
+            self.displaySubconsultant = function (line) {
+                if (filterflag === line) {
+                    flagnumber = self.contractData.SubConsultants().length;
+                    self.contractData.SubConsultants.valueHasMutated();
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            };
+
+            self.highlight = ko.observable(true);
+            self.toggleHighlight = function () { self.highlight(!self.highlight()) };
+
+            //               'Bridge',
+            //               'Surveys',
+            //               'Roadway',
+            //               'ROW',
+            //               'Consult. Coord.',
+            //               'PM',
+            //               'Env.',
+            //               'Const.',
+            //               'Maint',
+            //               'Trans. Planning & Policy',
+            //               'Info & Research',
+            //               'Facilities Mgmt.'
+            //];
+
+            self.contractTypes = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.contractTypes)))
+            self.divisions = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.divisions)))
+
+            self.agreementTypes = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.agreementTypes)))
+
+            self.workTypes = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.workTypes)))
+
+            self.consultants = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.consultants)))
+
+            //self.contractStatuses = ['A', 'F', 'I'];
+            self.contractStatuses = [
+                { label: 'Active', value: 'A' },
+                { label: 'Final', value: 'F' },
+                { label: 'Inactive', value: 'I' }
+            ];
+
+            self.contractData.WorkTypes.push(self.workTypes[6]);
+            self.contractData.WorkTypes.subscribe(function (newValue) {
+                self.getAllotments();
+            });
+            //utility functions
+
+            self.getAllotments = function () {
+                $.ajax({
+                    url: '@Url.Action("AllotmentsList", "AllotmentsLookup")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        jobNo: self.contractData.JobNo(),
+                        workTypes: self.contractData.WorkTypes().map(function (e) {
+                            return e.WorkTypeName;
+                        })
+                    }),
+                    contentType: 'application/json; charset=utf-8'
+                }).done(function (data) {
+                    self.contractData.T1Allotments([]);
+                    self.contractData.T2Allotments([]);
+                    data.t1.forEach(function (e, i, a) {
+                        self.contractData.T1Allotments.push(new Allotment(e));
+                    });
+                    data.t2.forEach(function (e, i, a) {
+                        self.contractData.T2Allotments.push(new Allotment(e));
+                    });
+                });
+            };
+
+            self.consultantQuery = function (term, callback) {
+                $.ajax({
+                    url: '@Url.Action("Search", "Consultants")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { term: term }
+                }).done(callback);
+            };
+
+            self.consultantQuery2 = function (term, callback) {
+                var jobNo = self.contractData.JobNo()
+                $.ajax({
+                    url: '@Url.Action("Search2", "Consultants")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { term: term, job: jobNo }
+                }).done(callback);
+            };
+
+            self.jobQuery = function (term, callback) {
+                $.ajax({
+                    url: '@Url.Action("JobSearch", "AllotmentsLookup")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { term: term }
+                }).done(callback);
+            };
+
+            self.addRow = function (data, list) {
+                //prevent dupes
+                if (list.indexOf(data) < 0)
+                    list.push(data);
+            };
+
+            var handleSubConSalaryRecords = function (subConIndex, rates) {
+                var sc = self.contractData.SubConsultants()[subConIndex];
+                sc.SalaryRates([]);
+                rates.forEach(function (e, i, a) {
+                    var r = new SalaryRate();
+                    r.JobTitle(e.name);
+                    r.RateMin(e.min);
+                    r.RateMax(e.max);
+
+                    sc.SalaryRates.push(ko.observable(r));
+                });
+            };
+
+            self.handleSubConSalaryPaste = function (i, event) {
+                var index = this.dataset.index;
+                handlepaste(this, event.originalEvent, function (e, s) {
+                    processpaste(e, s, function (rates) { handleSubConSalaryRecords(Number(index), rates); });
+                });
+                return true;
+            };
+
+            var handleSubConServiceRecords = function (subConIndex, rates) {
+                var sc = self.contractData.SubConsultants()[subConIndex];
+
+                sc.ServiceRates([]);
+
+                rates.forEach(function (e, i, a) {
+                    var r = new ServiceRate();
+                    r.ServiceName(e.name);
+                    r.RateMin(e.min);
+                    r.RateMax(e.max);
+
+                    sc.ServiceRates.push(ko.observable(r));
+                });
+            };
+
+            self.handleSubConServicePaste = function (i, event) {
+                var index = this.dataset.index;
+                handlepaste(this, event.originalEvent, function (e, s) {
+                    processpaste(e, s, function (rates) { handleSubConServiceRecords(Number(index), rates); });
+                });
+
+                return true;
+            };
+
+        };
+        var vm = new NewContractVM();
+
+            //update: moneyHandler
+        ko.applyBindings(vm);
+
+        //#region 
+
+        $(function () {
+
+            $.fn.scrollView = function () {
+                return this.each(function () {
+                    $('html, body').animate({
+                        scrollTop: $(this).offset().top
+                    }, 1000);
+                });
+            }
+
+            $('.tab-me').tabs({
+                activate: function (event, ui) {
+                    ui.newTab.scrollView();
+                }
+            });
+
+            var $tabs = $('#tabs').tabs();
+            var tabsTotal = $(".ui-tabs-panel").length;
+
+            var addButton = function (rel, text) {
+                return $("<a>")
+                        .attr("href", "#tabs").attr("rel", rel)
+                        .addClass("tab-nav")
+                        .append(text);
+            };
+
+            $(".ui-tabs-panel").each(function (i) {
+                if ((i + 1) < tabsTotal) {
+                    $(this).append(addButton(i + 1, "Next"));
+                } if (i != 0) {
+                    $(this).append(addButton(i - 1, "Back"));
+                }
+            });
+
+            $('.tab-nav').click(function () {
+                $tabs.tabs("option", "active", $(this).attr("rel"));
+            });
+
+            var handleSalary = function (rates) {
+                //vm.contractData.SalaryRates([]);
+                rates.forEach(function (e, i, a) {
+                    var r = new SalaryRate();
+                    r.JobTitle(e.name);
+                    r.RateMin(e.min);
+                    r.RateMax(e.max);
+
+                    vm.contractData.SalaryRates.push(ko.observable(r));
+                });
+            };
+
+            var handleService = function (rates) {
+                //vm.contractData.ServiceRates([]);
+                rates.forEach(function (e, i, a) {
+                    var r = new ServiceRate();
+                    r.ServiceName(e.name);
+                    r.RateMin(e.min);
+                    r.RateMax(e.max);
+
+                    vm.contractData.ServiceRates.push(ko.observable(r));
+                });
+            };
+
+            $(".date").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                maxDate: "+10Y"
+            });
+
+            $('#conSalaryRatePaste').on('paste', function () {
+                handlepaste(this, event, function (e, s) {
+                    processpaste(e, s, handleSalary);
+                });
+            });
+
+            $('#conServiceRatePaste').on('paste', function () {
+                handlepaste(this, event, function (e, s) {
+                    processpaste(e, s, handleService);
+                });
+            });
+
+            $('#quickAddConsultantDialog').dialog({
+                autoOpen: false,
+                height: 400,
+                width: 600,
+                buttons: {
+                    "Add": function () {
+                        vm.newCon().errors.showAllMessages();
+                        if (vm.newCon().isValid()) {
+                            //console.log(ko.toJSON(self.Consultant()));
+                            $.ajax({
+                                url: '@Url.Action("Create", "Consultants")',
+                                data: ko.toJSON(vm.newCon),
+                                type: 'POST',
+                                contentType: 'application/json; charset=utf-8',
+                                dataType: 'json',
+                                error: function () {
+                                    alert("something went wrong");
+                                },
+                                success: function (newsubconid) {
+                                    $.ajax({
+                                        url: '@Url.Action("GetById", "Consultants")',
+                                        data: { id: newsubconid.id },
+                                        contentType: 'application/json; charset=utf-8',
+                                        dataType: 'json',
+                                        error: function () {
+                                            alert("New SubCon insert failed");
+                                        },
+                                        success: function (data) {
+                                            vm.contractData.SubConsultants.push(new SubCon(data));
+                                        }
+                                    });
+                                },
+                            });
+                            $(this).dialog('close');
+                        }
+                    },
+                    "Cancel": function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+
+        });
+        //#endregion
+    </script>
+}
+<h2>Create</h2>
+
+<form method="post" id="Createconsultant">
+
+    <div id="tabs" class="tab-me">
+
+        <ul>
+            <li><a href="#GeneralTab"><span data-bind="css: generalErrorTab">General Tab</span></a></li>
+
+            <li><a href="#Salaryrates"><span data-bind="css: salaryratesErrorTab">Salary Rates</span></a></li>
+
+            <li><a href="#Servicerates"><span data-bind="css: servicesratesErrorTab">Services Rates</span></a></li>
+
+            <li><a href="#Title1"><span data-bind="css: titleIErrorTab">Title I</span> </a></li>
+
+            <li><a href="#Title2"><span data-bind="css: titleIIErrorTab">Title II</span></a></li>
+
+            <li><a href="#Subconsultant"><span data-bind="css: subconsultantErrorTab">Subconsultants</span></a></li>
+        </ul>
+
+        <div id="GeneralTab">
+            <div class="TableFormat">
+
+                <div>
+                    <label for="JobNo">Job Number</label>
+                    <div>
+                        <input type="text" id="JobNo" name="JobNo" class="searchBar" data-bind="selectOnFocus: true, jqAuto: { source: jobQuery, value: contractData.JobNo, valueProp: 'JobNo', labelProp: 'label', ignoreBlur: true, options: { minLength: 2 } }" />
+                        <span class="validationMessage">*</span>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.JobNo"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="Consultant">Consultant</label>
+                    <div>
+                        <input type="text" id="Consultant" name="Consultant" class="searchBar" data-bind="selectOnFocus: true, jqAuto: { source: consultantQuery2, value: contractData.Consultant, valueProp: 'data', labelProp: 'label', options: { minLength: 2 } }" />
+                        <span class="validationMessage">*</span>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.Consultant"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="RemitTo">Remit To</label>
+                    <div>
+                        <input type="text" id="RemitTo" name="RemitTo" class="searchBar" data-bind="selectOnFocus: true, jqAuto: { source: consultantQuery, value: contractData.RemitToCon, valueProp: 'data', labelProp: 'label', options: { minLength: 2 } }" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.RemitTo"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="ContractType">Contract Type</label>
+                    <div>
+                        <select id="ContractType" name="ContractType" data-bind="value: contractData.ContractType, options: contractTypes, optionsValue: 'value', optionsText: 'label'"></select>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.ContractType"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="ContractStatus">Contract Status</label>
+                    <div>
+                        <select id="ContractStatus" name="ContractStatus" data-bind="value: contractData.ContractStatus, options: contractStatuses, optionsText: 'label', optionsValue: 'value'"></select>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.ContractStatus"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="AgreementDate">Agreement Date</label>
+                    <div>
+                        <input type="text" id="AgreementDate" name="AgreementDate" class="date" data-bind="value: contractData.AgreementDate" />
+                        <span class="validationMessage">*</span>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.AgreementDate"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="NoticeProceedDate">Notice Proceed Date</label>
+                    <div>
+                        <input type="text" id="NoticeProceedDate" name="NoticeProceedDate" class="date" data-bind="value: contractData.NoticeProceedDate" />
+                        <span class="validationMessage">*</span>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.NoticeProceedDate"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="AgreementType">Agreement Type</label>
+                    <div>
+                        <select id="AgreementType" name="AgreementType" data-bind="value: contractData.AgreementType, options: agreementTypes, optionsValue: 'value', optionsText: 'label', optionsCaption: 'Types...'"></select>
+                        <span class="validationMessage">*</span>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.AgreementType"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="TaskOrderNo" data-bind="visible: contractData.AgreementType() === 3">Task Order</label>
+                    <div>
+                        <input type="text" id="TaskOrderNo" name="TaskOrderNo" data-bind="value: contractData.TaskOrderNo, visible: contractData.AgreementType() === 3" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.TaskOrderNo"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="ResponsibleDivision">Responsible Division</label>
+                    <div>
+                        <select id="ResponsibleDivision" name="ResponsibleDivision" data-bind="value: contractData.ResponsibleDivision, options: divisions, optionsValue: 'value', optionsText: 'label', optionsCaption: 'Responsible Division'"></select>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.ResponsibleDivision"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="ContractCeiling">Contract Ceiling</label>
+                    <div>
+                        <input class="money" type="text" id="ContractCeiling" name="ContractCeiling" data-bind="moneyvalue: contractData.ContractCeiling" />
+                        <span class="validationMessage">*</span>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.ContractCeiling"></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="T1SvcsCeiling" class="vert_space">Title I Services Ceiling</label>
+                    <div>
+                        <input class="money" type="text" id="T1SvcsCeiling" name="T1SvcsCeiling" data-bind="moneyvalue: contractData.T1SvcsCeiling" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.T1SvcsCeiling"></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="T1FixedFeeMax">Title I Fixed Fee Max</label>
+                    <div>
+                        <input class="money" type="text" id="T1FixedFeeMax" name="T1FixedFeeMax" data-bind="moneyvalue: contractData.T1FixedFeeMax, disable: contractData.ContractType() === 1, if: (contractData.ContractType !== 1)" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.T1FixedFeeMax"></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="T2SvcsCeiling" class="vert_space">Title II Services Ceiling</label>
+                    <div>
+                        <input class="money" type="text" id="T2SvcsCeiling" name="T2SvcsCeiling" data-bind="moneyvalue: contractData.T2SvcsCeiling" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.T2SvcsCeiling"></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="T2FixedFeeMax">Title II Fixed Fee Max</label>
+                    <div>
+                        <input class="money" type="text" id="T2FixedFeeMax" name="T2FixedFeeMax" data-bind="moneyvalue: contractData.T2FixedFeeMax, disable: contractData.ContractType() === 1" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.T2FixedFeeMax"></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="HomeOfficeOverheadRateMax" class="vert_space">Home Office Overhead Rate Max</label>
+                    <div>
+                        <input type="text" id="HomeOfficeOverheadRateMax" name="HomeOfficeOverheadRateMax" data-bind="percentvalue: contractData.HomeOfficeOverheadRateMax, disable: contractData.ContractType() === 1" />
+                        <input type="button" value="Default" tabindex="-1" data-bind="click: contractData.UseConsultantHOOverhead, visible: contractData.ConsultantHOOverheadExists() && contractData.ContractType() !== 1" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.HomeOfficeOverheadRateMax"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="FieldServiceOverheadRateMax">Field Service Overhead Rate Max</label>
+                    <div>
+                        <input type="text" id="FieldServiceOverheadRateMax" name="FieldServiceOverheadRateMax" data-bind="percentvalue: contractData.FieldServiceOverheadRateMax, disable: contractData.ContractType() === 1" />
+                        <input type="button" value="Default" tabindex="-1" data-bind="click: contractData.UseConsultantFSOverhead, visible: contractData.ConsultantFSOverheadExists() && contractData.ContractType() !== 1" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.FieldServiceOverheadRateMax"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="FCCM">FCCM</label>
+                    <div>
+                        <input type="text" id="FCCM" name="FCCM" data-bind="percentvalue: contractData.FCCM, disable: contractData.ContractType() === 1" />
+                        <input type="button" value="Default" tabindex="-1" data-bind="click: contractData.UseConsultantFCCM, visible: contractData.ConsultantFCCMExists() && contractData.ContractType() !== 1" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.FCCM"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="Multiplier">Multiplier</label>
+                    <div>
+                        <input type="text" id="Multiplier" name="Multiplier" data-bind="numeralvalue: contractData.Multiplier" />
+                        <input type="button" value="Default" tabindex="-1" data-bind="click: contractData.UseConsultantMultiplier, visible: contractData.ConsultantMultiplierExists()" />
+                        <span class="validationMessage" data-bind="validationMessage: contractData.Multiplier"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="ScheduledCompletionDate">Scheduled Completion Date</label>
+                    <div>
+                        <input type="text" id="ScheduledCompletionDate" name="ScheduledCompletionDate" class="date" data-bind="value: contractData.ScheduledCompletionDate" />
+                        <span class="validationMessage">*</span>
+                        <span class="validationMessage" data-bind="validationMessage: contractData.ScheduledCompletionDate"></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label>Work Types</label>
+                    <div>
+                        <select data-bind="options: workTypes, selectedOptions: contractData.WorkTypes, optionsText: 'WorkTypeName'" size="8" multiple="multiple"></select>
+                    </div>
+                </div>
+
+            </div>
+            <p />
+        </div>
+
+        <div id="Salaryrates">
+            <div class="TableFormat">
+                <div>
+                    <label>Rates Import</label>
+                    <div>
+                        <input type="text" data-bind="value: RateImport" placeholder="ContractCode" />
+                        <input id="importButton" type="button" value="Import" data-bind="click: RateImportClick" />
+                    </div>
+                </div>
+
+                <div class="inlineTableTitle">
+                    <h3>Salary Rates</h3>
+                    <a href="#" data-bind="click: addSalaryRate">+Add</a>
+                    <div data-bind="visible: SalaryOrServicesVisibleDiv "><span style="color: red;">&nbsp;  Contract must contain at least one Salary Rate or Service Rate.</span></div>
+                </div>
+
+                <div>
+                    <div id="conSalaryRatePaste" contenteditable>Paste</div>
+                </div>
+
+                <table>
+                    <thead data-bind="visible: contractData.SalaryRates().length > 0">
+                        <tr>
+                            <td>JobTitle</td>
+                            <td>RateMin</td>
+                            <td>RateMax</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: contractData.SalaryRates">
+                        <tr>
+                            <td>
+                                <input type="text" data-bind="value: JobTitle" /></td>
+                            <td>
+                                <input type="text" data-bind="value: RateMin" /></td>
+                            <td>
+                                <input type="text" data-bind="value: RateMax" /></td>
+                            <td><a href="#" tabindex="-1" data-bind="click: $root.removeSalary">Remove</a></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="validationMessage" data-bind="validationMessage: JobTitle"></span>
+                            </td>
+                            <td>
+                                <span class="validationMessage" data-bind="validationMessage: RateMin"></span>
+                            </td>
+                            <td>
+                                <span class="validationMessage" data-bind="validationMessage: RateMax"></span>
+                            </td>
+                            <td></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <p />
+        </div>
+
+        <div id="Servicerates">
+            <div>
+                <div>
+                    <div class="inlineTableTitle">
+                        <h3>Service Rates</h3>
+                        <a href="#" data-bind="click: addServiceRate">+Add</a>
+                        <div data-bind="visible: SalaryOrServicesVisibleDiv "><span style="color: red;">&nbsp; Contract must contain at least one Salary Rate or Service Rate.</span></div>
+                    </div>
+                    <div>
+                        <div id="conServiceRatePaste" contenteditable>Paste</div>
+                    </div>
+                    <table>
+                        <thead data-bind="visible: contractData.ServiceRates().length > 0">
+                            <tr>
+                                <td>ServiceName</td>
+                                <td>RateMin</td>
+                                <td>RateMax</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: contractData.ServiceRates">
+                            <tr>
+                                <td>
+                                    <input type="text" data-bind="value: ServiceName" /></td>
+                                <td>
+                                    <input type="text" data-bind="value: RateMin" /></td>
+                                <td>
+                                    <input type="text" data-bind="value: RateMax" /></td>
+                                <td><a href="#" tabindex="-1" data-bind="click: $root.removeService">Remove</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="validationMessage" data-bind="validationMessage: ServiceName"></span>
+                                </td>
+                                <td>
+                                    <span class="validationMessage" data-bind="validationMessage: RateMin"></span>
+                                </td>
+                                <td>
+                                    <span class="validationMessage" data-bind="validationMessage: RateMax"></span>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                @*   <div class="inlineTableTitle">
+                    <h3>Allotments</h3>
+                    <a href="#" data-bind="click: getAllotments">Reset</a>
+                </div>*@
+            </div>
+            <p />
+        </div>
+
+        <div id="Title1">
+            <table data-bind="visible: contractData.T1Allotments().length > 0">
+                <thead>
+                    <tr>
+                        <td class="allotmentTableLeftAlignHeader">Func</td>
+                        <td class="allotmentTableLeftAlignHeader">FAP</td>
+                        <td class="allotmentTableRightAlignHeader">FundingPriority</td>
+                        <td class="allotmentTableRightAlignHeader">Fed %</td>
+                        <td class="allotmentTableRightAlignHeader">State %</td>
+                        <td class="allotmentTableRightAlignHeader">State Aid %</td>
+                        <td class="allotmentTableRightAlignHeader">Other %</td>
+                        <td class="allotmentTableRightAlignHeader">Allotted Amount</td>
+                        <td class="allotmentTableRightAlignHeader">
+                            <div data-bind="visible: TitleIVisibleDiv"><span style="color: red">Missing Funding Priority</span></div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: contractData.T1Allotments">
+                    <tr>
+                        <td class="allotmentTableLeftAlignDataCol" data-bind="text: Func"></td>
+                        <td class="allotmentTableLeftAlignDataCol" data-bind="text: FAP"></td>
+                        <td class="allotmentTableCenterAlignDataCol">
+                            <input type="text" size="2" style="text-align: center" data-bind="value: FundingPriority" /></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: FedPct"></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: StatePct"></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: StateAidPct"></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: OtherPct"></td>
+                        <td class="allotmentTableRightAlignDataCol">
+                            <input type="text" size="12" style="text-align: left" data-bind="moneyvalue: AllottedAmount" /></td>
+                        <td class="link"><a href="#" tabindex="-1" data-bind="click: $root.removeAllotment">Remove</a></td>
+                    </tr>
+                    <tr>
+                        <td><span class="validationMessage" data-bind="validationMessage: Func"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: FAP"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: FundingPriority"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: FedPct"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: StatePct"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: StateAidPct"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: OtherPct"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: AllottedAmount"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p />
+        </div>
+
+        <div id="Title2">
+            <table>
+                <thead data-bind="visible: contractData.T2Allotments().length > 0">
+                    <tr>
+                        <td class="allotmentTableLeftAlignHeader">Func</td>
+                        <td class="allotmentTableLeftAlignHeader">FAP</td>
+                        <td class="allotmentTableRightAlignHeader">FundingPriority</td>
+                        <td class="allotmentTableRightAlignHeader">Fed %</td>
+                        <td class="allotmentTableRightAlignHeader">State %</td>
+                        <td class="allotmentTableRightAlignHeader">State Aid %</td>
+                        <td class="allotmentTableRightAlignHeader">Other %</td>
+                        <td class="allotmentTableRightAlignHeader">Allotted Amount</td>
+                        <td class="allotmentTableRightAlignHeader">
+                            <div data-bind="visible: TitleIIVisibleDiv"><span style="color: red">Missing Funding Priority</span></div>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: contractData.T2Allotments">
+                    <tr>
+                        <td class="allotmentTableLeftAlignDataCol" data-bind="text: Func"></td>
+                        <td class="allotmentTableLeftAlignDataCol" data-bind="text: FAP"></td>
+                        <td class="allotmentTableCenterAlignDataCol">
+                            <input type="text" size="2" style="text-align: center" data-bind="value: FundingPriority" /></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: FedPct"></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: StatePct"></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: StateAidPct"></td>
+                        <td class="allotmentTableRightAlignDataCol" data-bind="text: OtherPct"></td>
+                        <td class="allotmentTableRightAlignDataCol">
+                        <input type="text" size="12" style="text-align: left" data-bind="moneyvalue: AllottedAmount" /></td>
+                        <td class="link"><a href="#" tabindex="-1" data-bind="click: $root.removeAllotment">Remove</a></td>
+                    </tr>
+                    <tr>
+                        <td ><span class="validationMessage" data-bind="validationMessage: Func"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: FAP"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: FundingPriority"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: FedPct"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: StatePct"> </span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: StateAidPct"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: OtherPct"></span></td>
+                        <td><span class="validationMessage" data-bind="validationMessage: AllottedAmount"><?</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p />
+        </div>
+
+        <div id="Subconsultant">
+            <div class="TableFormat">
+                <div>
+                    <label>SubConsultants</label>
+                    <div>
+                        <input type="text" id="selectSubCon" name="selectSubCon" size="50" class="searchBar"
+                            data-bind="selectOnFocus: true, jqAuto: { source: consultantQuery, value: selectedSubCon, valueProp: 'data', labelProp: 'label', ignoreBlur: true, options: { minLength: 2, change: function () { return null; } } }" />
+                        <span><a href="#" data-bind="click: newSubCon">+New</a></span>
+                    </div>
+                </div>
+            </div>
+            @*            ' Added to deal with multiple Subconsultant Display*@
+
+            <div id="Subconsultantlist" data-bind="foreach: contractData.SubConsultants">
+                <table>
+                    <tr>
+                        <td><a class="hyperlink" href="#" tabindex="-1" data-bind="click: $root.filter">Select</a></td>
+                        <td><a class="hyperlink" href="#" tabindex="-1" data-bind="click: $root.removeSub">Remove</a></td>
+                        <td data-bind="text: TaxID() + '  ' + Name(), css: $parent.subconsultantdiv, attr: { id: 'div-' + TaxID() }"></td>
+                    </tr>
+                </table>
+            </div>
+
+            @*            ' end of SubConsultant Display*@
+            <div data-bind="foreach: contractData.SubConsultants">
+                @*                ' New division to filter array*@
+                <div data-bind="if: $root.displaySubconsultant(ConsultantId())">
+
+                    <div data-bind="attr: { id: 'tab-' + TaxID() }">
+                        <table style="border-color: black">
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 600" data-bind="text: TaxID() + '  ' + Name()"></td>
+                                </tr>
+                                <tr>
+                                    <td>Contract Ceiling</td>
+                                    <td colspan="2">
+                                        <input data-bind="value: ContractCeiling" />
+                                        <span class="validationMessage">*</span>
+                                    </td>
+                                    <td class="validationMessage" data-bind="validationMessage: ContractCeiling"></td>
+                                </tr>
+                                <tr>
+                                    <td>Title I Services Ceiling</td>
+                                    <td>
+                                        <input data-bind="value: T1Services" /></td>
+                                    <td class="validationMessage" data-bind="validationMessage: T1Services"></td>
+                                </tr>
+                                <tr>
+                                    <td>Title I Fixed Fee Max</td>
+                                    <td>
+                                        <input data-bind="value: T1FixedFee, disable: vm.contractData.ContractType() === 1" /></td>
+                                    <td class="validationMessage" data-bind="validationMessage: T1FixedFee"></td>
+                                </tr>
+                                <tr>
+                                    <td>Title II Services Ceiling</td>
+                                    <td>
+                                        <input data-bind="value: T2Services" /></td>
+                                    <td class="validationMessage" data-bind="validationMessage: T2Services"></td>
+                                </tr>
+                                <tr>
+                                    <td>Title II Fixed Fee Max</td>
+                                    <td>
+                                        <input data-bind="value: T2FixedFee, disable: vm.contractData.ContractType() === 1" /></td>
+                                    <td class="validationMessage" data-bind="validationMessage: T2FixedFee"></td>
+                                </tr>
+                                <tr>
+                                    <td>Home Office Overhead Rate Max</td>
+                                    <td>
+                                        <input data-bind="value: HomeOfficeOverhead, disable: vm.contractData.ContractType() === 1" />%
+                                     <span class="validationMessage">*</span>
+                                    </td>
+                                    <td style="display: none;" data-bind="visible: ConsultantHOOverheadExists() && vm.contractData.ContractType() !== 1">
+                                        <input type="button" class="defaultbutton" value="Default" data-bind="click: UseConsultantHOOverhead, visible: ConsultantHOOverheadExists() && vm.contractData.ContractType() !== 1" />
+                                    </td>
+                                    <td class="validationMessage" data-bind="validationMessage: HomeOfficeOverhead"></td>
+                                </tr>
+                                <tr>
+                                    <td>Field Service Overhead Rate Max</td>
+                                    <td>
+                                        <input data-bind="value: FieldServiceOverhead, disable: vm.contractData.ContractType() === 1" />%
+                                    <span class="validationMessage">*</span>
+                                    </td>
+                                    <td style="display: none;" data-bind="visible: ConsultantFSOverheadExists() && vm.contractData.ContractType() !== 1">
+                                        <input type="button" class="defaultbutton" value="Default" data-bind="click: UseConsultantFSOverhead, visible: ConsultantFSOverheadExists() && vm.contractData.ContractType() !== 1" />
+                                    </td>
+                                    <td class="validationMessage" data-bind="validationMessage: FieldServiceOverhead"></td>
+                                </tr>
+                                <tr>
+                                    <td>FCCM </td>
+                                    <td>
+                                        <input data-bind="value: FCCM, disable: vm.contractData.ContractType() === 1" />%                                    
+                                    </td>
+                                    <td style="display: none;" data-bind="visible: ConsultantFCCMExists() && vm.contractData.ContractType() !== 1">
+                                        <input type="button" class="defaultbutton" value="Default" data-bind="click: UseConsultantFCCM, visible: ConsultantFCCMExists() && vm.contractData.ContractType() !== 1" />
+                                    </td>
+                                    <td class="validationMessage" data-bind="validationMessage: FCCM"></td>
+                                </tr>
+                                <tr>
+                                    <td>Multiplier</td>
+                                    <td>
+                                        <input data-bind="value: Multiplier" />
+                                        <span class="validationMessage">*</span></td>
+                                    <td style="display: none; width: 100px;" data-bind="visible: ConsultantMultiplierExists()">
+                                        <input type="button" class="defaultbutton" value="Default" data-bind="click: UseConsultantMultiplier, visible: ConsultantMultiplierExists()" />
+                                    </td>
+                                    <td class="validationMessage" data-bind="validationMessage: Multiplier"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <div class="inlineTableTitle">
+                                <h3>Salary Rates</h3>
+                                <a href="#" data-bind="click: addSalaryRate">+Add</a>
+                            </div>
+
+                            <div>
+                                <!--<div id="conSalaryRatePaste2">Paste</div>-->
+                                <div class="subConSalary" data-bind="attr: { 'data-index': $index }, event: { paste: $root.handleSubConSalaryPaste.bind($element) }" contenteditable>Paste</div>
+                            </div>
+
+                            <table>
+                                <thead data-bind="visible: SalaryRates().length > 0">
+                                    <tr>
+                                        <td>JobTitle</td>
+                                        <td>RateMin</td>
+                                        <td>RateMax</td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody data-bind="foreach: SalaryRates">
+                                    <tr>
+                                        <td>
+                                            <input type="text" data-bind="value: JobTitle" /></td>
+                                        <td>
+                                            <input type="text" data-bind="value: RateMin" /></td>
+                                        <td>
+                                            <input type="text" data-bind="value: RateMax" /></td>
+                                        <td><a href="#" tabindex="-1" data-bind="click: $parent.removeSalary">Remove</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="validationMessage" data-bind="validationMessage: JobTitle"></span>
+                                        </td>
+                                        <td>
+                                            <span class="validationMessage" data-bind="validationMessage: RateMin"></span>
+                                        </td>
+                                        <td>
+                                            <span class="validationMessage" data-bind="validationMessage: RateMax"></span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div>
+                                <div class="inlineTableTitle">
+                                    <h3>Service Rates</h3>
+                                    <a href="#" data-bind="click: addServiceRate">+Add</a>
+                                </div>
+                                <div>
+                                    <!--<div id="conSalaryRatePaste3">Paste</div> -->
+                                    <div class="subConSalary" data-bind="attr: { 'data-index': $index }, event: { paste: $root.handleSubConServicePaste.bind($element) }" contenteditable>Paste</div>
+                                </div>
+                                <table>
+                                    <thead data-bind="visible: ServiceRates().length > 0">
+                                        <tr>
+                                            <td>ServiceName</td>
+                                            <td>RateMin</td>
+                                            <td>RateMax</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-bind="foreach: ServiceRates">
+                                        <tr>
+                                            <td>
+                                                <input type="text" data-bind="value: ServiceName" /></td>
+                                            <td>
+                                                <input type="text" data-bind="value: RateMin" /></td>
+                                            <td>
+                                                <input type="text" data-bind="value: RateMax" /></td>
+                                            <td><a href="#" tabindex="-1" data-bind="click: $parent.removeService">Remove</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span class="validationMessage" data-bind="validationMessage: ServiceName"></span>
+                                            </td>
+                                            <td>
+                                                <span class="validationMessage" data-bind="validationMessage: RateMin"></span>
+                                            </td>
+                                            <td>
+                                                <span class="validationMessage" data-bind="validationMessage: RateMax"></span>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* End of logic for filter *@
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <h3>Remarks</h3>
+        <textarea data-bind="value: contractData.Remarks"></textarea>
+    </div>
+
+    <input type="button" data-bind="click: submit" value="Submit" style="margin-top:8px"/>
+
+    <br />
+    <a href="@Url.Action("Index", "Home")" class="hyperlink">Home</a>
+    <br />
+    <a href="javascript:void(0);" onclick="history.go(-1);") , class="hyperlink">Back</a>
+
+    <div id="quickAddConsultantDialog" title="New Sub Consultant">
+        <table data-bind="if: newCon() != null">
+            <tbody>
+                <tr>
+                    <td>Name</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().Name" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().Name"></td>
+                </tr>
+                <tr>
+                    <td>Primary Contact First Name</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().PrimaryContactFirstName" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().PrimaryContactFirstName"></td>
+                </tr>
+                <tr>
+                    <td>Primary Contact Last Name</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().PrimaryContactLastName" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().PrimaryContactLastName"></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().PhysicalAddress" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().PhysicalAddress"></td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().City" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().City"></td>
+                </tr>
+                <tr>
+                    <td>State</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().State" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().State"></td>
+                </tr>
+                <tr>
+                    <td>Zip</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().PostalCode" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().PostalCode"></td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().CountryCode" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().CountryCode"></td>
+                </tr>
+                <tr>
+                    <td>Email Address</td>
+                    <td>
+                        <input type="text" data-bind="value: newCon().EmailAddress" /></td>
+                    <td class="validationMessage" data-bind="validationMessage: newCon().EmailAddress"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="contentPasteBuffer" style="visibility:hidden"></div>
+</form>

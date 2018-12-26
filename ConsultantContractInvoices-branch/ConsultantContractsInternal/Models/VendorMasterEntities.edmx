@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FiscalSer_VendorMasterModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="FiscalSer_VendorMasterModelStoreContainer">
+          <EntitySet Name="VENDOR_MASTER" EntityType="FiscalSer_VendorMasterModel.Store.VENDOR_MASTER" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+        </EntityContainer>
+        <EntityType Name="VENDOR_MASTER">
+          <Key>
+            <PropertyRef Name="FED_ID" />
+            <PropertyRef Name="SEQ_NO" />
+          </Key>
+          <Property Name="FED_ID" Type="char" Nullable="false" MaxLength="9" />
+          <Property Name="SEQ_NO" Type="numeric" Nullable="false" Precision="2" />
+          <Property Name="EXEMPT_CODE" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="VENDOR_NAME" Type="char" Nullable="false" MaxLength="30" />
+          <Property Name="BUS_NAME" Type="char" Nullable="false" MaxLength="30" />
+          <Property Name="ADDRESS_1" Type="char" Nullable="false" MaxLength="35" />
+          <Property Name="ADDRESS_2" Type="char" Nullable="false" MaxLength="35" />
+          <Property Name="CITY" Type="char" Nullable="false" MaxLength="40" />
+          <Property Name="STATE" Type="char" Nullable="false" MaxLength="3" />
+          <Property Name="ZIP" Type="char" Nullable="false" MaxLength="10" />
+          <Property Name="PHONE_NO" Type="char" Nullable="false" MaxLength="10" />
+          <Property Name="FAX_NO" Type="char" Nullable="false" MaxLength="10" />
+          <Property Name="VENDOR_IND" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="ELIG_STATUS_DATE" Type="datetime" />
+          <Property Name="COUNTRY_CODE" Type="char" Nullable="false" MaxLength="2" />
+          <Property Name="FED_MINORITY" Type="char" MaxLength="1" />
+          <Property Name="STATE_MINORITY" Type="char" MaxLength="1" />
+          <Property Name="VENDOR_TYPE" Type="char" MaxLength="2" />
+          <Property Name="COMMENT" Type="char" Nullable="false" MaxLength="68" />
+          <Property Name="LAST_PAYMENT_DATE" Type="datetime" />
+          <Property Name="LAST_DATE" Type="datetime" />
+          <Property Name="LAST_USERID" Type="char" Nullable="false" MaxLength="7" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FiscalSer_VendorMasterModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="FiscalSer_VendorMasterEntities" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+          <EntitySet Name="VENDOR_MASTER" EntityType="FiscalSer_VendorMasterModel.VENDOR_MASTER" />
+        </EntityContainer>
+        <EntityType Name="VENDOR_MASTER">
+          <Key>
+            <PropertyRef Name="FED_ID" />
+            <PropertyRef Name="SEQ_NO" />
+          </Key>
+          <Property Name="FED_ID" Type="String" Nullable="false" MaxLength="9" Unicode="false" FixedLength="true" />
+          <Property Name="SEQ_NO" Type="Decimal" Nullable="false" Precision="2" Scale="0" />
+          <Property Name="EXEMPT_CODE" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="VENDOR_NAME" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="true" />
+          <Property Name="BUS_NAME" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="true" />
+          <Property Name="ADDRESS_1" Type="String" Nullable="false" MaxLength="35" Unicode="false" FixedLength="true" />
+          <Property Name="ADDRESS_2" Type="String" Nullable="false" MaxLength="35" Unicode="false" FixedLength="true" />
+          <Property Name="CITY" Type="String" Nullable="false" MaxLength="40" Unicode="false" FixedLength="true" />
+          <Property Name="STATE" Type="String" Nullable="false" MaxLength="3" Unicode="false" FixedLength="true" />
+          <Property Name="ZIP" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="true" />
+          <Property Name="PHONE_NO" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="true" />
+          <Property Name="FAX_NO" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="true" />
+          <Property Name="VENDOR_IND" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="ELIG_STATUS_DATE" Type="DateTime" Precision="3" />
+          <Property Name="COUNTRY_CODE" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="FED_MINORITY" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="STATE_MINORITY" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="VENDOR_TYPE" Type="String" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="COMMENT" Type="String" Nullable="false" MaxLength="68" Unicode="false" FixedLength="true" />
+          <Property Name="LAST_PAYMENT_DATE" Type="DateTime" Precision="3" />
+          <Property Name="LAST_DATE" Type="DateTime" Precision="3" />
+          <Property Name="LAST_USERID" Type="String" Nullable="false" MaxLength="7" Unicode="false" FixedLength="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FiscalSer_VendorMasterModelStoreContainer" CdmEntityContainer="FiscalSer_VendorMasterEntities">
+          <EntitySetMapping Name="VENDOR_MASTER">
+            <EntityTypeMapping TypeName="FiscalSer_VendorMasterModel.VENDOR_MASTER">
+              <MappingFragment StoreEntitySet="VENDOR_MASTER">
+                <ScalarProperty Name="FED_ID" ColumnName="FED_ID" />
+                <ScalarProperty Name="SEQ_NO" ColumnName="SEQ_NO" />
+                <ScalarProperty Name="EXEMPT_CODE" ColumnName="EXEMPT_CODE" />
+                <ScalarProperty Name="VENDOR_NAME" ColumnName="VENDOR_NAME" />
+                <ScalarProperty Name="BUS_NAME" ColumnName="BUS_NAME" />
+                <ScalarProperty Name="ADDRESS_1" ColumnName="ADDRESS_1" />
+                <ScalarProperty Name="ADDRESS_2" ColumnName="ADDRESS_2" />
+                <ScalarProperty Name="CITY" ColumnName="CITY" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+                <ScalarProperty Name="PHONE_NO" ColumnName="PHONE_NO" />
+                <ScalarProperty Name="FAX_NO" ColumnName="FAX_NO" />
+                <ScalarProperty Name="VENDOR_IND" ColumnName="VENDOR_IND" />
+                <ScalarProperty Name="ELIG_STATUS_DATE" ColumnName="ELIG_STATUS_DATE" />
+                <ScalarProperty Name="COUNTRY_CODE" ColumnName="COUNTRY_CODE" />
+                <ScalarProperty Name="FED_MINORITY" ColumnName="FED_MINORITY" />
+                <ScalarProperty Name="STATE_MINORITY" ColumnName="STATE_MINORITY" />
+                <ScalarProperty Name="VENDOR_TYPE" ColumnName="VENDOR_TYPE" />
+                <ScalarProperty Name="COMMENT" ColumnName="COMMENT" />
+                <ScalarProperty Name="LAST_PAYMENT_DATE" ColumnName="LAST_PAYMENT_DATE" />
+                <ScalarProperty Name="LAST_DATE" ColumnName="LAST_DATE" />
+                <ScalarProperty Name="LAST_USERID" ColumnName="LAST_USERID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer>
+    <edmx:Connection>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </edmx:DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams />
+  </edmx:Designer>
+</edmx:Edmx>

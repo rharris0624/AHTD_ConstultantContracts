@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Recommend Invoices";
+}
+
+@section styles
+{
+    <style type="text/css">
+        table {
+            border-spacing: 0;
+        }
+
+        .approve-color {
+            background: #11d47c;
+            background: rgba(17, 212, 124, .5);
+        }
+
+        .reject-color {
+            background: #d4117c;
+            background: rgba(212, 17, 124, .5);
+        }
+    </style>
+}
+
+<table class="homepagetable">
+    <thead>
+        <tr>
+            <th>
+                <!-- yes no -->
+            </th>
+            <th>Contract</th>
+            <th>Consultant</th>
+            <th>Invoice No</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: RecomendedInvoices">
+        <tr data-bind="attr: { id: InvoiceId }">
+            @if (ViewBag.WriteAccess)
+            {
+            <td>
+                <a data-bind="click: Recomend" href="#" class="button approve-button ">Recommend</a>
+                <a data-bind="click: Reject" href="#" class="button reject-button ">Reject</a>
+            </td>
+            }
+            else
+            { 
+                <td></td>
+            }
+            <td><a class="hyperlink" data-bind="attr: { href: ContractLink }, text: JobNo"></a><span data-bind="    text: ' - ' + ContractCode"></span></td>
+            <td style="text-align:left"><a class="hyperlink" data-bind="attr: { href: ConsultantLink }, text: ConsultantName"></a></td>
+            <td style="text-align: center"><a class="hyperlink" data-bind="attr: { href: InvoiceLink }, text: InvoiceNo"></a></td>
+            <td data-bind="text: Total"></td>
+        </tr>
+        <!-- ko foreach: Allotments -->
+        <tr>
+            <td></td>
+            <td></td>
+            <td data-bind="text: Func + '&nbsp; &nbsp;' + FAP"></td>
+            <td></td>
+            <td data-bind="text: accounting.formatMoney(Amount)"></td>
+        </tr>
+        <!-- /ko -->
+        <!-- /ko -->
+    </tbody>
+</table>

@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ConsultantContractsInternal.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UserProvUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://devweb/ArDOT_UserProv/</Value>
+    </Setting>
+    <Setting Name="UserProvApplicationId" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">CONS_CNTRT</Value>
+    </Setting>
+    <Setting Name="ClientSettingsProvider" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RuntimeEnvironment" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Production</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

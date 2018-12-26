@@ -1,0 +1,859 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ArDOT_UserProvModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Applications">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ApplicationDesc" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="LegacyApplication" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationSecurities">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="RoleId" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HistoricalSecurities">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="PermissionId" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="ChangeDateTime" />
+            <PropertyRef Name="ChangeType" />
+          </Key>
+          <Property Name="UserId" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RoleId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PermissionId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ResourceId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ChangeDateTime" Type="datetime" Nullable="false" />
+          <Property Name="ChangeType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="EmployeeNumber" Type="char" MaxLength="9" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" />
+          <Property Name="Budget" Type="char" MaxLength="3" />
+          <Property Name="BudgetName" Type="varchar" MaxLength="100" />
+          <Property Name="Status" Type="char" MaxLength="2" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="100" />
+          <Property Name="ApplicationDesc" Type="varchar" MaxLength="500" />
+          <Property Name="ApplicationStartEffectiveDate" Type="datetime" />
+          <Property Name="ApplicationEndEffectiveDate" Type="datetime" />
+          <Property Name="RoleName" Type="varchar" MaxLength="100" />
+          <Property Name="RoleDesc" Type="varchar" MaxLength="500" />
+          <Property Name="PermissionName" Type="varchar" MaxLength="100" />
+          <Property Name="PermissionDesc" Type="varchar" MaxLength="500" />
+          <Property Name="ResourceName" Type="varchar" MaxLength="100" />
+          <Property Name="ResourceDesc" Type="varchar" MaxLength="500" />
+          <Property Name="ChangeUserId" Type="varchar" MaxLength="15" />
+          <Property Name="ChangeUserFirstName" Type="varchar" MaxLength="100" />
+          <Property Name="ChangeUserLastName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="LegacySecurities">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="Sequence" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="RoleId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sequence" Type="int" Nullable="false" />
+          <Property Name="PermissionId" Type="varchar" MaxLength="10" />
+          <Property Name="ResourceId" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PermissionResources">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="PermissionId" />
+            <PropertyRef Name="ResourceId" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PermissionId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ResourceId" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permissions">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PermissionId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PermissionName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PermissionDesc" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resources">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="ResourceId" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ResourceId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ResourceName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ResourceDesc" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolePermissions">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RoleId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PermissionId" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="ApplicationId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RoleId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="RoleDesc" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="EmployeeNumber" Type="char" MaxLength="9" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Budget" Type="char" MaxLength="3" Nullable="false" />
+          <Property Name="Status" Type="char" MaxLength="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId">
+          <End Role="Applications" Type="Self.Applications" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="ApplicationSecurities">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ApplicationSecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ApplicationSecurities_dbo_Users_UserId">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ApplicationSecurities">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId">
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurities" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LegacySecurities" Type="Self.LegacySecurities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationSecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="LegacySecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="0..1" />
+          <End Role="LegacySecurities" Type="Self.LegacySecurities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="LegacySecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId">
+          <End Role="Resources" Type="Self.Resources" Multiplicity="0..1" />
+          <End Role="LegacySecurities" Type="Self.LegacySecurities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Principal>
+            <Dependent Role="LegacySecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PermissionResources" Type="Self.PermissionResources" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="PermissionResources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId">
+          <End Role="Resources" Type="Self.Resources" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PermissionResources" Type="Self.PermissionResources" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Principal>
+            <Dependent Role="PermissionResources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId">
+          <End Role="Permissions" Type="Self.Permissions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermissions" Type="Self.RolePermissions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ArDOT_UserProvModelStoreContainer">
+          <EntitySet Name="Applications" EntityType="Self.Applications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicationSecurities" EntityType="Self.ApplicationSecurities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistoricalSecurities" EntityType="Self.HistoricalSecurities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LegacySecurities" EntityType="Self.LegacySecurities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PermissionResources" EntityType="Self.PermissionResources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Permissions" EntityType="Self.Permissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resources" EntityType="Self.Resources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RolePermissions" EntityType="Self.RolePermissions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId" Association="Self.FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId" Association="Self.FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ApplicationSecurities_dbo_Users_UserId" Association="Self.FK_dbo_ApplicationSecurities_dbo_Users_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId" Association="Self.FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId">
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+            <End Role="LegacySecurities" EntitySet="LegacySecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId" Association="Self.FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="LegacySecurities" EntitySet="LegacySecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId" Association="Self.FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="LegacySecurities" EntitySet="LegacySecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId" Association="Self.FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionResources" EntitySet="PermissionResources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId" Association="Self.FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="PermissionResources" EntitySet="PermissionResources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId" Association="Self.FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId" Association="Self.FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ArDOT_UserProvModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Application">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApplicationDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LegacyApplication" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ApplicationSecurities" Relationship="Self.FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId" FromRole="Applications" ToRole="ApplicationSecurities" />
+        </EntityType>
+        <EntityType Name="ApplicationSecurity">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Application" Relationship="Self.FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId" FromRole="ApplicationSecurities" ToRole="Applications" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId" FromRole="ApplicationSecurities" ToRole="Roles" />
+          <NavigationProperty Name="User" Relationship="Self.FK_dbo_ApplicationSecurities_dbo_Users_UserId" FromRole="ApplicationSecurities" ToRole="Users" />
+          <NavigationProperty Name="LegacySecurities" Relationship="Self.FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId" FromRole="ApplicationSecurities" ToRole="LegacySecurities" />
+        </EntityType>
+        <EntityType Name="HistoricalSecurity">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="PermissionId" />
+            <PropertyRef Name="ResourceId" />
+            <PropertyRef Name="ChangeDateTime" />
+            <PropertyRef Name="ChangeType" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PermissionId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ResourceId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ChangeDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ChangeType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmployeeNumber" Type="String" MaxLength="9" FixedLength="true" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Budget" Type="String" MaxLength="3" FixedLength="true" Unicode="false" />
+          <Property Name="BudgetName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationStartEffectiveDate" Type="DateTime" Precision="3" />
+          <Property Name="ApplicationEndEffectiveDate" Type="DateTime" Precision="3" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RoleDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PermissionName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PermissionDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ResourceName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ResourceDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ChangeUserId" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ChangeUserFirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ChangeUserLastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LegacySecurity">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="Sequence" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sequence" Type="Int32" Nullable="false" />
+          <Property Name="PermissionId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ResourceId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ApplicationSecurity" Relationship="Self.FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId" FromRole="LegacySecurities" ToRole="ApplicationSecurities" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId" FromRole="LegacySecurities" ToRole="Permissions" />
+          <NavigationProperty Name="Resource" Relationship="Self.FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId" FromRole="LegacySecurities" ToRole="Resources" />
+        </EntityType>
+        <EntityType Name="PermissionResource">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="PermissionId" />
+            <PropertyRef Name="ResourceId" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PermissionId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ResourceId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId" FromRole="PermissionResources" ToRole="Permissions" />
+          <NavigationProperty Name="Resource" Relationship="Self.FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId" FromRole="PermissionResources" ToRole="Resources" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PermissionId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PermissionName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PermissionDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="LegacySecurities" Relationship="Self.FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId" FromRole="Permissions" ToRole="LegacySecurities" />
+          <NavigationProperty Name="PermissionResources" Relationship="Self.FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId" FromRole="Permissions" ToRole="PermissionResources" />
+          <NavigationProperty Name="RolePermissions" Relationship="Self.FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId" FromRole="Permissions" ToRole="RolePermissions" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="ResourceId" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ResourceId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ResourceName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ResourceDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="LegacySecurities" Relationship="Self.FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId" FromRole="Resources" ToRole="LegacySecurities" />
+          <NavigationProperty Name="PermissionResources" Relationship="Self.FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId" FromRole="Resources" ToRole="PermissionResources" />
+        </EntityType>
+        <EntityType Name="RolePermission">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PermissionId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Permission" Relationship="Self.FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId" FromRole="RolePermissions" ToRole="Permissions" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId" FromRole="RolePermissions" ToRole="Roles" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="ApplicationId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="ApplicationId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ApplicationSecurities" Relationship="Self.FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId" FromRole="Roles" ToRole="ApplicationSecurities" />
+          <NavigationProperty Name="RolePermissions" Relationship="Self.FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId" FromRole="Roles" ToRole="RolePermissions" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmployeeNumber" Type="String" MaxLength="9" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Budget" Type="String" MaxLength="3" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="2" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ApplicationSecurities" Relationship="Self.FK_dbo_ApplicationSecurities_dbo_Users_UserId" FromRole="Users" ToRole="ApplicationSecurities" />
+        </EntityType>
+        <Association Name="FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId">
+          <End Role="Applications" Type="Self.Application" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Applications">
+              <PropertyRef Name="ApplicationId" />
+            </Principal>
+            <Dependent Role="ApplicationSecurities">
+              <PropertyRef Name="ApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="ApplicationSecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ApplicationSecurities_dbo_Users_UserId">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="ApplicationSecurities">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId">
+          <End Role="ApplicationSecurities" Type="Self.ApplicationSecurity" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="LegacySecurities" Type="Self.LegacySecurity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationSecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="LegacySecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="UserId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="0..1" />
+          <End Role="LegacySecurities" Type="Self.LegacySecurity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="LegacySecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId">
+          <End Role="Resources" Type="Self.Resource" Multiplicity="0..1" />
+          <End Role="LegacySecurities" Type="Self.LegacySecurity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Principal>
+            <Dependent Role="LegacySecurities">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PermissionResources" Type="Self.PermissionResource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="PermissionResources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId">
+          <End Role="Resources" Type="Self.Resource" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PermissionResources" Type="Self.PermissionResource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Principal>
+            <Dependent Role="PermissionResources">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="ResourceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId">
+          <End Role="Permissions" Type="Self.Permission" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermissions" Type="Self.RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermissions" Type="Self.RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="RolePermissions">
+              <PropertyRef Name="ApplicationId" />
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ArDOT_UserProvEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Applications" EntityType="Self.Application" />
+          <EntitySet Name="ApplicationSecurities" EntityType="Self.ApplicationSecurity" />
+          <EntitySet Name="HistoricalSecurities" EntityType="Self.HistoricalSecurity" />
+          <EntitySet Name="LegacySecurities" EntityType="Self.LegacySecurity" />
+          <EntitySet Name="PermissionResources" EntityType="Self.PermissionResource" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="Resources" EntityType="Self.Resource" />
+          <EntitySet Name="RolePermissions" EntityType="Self.RolePermission" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId" Association="Self.FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId">
+            <End Role="Applications" EntitySet="Applications" />
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId" Association="Self.FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ApplicationSecurities_dbo_Users_UserId" Association="Self.FK_dbo_ApplicationSecurities_dbo_Users_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId" Association="Self.FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId">
+            <End Role="ApplicationSecurities" EntitySet="ApplicationSecurities" />
+            <End Role="LegacySecurities" EntitySet="LegacySecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId" Association="Self.FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="LegacySecurities" EntitySet="LegacySecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId" Association="Self.FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="LegacySecurities" EntitySet="LegacySecurities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId" Association="Self.FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="PermissionResources" EntitySet="PermissionResources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId" Association="Self.FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId">
+            <End Role="Resources" EntitySet="Resources" />
+            <End Role="PermissionResources" EntitySet="PermissionResources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId" Association="Self.FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId">
+            <End Role="Permissions" EntitySet="Permissions" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId" Association="Self.FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="RolePermissions" EntitySet="RolePermissions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ArDOT_UserProvModelStoreContainer" CdmEntityContainer="ArDOT_UserProvEntities1">
+          <EntitySetMapping Name="Applications">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.Application">
+              <MappingFragment StoreEntitySet="Applications">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ApplicationDesc" ColumnName="ApplicationDesc" />
+                <ScalarProperty Name="LegacyApplication" ColumnName="LegacyApplication" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationSecurities">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.ApplicationSecurity">
+              <MappingFragment StoreEntitySet="ApplicationSecurities">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistoricalSecurities">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.HistoricalSecurity">
+              <MappingFragment StoreEntitySet="HistoricalSecurities">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="ChangeDateTime" ColumnName="ChangeDateTime" />
+                <ScalarProperty Name="ChangeType" ColumnName="ChangeType" />
+                <ScalarProperty Name="EmployeeNumber" ColumnName="EmployeeNumber" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="BudgetName" ColumnName="BudgetName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="ApplicationDesc" ColumnName="ApplicationDesc" />
+                <ScalarProperty Name="ApplicationStartEffectiveDate" ColumnName="ApplicationStartEffectiveDate" />
+                <ScalarProperty Name="ApplicationEndEffectiveDate" ColumnName="ApplicationEndEffectiveDate" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleDesc" ColumnName="RoleDesc" />
+                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+                <ScalarProperty Name="PermissionDesc" ColumnName="PermissionDesc" />
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="ResourceDesc" ColumnName="ResourceDesc" />
+                <ScalarProperty Name="ChangeUserId" ColumnName="ChangeUserId" />
+                <ScalarProperty Name="ChangeUserFirstName" ColumnName="ChangeUserFirstName" />
+                <ScalarProperty Name="ChangeUserLastName" ColumnName="ChangeUserLastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LegacySecurities">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.LegacySecurity">
+              <MappingFragment StoreEntitySet="LegacySecurities">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Sequence" ColumnName="Sequence" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PermissionResources">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.PermissionResource">
+              <MappingFragment StoreEntitySet="PermissionResources">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.Permission">
+              <MappingFragment StoreEntitySet="Permissions">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+                <ScalarProperty Name="PermissionName" ColumnName="PermissionName" />
+                <ScalarProperty Name="PermissionDesc" ColumnName="PermissionDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resources">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.Resource">
+              <MappingFragment StoreEntitySet="Resources">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+                <ScalarProperty Name="ResourceName" ColumnName="ResourceName" />
+                <ScalarProperty Name="ResourceDesc" ColumnName="ResourceDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RolePermissions">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.RolePermission">
+              <MappingFragment StoreEntitySet="RolePermissions">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="PermissionId" ColumnName="PermissionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleDesc" ColumnName="RoleDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ArDOT_UserProvModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EmployeeNumber" ColumnName="EmployeeNumber" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Budget" ColumnName="Budget" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

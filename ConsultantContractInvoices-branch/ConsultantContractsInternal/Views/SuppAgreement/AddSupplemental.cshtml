@@ -1,0 +1,1786 @@
+﻿@using ConsultantContractsInternal.Utilities
+@using System.Web.Optimization
+@{}
+@{
+	ViewBag.Title = "AddSupplemental";
+}
+
+<h2>Add Supplemental Agreement</h2>
+
+@section styles
+{
+	<style>
+		#content {
+		}
+		
+		td {
+			column-width: auto;
+			text-align: center;
+		}
+
+		th {
+			font-family: 'Arial Rounded MT';
+				padding: 2px 2px 2px 4px;
+		}
+
+		 .generalData label {
+			padding-right: 1em;
+			display: table-cell;
+			text-align: right;
+		}
+		.generalData > div > div {
+			display: table-cell;
+		}
+		.generalData > div {
+			display:table-row
+		}
+
+		.changed {
+			border:3px solid #76cd37;
+		}
+
+		.container {
+		  width: 100%;
+		  margin: 1em auto;
+		  @@media (min-width: 40em) {
+			width: 90%;
+		  }
+			@@media (min-width: 64em) {
+			width: 80%;
+		  }
+		}
+
+		.inlineTableTitle * {
+			display: inline-block;
+		}
+
+		.inlineTableTitle > a {
+			font-size: .7em;
+		}
+
+		.TableFormat label {
+			padding-right: 1em;
+			display: table-cell;
+			text-align: right;
+		}
+
+		.TableFormat > div > div {
+			display: table-cell;
+			padding: 1px;
+		}
+
+		.TableFormat > div {
+			display: table-row;
+		}
+
+		.generalData2 .cell {
+			padding-right: 1em;
+			display: table-cell;
+			text-align: right;
+		}
+
+		.generalData2 .row {
+			display: table-row;
+		}
+
+		/* Customized Demo CSS for our Demo Tables */
+		.tablesaw-columntoggle td.title a,
+		.tablesaw-swipe td.title a {
+			display: block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 10em;
+			max-width: 40vw;
+		}
+
+		@@media (min-width: 40em) {
+			td.title {
+				max-width: 12em;
+			}
+			.tablesaw-stack td.title a {
+				display: block;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				max-width: 10em;
+				max-width: 40vw;
+			}
+		}
+
+		.allotmentTableRightAlignDataCol {
+			text-align: right;
+			padding-left: 2em;
+		}
+
+		.allotmentTableRightAlignHeader {
+			text-align: right;
+			padding-left: 2em;
+			font-weight: bold;
+		}
+
+		.allotmentTableLeftAlignDataCol {
+			text-align: left;
+			padding-left: 2em;
+		}
+
+		.allotmentTableLeftAlignHeader {
+			text-align: left;
+			padding-left: 2em;
+			font-weight: bold;
+		}
+
+		.allotmentTableCenterAlignDataCol {
+			text-align: center;
+			padding-left: 2em;
+		}
+
+		.allotmentTableCenterAlignHeader {
+			text-align: center;
+			padding-left: 2em;
+			font-weight: bold;
+		}
+	</style>
+}
+
+@section scripts
+{
+	@Scripts.Render("~/scripts/vms")
+	<script src="~/Scripts/jquery.maskedinput.min.js"></script>
+	<script type="text/javascript">
+
+		var salaryRateAccumulator = {strVal: ""};
+		var serviceRateAccumulator = {strVal: ""};
+		
+		ko.extenders.uppercase = function(target, option) {
+			target.subscribe(function(newValue) {
+				target(newValue.toUpperCase());
+			});
+			return target;
+		};
+		
+	var dialogOptions = {
+		autoOpen: false,
+		height: 800,
+		width: 700,
+		buttons: {
+			"Add": function() {
+				vm.newCon().errors.showAllMessages();
+				if (vm.newCon().isValid()) {
+					//console.log(ko.toJSON(self.Consultant()));
+					$.ajax({
+						url: '@Url.Action("Create", "Consultants")',
+							data: ko.toJSON(vm.newCon),
+							contentType: 'application/json; charset=utf-8',
+							dataType: 'json',
+							error: function() {
+								/*alert("something went wrong");*/
+								throw new Error("Error in Add Consultant Dialog");
+							},
+							success: function(newsubconid) {
+								$.ajax({
+									url: '@Url.Action("GetById", "Consultants")',
+									data:  {id:newsubconid.id},
+									contentType: 'application/json; charset=utf-8',
+									dataType: 'json',
+									error: function() {
+										//alert("New SubCon insert failed");
+										throw new Error("Error inserting new Consultant");
+									},
+									success: function(data){
+										vm.suppData.SubConsultants.push(new SubCon(data));
+										//vm.contractData.SubConsultants.push(new SubCon(data));
+									}
+								});									
+							},
+							type: 'POST'
+						});
+						$(this).dialog('close');
+					}
+				},
+				"Cancel": function() {
+					$(this).dialog('close');
+				}
+			}
+		};
+
+		newSubConsultantDialog = $('#quickAddConsultantDialog').dialog(dialogOptions);
+			
+		function removeTableRow(accumulator, idx)
+		{
+			var parser = new DOMParser();
+			
+			var doc = parser.parseFromString(accumulator.strVal, 'text/html');
+			var doc2 = document.createElement("table");
+			var tableBody = document.createElement("tbody");
+			doc2.appendChild(tableBody);
+			var rows = doc.getElementsByTagName("tr");
+			for( i = 0; i < rows.length; i++)
+			{
+				if(i != idx)
+					tableBody.appendChild(rows[i]);
+			}
+			accumulator.strVal = doc2.innerHTML;
+		}
+
+		ko.validation.init({ insertMessages: false });
+
+		var nextSuppNo = function(suppNo) {
+			//get last digits
+			var re = /(\d+)(?!.*\d)/;
+			var num = re.exec(suppNo);
+			if (!suppNo) {
+				return '1';
+			} else if (num === null) {
+				return suppNo + ' 1';
+			} else {
+				var newNum = parseInt(num[0], 10) + 1;
+				var guess = suppNo.replace(re, newNum);
+				return guess;
+			}
+		}
+
+		var filterflag;
+		filterflag = '0';
+		var flagnumber;
+		flagnumber = 0;
+
+		var SuppData = function(data, ceiling, contractCode) {
+
+			var self = this;
+			var t1SvcsCeiling = data && data.T1SvcsCeiling && data.T1SvcsCeiling.toFixed(2);
+			var t1FixedFeeMax = data && data.T1FixedFeeMax && data.T1FixedFeeMax.toFixed(2);
+			var tempHOOverhead = data && data.HomeOfficeOverheadRateMax && data.HomeOfficeOverheadRateMax.toFixed(2);
+			var tempFCCM = data && data.FCCM && data.FCCM.toFixed(2);
+			var t2SvcsCeiling = data && data.T2SvcsCeiling && data.T2SvcsCeiling.toFixed(2);
+			var t2FixedFeeMax = data && data.T2FixedFeeMax && data.T2FixedFeeMax.toFixed(2);
+			var tempFSOverhead = data && data.FieldServiceOverheadRateMax && data.FieldServiceOverheadRateMax.toFixed(2);
+			var tempMultiplier = data && data.Multiplier && data.Multiplier.toFixed(2);
+
+			self.ContractCode = ko.observable(contractCode);
+
+			self.SuppNo = ko.observable().extend({ required: { params: true, message: '*'}});
+
+			//These two are needed for validations
+			self.ContractType = ko.observable(data.ContractType);
+			self.AgreementType = ko.observable(data.AgreementType);
+
+			self.ContractCeiling = ko.observable(ceiling ? ceiling.toFixed(2) : ''); //validations called further down
+			self.ContractCeilingOri = ceiling ? ceiling.toFixed(2) : '';
+			self.ContractCeilingChanged = ko.computed(function() {
+				return !(self.ContractCeiling() === self.ContractCeilingOri);
+			});
+
+			self.T1SvcsCeiling = ko.observable(t1SvcsCeiling || '').extend({ number: true});
+			self.T1SvcsCeilingOri = self.T1SvcsCeiling() ? self.T1SvcsCeiling() : '';
+			self.T1SvcsCeilingChanged = ko.computed(function() {
+				return !(self.T1SvcsCeiling() === self.T1SvcsCeilingOri);
+			});
+
+			self.T1FixedFeeMax = ko.observable(t1FixedFeeMax ? t1FixedFeeMax : '').extend({ 
+				number: true, 
+				lessThan: {
+					params: self.T1SvcsCeiling,
+					message: "Fixed Fee Max must be less than Services Ceiling"
+				}
+			});
+			self.T1FixedFeeMaxOri = self.T1FixedFeeMax() ? self.T1FixedFeeMax() : '';
+			self.T1FixedFeeMaxChanged = ko.computed(function() {
+				return !(self.T1FixedFeeMax() === self.T1FixedFeeMaxOri);
+			});
+			
+			self.T2SvcsCeiling = ko.observable(t2SvcsCeiling ? t2SvcsCeiling : '').extend({ number: true });
+			self.T2SvcsCeilingOri = self.T2SvcsCeiling() ? self.T2SvcsCeiling() : '';
+			self.T2SvcsCeilingChanged = ko.computed(function() {
+				return !(self.T2SvcsCeiling() === self.T2SvcsCeilingOri);
+			});
+
+			self.T2FixedFeeMax = ko.observable(t2FixedFeeMax ? t2FixedFeeMax : '').extend({ 
+				number: true, 
+				lessThan: {
+					params: self.T2SvcsCeiling,
+					message: "Fixed Fee Max must be less than Services Ceiling"
+				}
+				});
+			self.T2FixedFeeMaxOri = self.T2FixedFeeMax() ? self.T2FixedFeeMax() : '';
+			self.T2FixedFeeMaxChanged = ko.computed(function() {
+				return !(self.T2FixedFeeMax() === self.T2FixedFeeMaxOri);
+			});
+
+			self.HomeOfficeOverheadRateMax = ko.observable(tempHOOverhead ? tempHOOverhead : ''); //validations called further down
+			self.HomeOfficeOverheadRateMaxOri = self.HomeOfficeOverheadRateMax() ? self.HomeOfficeOverheadRateMax() : '';
+			self.HomeOfficeOverheadRateMaxChanged = ko.computed(function() {
+				return !(self.HomeOfficeOverheadRateMax() === self.HomeOfficeOverheadRateMaxOri);
+			});
+
+			self.FieldServiceOverheadRateMax = ko.observable(tempFSOverhead ? tempFSOverhead : ''); //validations called further down
+			self.FieldServiceOverheadRateMaxOri = self.FieldServiceOverheadRateMax() ? self.FieldServiceOverheadRateMax() : '';
+			self.FieldServiceOverheadRateMaxChanged = ko.computed(function() {
+				return !(self.FieldServiceOverheadRateMax() === self.FieldServiceOverheadRateMaxOri);
+			});
+
+			self.FCCM = ko.observable(tempFCCM ? tempFCCM : '').extend({ number: true, max: 999 });
+			self.FCCMOri = self.FCCM() ? self.FCCM() : '';
+			self.FCCMCHanged = ko.computed(function() {
+				return !(self.FCCM() === self.FCCMOri);
+			});
+
+			self.Multiplier = ko.observable(tempMultiplier ? tempMultiplier : ''); //validations called further down
+			self.MultiplierOri = self.Multiplier() ? self.Multiplier() : '';
+			self.MultiplierChanged = ko.computed(function() {
+				return !(self.Multiplier() === self.MultiplierOri);
+			});
+			
+			self.CompletionDate = ko.observable().extend({
+				date: true,
+				required: {params: true, message: 'Completion Date is required'},
+				properDateFormat: true,
+				properDateRange: true
+			});
+
+
+			self.CompletionDate.subscribe(function (newValue) {
+				$('#CompletionDate').datepicker('option', 'minDate', new Date(newValue));
+			});
+
+			self.CompletionDate('@ViewBag.EstimatedCompletionDate');
+
+			self.SuppAgreementDate = ko.observable().extend({ 
+				date: true, 
+				required: { params: true, message: 'Supplemental Agreement Date is required'},
+				properDateFormat: true,
+				properDateRange: true
+			});
+
+			self.SuppAgreementDate.subscribe(function (newValue) {
+				$('#SuppAgreementDate').datepicker('option', 'minDate', new Date(newValue));
+			});
+
+			self.SalaryRates = ko.observableArray();
+			self.ServiceRates = ko.observableArray();
+			self.T1Allotments = ko.observableArray();
+			self.T2Allotments = ko.observableArray();
+			self.SubConsultants = ko.observableArray();
+			data.ContractSubConsultants.forEach(function(e, i, a) {
+				self.SubConsultants.push(ko.observable(new SubCon(e)));
+			});
+
+			self.Remarks = ko.observable();
+
+			//added a few validators later to delay first evaluation
+			
+			self.TitleSum = ko.computed(function() { // called down here to let T1 & T2 SvcCeilings initilize
+
+				var t1 = Number(self.T1SvcsCeiling());
+				var t2 = Number(self.T2SvcsCeiling());
+				
+				if(self.ContractCeiling.isModified && !self.ContractCeiling.isModified())
+					self.ContractCeiling.isModified(true);
+
+				if (!isNaN(t1) && !isNaN(t2)) {
+					return (t1 + t2);
+				} else if ((!isNaN(t1)) && (isNaN(t2))) {
+					return t1;
+				} else if (isNaN(t1) && (!isNaN(t2))) {
+					return t2;
+				} else return 0;
+			});
+			self.ContractCeiling.extend({
+				number: true,
+				required: { params: true, message: 'Contract Ceiling is required' },
+				equalNumbers: {
+					params: self.TitleSum,
+					onlyIf: function() {
+						return ((self.T1SvcsCeiling() !== '' && self.T1SvcsCeiling() !== undefined) || (self.T2SvcsCeiling() !== '' && self.T2SvcsCeiling() !== undefined));
+					},
+					message: "Service Ceilings must add up to Contract Ceiling"
+				}
+			});
+			self.HomeOfficeOverheadRateMax.extend({ 
+				number: true,
+				required: {
+					onlyIf:
+							function () { 
+								return self.ContractType === 3 && (self.FieldServiceOverheadRateMax() === '' || self.FieldServiceOverheadRateMax() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+							}
+					, message: 'OverheadRateMax required'
+				}
+			});
+			self.FieldServiceOverheadRateMax.extend({ 
+				number: true,
+				required: {
+					onlyIf:
+							function () { 
+								return self.ContractType === 3 && (self.HomeOfficeOverheadRateMax() === '' || self.HomeOfficeOverheadRateMax() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+							}
+					, message: 'OverheadRateMax or Multiplier required'
+				}
+			});
+			self.Multiplier.extend({ 
+				number: true,
+				required: {
+					onlyIf:
+							function () { 
+								return self.ContractType === 3 && (self.HomeOfficeOverheadRateMax() === '' || self.HomeOfficeOverheadRateMax() === undefined) && (self.FieldServiceOverheadRateMax() === '' || self.FieldServiceOverheadRateMax() === undefined);
+							}
+					, message: 'OverheadRateMax or Multiplier required'
+				}
+			});
+			
+			self.SubConT1CeilingTotal = ko.computed(function() {
+				var subConTotals = self.SubConsultants().map(function(c) {
+					return Number(ko.unwrap(c).T1Services());
+				});
+				var grandTotal = 0;
+				subConTotals.forEach(function(e, i, a) {
+					if (!isNaN(e)) {
+						grandTotal += e;
+					}
+				});
+
+				return grandTotal;
+			});
+
+			self.SubConT2CeilingTotal = ko.computed(function() {
+				var subConTotals = self.SubConsultants().map(function(c) {
+					return Number(ko.unwrap(c).T2Services());
+				});
+				var grandTotal = 0;
+				subConTotals.forEach(function(e, i, a) {
+					if (!isNaN(e)) {
+						grandTotal += e;
+					}
+				});
+
+				return grandTotal;
+			});
+			
+			//Buttons and default value stuff
+
+			self.ConsultantHOOverhead = ko.observable();
+			self.ConsultantHOOverheadExists = ko.computed(
+				function() {
+					if (vm && vm.contractData.Consultant.HOOverhead) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantHOOverhead = function(newValue) {
+				if (newValue) {
+					self.HomeOfficeOverheadRateMax(self.Consultant().HOOverhead);
+				}
+			};
+			self.ConsultantFCCM = ko.observable();
+			self.ConsultantFCCMExists = ko.computed(
+				function() {
+					if (vm && vm.contractData.Consultant.FCCM) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantFCCM = function(newValue) {
+				if (newValue) {
+					self.FCCM(self.Consultant().FCCM);
+				}
+			};
+			self.ConsultantFSOverhead = ko.observable();
+			self.ConsultantFSOverheadExists = ko.computed(
+				function() {
+					if (vm && vm.contractData.Consultant.FSOverhead) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantFSOverhead = function(newValue) {
+				if (newValue) {
+					self.FieldServiceOverheadRateMax(self.Consultant().FSOverhead);
+				}
+			};
+			self.ConsultantMultiplier = ko.observable();
+			self.ConsultantMultiplierExists = ko.computed(
+				function() {
+					if (vm && vm.contractData.Consultant.Multiplier) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantMultiplier = function(newValue) {
+				if (newValue) {
+					self.Multiplier(self.Consultant().Multiplier);
+				}
+			};
+
+			self.errors = ko.validation.group(this, { deep: true, observable: false });
+			self.isValid = function() {
+				return self.errors().length < 1;
+			};
+		};
+
+		var WorkType = function(data) {
+			var self = this;
+
+			self.WorkTypeId = data.WorkTypeId;
+			self.WorkTypeName = data.WorkTypeName;
+		};
+
+		var SalaryRate = function(data, existing) {
+			var self = this;
+			self.existingRecord = existing;
+
+			self.JobTitle = ko.observable(data ? data.JobTitle : '').extend({ required: { params: true, message: 'Job Title required' } });
+			self.RateMin = ko.observable(data ? data.RateMin.toFixed(2) : '').extend({ 
+				number: true, 
+				min: 0,
+				required: { params: true, message: 'Rate Minimum required' }
+			});
+			self.RateMinOri = data ? data.RateMin.toFixed(2) : null;
+			self.RateMinChanged = ko.computed(function() {
+				if (self.existingRecord === true) {
+					return !(self.RateMin() === self.RateMinOri);
+				} else {
+					return false;
+				}
+			});
+
+			self.RateMax = ko.observable(data ? data.RateMax.toFixed(2) : '').extend({ 
+				number: true,
+				greaterThan: { params: self.RateMin, message: 'RateMax must be larger than RateMin'},
+				required: { params: true, message: 'Rate Maximum required' } });
+			self.RateMaxOri = data ? data.RateMax.toFixed(2) : null;
+			self.RateMaxChanged = ko.computed(function() {
+				if (self.existingRecord === true) {
+					return !(self.RateMax() === self.RateMaxOri);
+				} else {
+					return false;
+				}
+			});
+			self.PendingDelete = ko.observable();
+		};
+
+		var ServiceRate = function(data, existing) {
+			var self = this;
+			self.existingRecord = existing;
+
+			self.ServiceName = ko.observable(data ? data.ServiceName : '').extend({ required: { params: true, message: 'Service Name Required' } });
+			self.RateMin = ko.observable(data ? data.RateMin.toFixed(2) : '').extend({ 
+				number: true, 
+				min: 0,
+				required: { params: true, message: 'Rate Minimum required' }
+			});
+			self.RateMinOri = data ? data.RateMin.toFixed(2) : null;
+			self.RateMinChanged = ko.computed(function() {
+				if (self.existingRecord === true) {
+					return !(self.RateMin() === self.RateMinOri);
+				} else {
+					return false;
+				}
+			});
+
+			self.RateMax = ko.observable(data ? data.RateMax.toFixed(2) : '').extend({ 
+				number: true,
+				greaterThan: { params: self.RateMin, message: 'RateMax must be larger than RateMin'},
+				required: { params: true, message: 'Rate Maximum required' } });
+			self.RateMaxOri = data ? data.RateMax.toFixed(2) : null;
+			self.RateMaxChanged = ko.computed(function() {
+				if (self.existingRecord === true) {
+					return !(+self.RateMax() === +self.RateMaxOri);
+				} else {
+					return false;
+				}
+			});
+
+			self.PendingDelete = ko.observable();
+		};
+
+		var Allotment = function(data, oriAllotments) {
+			var self = this;
+
+			self.Func = ko.observable(data ? data.FunctionNumber : '');
+			self.FAP = ko.observable(data ? data.FederalAidProjectNumber : '');
+			self.FundingPriority = ko.observable('').extend({ number: true });
+			self.FedPct = ko.observable(data ? (data.FederalPercent).toFixed(2) : '');
+			self.StatePct = ko.observable(data ? (data.StatePercent).toFixed(2) : '');
+			self.StateAidPct = ko.observable(data ? (data.StateAidPercent * 100).toFixed(2) : '');
+			self.OtherPct = ko.observable(data ? (data.OtherPercent).toFixed(2) : '');
+			self.AllottedAmount = ko.observable(data ? data.LastAmount : '').extend({ number: true, required: { params: true, message: 'Alloted Amount is required' }, min: 0 });
+			self.AllottedAmountOri = oriAllotments[self.Func() + self.FAP()];
+			self.AllottedAmountChanged = ko.computed(function() {
+				return !(self.AllottedAmount() === self.AllottedAmountOri);
+			});
+		};
+
+		var SubCon = function(data) {
+			var self = this;
+			//self.Name = ko.observable(data.SubConsultant ? data.SubConsultant.Name : '').extend({
+			//	params: true, message: 'SubConsultant Name is required' 
+			//});
+			self.Name = ko.observable(data.SubConsultant ? data.SubConsultant.Name : data.Name ? data.Name : '').extend({
+				params: true, required: true, message: 'SubConsultant Name is required', 
+				uppercase: true
+			});
+			self.Consultant = ko.observable(data ? data.SubConsultant : '').extend({
+				params: true, message: 'Consultant is required'
+			});
+			self.PrimaryContactFirstName = ko.observable(data.PrimaryContactFirstName ? data.PrimaryContactFirstName : '');
+			self.PrimaryContactLastName = ko.observable(data.PrimaryContactLastName ? data.PrimaryContactLastName : '');
+			self.ConsultantId = ko.observable(data && data.SubConsultant ? data.SubConsultant.ConsultantId : data.ConId ? data.ConId : '')
+			self.HasConsultant = ko.computed(function() {
+				if (self.Consultant())
+					return true;
+				else return false;
+			});
+			self.filterFlag = ko.observable(false);
+			self.TaxId = ko.observable(data.SubConsultant ? data.SubConsultant.TaxId : data.TaxId ? data.TaxId : '');
+			self.SeqNo = ko.observable(data.SeqNo ? data.SeqNo : '');
+			self.ContractCeiling = ko.observable(data && data.ContractCeiling && data.ContractCeiling.toFixed(2)); // validation called below
+			self.ContractCeilingOri = self.ContractCeiling ? self.ContractCeiling : '';
+			self.ContractCeilingChanged = ko.computed(function() {
+				return !(+self.ContractCeiling() === +self.ContractCeilingOri);
+			});
+			self.T1Services = ko.observable(data.T1SvcsCeiling).extend({ number: true });
+			self.T1ServicesOri = self.T1Services ? self.T1Services : '';
+			self.T1ServicesChanged = ko.computed(function() {
+				return !(+self.T1Services() === +self.T1ServicesOri);
+			});
+			self.T1FixedFee = ko.observable(data.T1FixedFee).extend({ number: true });
+			self.T1FixedFeeOri = self.T1FixedFee ? self.T1FixedFee : '';
+			self.T1FixedFeeChanged = ko.computed(function() {
+				return !(+self.T1FixedFee() === +self.T1FixedFeeOri);
+			});
+			self.HomeOfficeOverhead = ko.observable(data.HomeOfficeOverheadRateMax ? data.HomeOfficeOverheadRateMax : data.HOOverhead).extend({
+				number: true,
+				max: 999,
+				required: {
+					onlyIf:
+						function() { // 3 is ContractType ID ~ Cost Plus
+							return SuppData.ContractType === 3 && (self.FieldServiceOverhead() === '' || self.FieldServiceOverhead() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+						},
+					message: 'OverheadRateMax required'
+				}
+			});
+			self.HomeOfficeOverheadOri = self.HomeOfficeOverhead ? self.HomeOfficeOverhead : '';
+			self.HomeOfficeOverheadChanged = ko.computed(function() {
+				return !(+self.HomeOfficeOverhead() === +self.HomeOfficeOverheadOri);
+			});
+			self.FCCM = ko.observable(data.FCCM).extend({ number: true, max: 999 });
+			self.FCCMOri = self.FCCM ? self.FCCM : '';
+			self.FCCMChanged = ko.computed(function() {
+				return !(+self.FCCM() === +self.FCCMOri);
+			});
+
+			self.T2Services = ko.observable(data.T2SvcsCeiling).extend({ number: true });
+			self.T2ServicesOri = self.T2Services ? self.T2Services : '';
+			self.T2ServicesChanged = ko.computed(function() {
+				return !(+self.T2Services() === +self.T2ServicesOri);
+			});
+			self.T2FixedFee = ko.observable(data.T2FixedFee).extend({ number: true });
+			self.T2FixedFeeOri = self.T2FixedFee ? self.T2FixedFee : '';
+			self.T2FixedFeeChanged = ko.computed(function() {
+				return !(+self.T2FixedFee() === +self.T2FixedFeeOri);
+			});
+			self.FieldServiceOverhead = ko.observable(data.FieldServiceOverheadRateMax ? data.FieldServiceOverheadRateMax : data.FSOverhead).extend({ 
+				number: true, 
+				max: 999,
+				required: {
+					onlyIf:
+						function() { // 3 is ContractType ID ~ Cost Plus
+							return SuppData.ContractType === 3 && (self.HomeOfficeOverhead() === '' || self.HomeOfficeOverhead() === undefined) && (self.Multiplier() === '' || self.Multiplier() === undefined);
+						},
+					message: 'OverheadRateMax required'
+				}
+			});
+			self.FieldServiceOverheadOri = self.FieldServiceOverhead ? self.FieldServiceOverhead : '';
+			self.FieldServiceOverheadChanged = ko.computed(function() {
+				return !(+self.FieldServiceOverhead() === +self.FieldServiceOverheadOri);
+			});
+			self.Multiplier = ko.observable(data.Multiplier).extend({ 
+				number: true, 
+				max: 999,
+				required: {
+					onlyIf:
+						function() { // 3 is ContractType ID ~ Cost Plus
+							return SuppData.ContractType === 3 && (self.FieldServiceOverhead() === '' || self.FieldServiceOverhead() === undefined) && (self.HomeOfficeOverhead() === '' || self.HomeOfficeOverhead() === undefined);
+						},
+					message: 'OverheadRateMax required'
+				}
+			});
+			self.MultiplierOri = self.Multiplier ? self.Multiplier : '';
+			self.MultiplierChanged = ko.computed(function() {
+				return !(+self.Multiplier() === +self.MultiplierOri);
+			});
+			self.TitleSum = ko.computed(function() { // called down here to let T1 & T2 SvcCeilings initilize
+
+				var t1 = Number(self.T1Services());
+				var t2 = Number(self.T2Services());
+
+				if(self.ContractCeiling.isModified && !self.ContractCeiling.isModified())
+					self.ContractCeiling.isModified(true);
+
+				if (!isNaN(t1) && !isNaN(t2)) {
+					return (t1 + t2);
+				} else if ((!isNaN(t1)) && (isNaN(t2))) {
+					return t1;
+				} else if (isNaN(t1) && (!isNaN(t2))) {
+					return t2;
+				} else return "0.00";
+			});
+			self.ContractCeiling.extend({ //validation called down here for TitleSum
+				number: true,
+				required: { params: true, message: 'Contract Ceiling is required' },
+				equalNumbers: {
+					params: self.TitleSum,
+					onlyIf: function() {
+						return ((self.T1Services() !== '' && self.T1Services() !== undefined) || (self.T2Services() !== '' && self.T2Services() !== undefined));
+					},
+					message: 'Service Ceilings must add up to Contract Ceiling'
+				},
+				max: {
+					params: function() {
+						return SuppData.ContractCeiling();
+					}
+				}
+			});
+
+			self.SalaryRates = ko.observableArray();
+			self.ServiceRates = ko.observableArray();
+
+			if(data.SubConsultantSalaryRates)
+				data.SubConsultantSalaryRates.forEach(function(e, i, a) {
+					self.SalaryRates.push(ko.observable(new SalaryRate(e, true)))
+					});
+			
+			if(data.SubConsultantServiceRates)
+				data.SubConsultantServiceRates.forEach(function(e, i, a) {
+					self.ServiceRates.push(ko.observable(new ServiceRate(e, true)))
+				});
+
+			//Checkboxes and default value stuff
+			self.ConsultantHOOverhead = ko.observable();
+			self.ConsultantHOOverheadExists = ko.computed(
+				function() {
+					if (self.HasConsultant() && self.Consultant().HOOverhead) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantHOOverhead = function(newValue) {
+				if (newValue) {
+					self.HomeOfficeOverhead(self.Consultant().HOOverhead);
+				}
+			};
+			self.ConsultantFCCM = ko.observable();
+			self.ConsultantFCCMExists = ko.computed(
+				function() {
+					if (self.HasConsultant() && self.Consultant().FCCM) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantFCCM = function(newValue) {
+				if (newValue) {
+					self.FCCM(self.Consultant().FCCM);
+				}
+			};
+			self.ConsultantFSOverhead = ko.observable();
+			self.ConsultantFSOverheadExists = ko.computed(
+				function() {
+					if (self.HasConsultant() && self.Consultant().FSOverhead) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantFSOverhead = function(newValue) {
+				if (newValue) {
+					self.FieldServiceOverhead(self.Consultant().FSOverhead);
+				}
+			};
+			self.ConsultantMultiplier = ko.observable();
+			self.ConsultantMultiplierExists = ko.computed(
+				function() {
+					if (self.HasConsultant() && self.Consultant().Multiplier) {
+						return true;
+					}
+					return false;
+				}
+			);
+			self.UseConsultantMultiplier = function(newValue) {
+				if (newValue) {
+					self.Multiplier(self.Consultant().Multiplier);
+				}
+			};
+
+
+			self.addSalaryRate = function() {
+				self.SalaryRates.push(ko.validatedObservable(new SalaryRate()));
+			};
+
+			self.addServiceRate = function() {
+				self.ServiceRates.push(ko.validatedObservable(new ServiceRate()));
+			};
+
+			self.removeSalary = function (line) {
+				self.SalaryRates.remove(function (i) {
+					return i().JobTitle === line.JobTitle;
+				});
+			};
+			self.removeService = function (line) {
+				self.ServiceRates.remove(function (i) {
+					return i().ServiceName === line.ServiceName;
+				});
+			};
+		};
+
+		var NewSuppVM = function() {
+			var self = this;
+
+			self.contractData = @Html.Raw(ViewBag.contractData);
+
+			self.suppData = new SuppData(self.contractData.Contract, self.contractData.Contract.ContractCeiling, self.contractData.Contract.ContractCode);
+
+			self.suppData.SuppNo(nextSuppNo(self.contractData.latestSuppNo));
+
+			self.suppData.SalaryRates([]);
+			self.contractData.Contract.SalaryRates.forEach(function(e, i, a) {
+				self.suppData.SalaryRates.push(ko.validatedObservable(new SalaryRate(e, true)));
+			});
+			self.suppData.ServiceRates([]);
+			self.contractData.Contract.ServiceRates.forEach(function(e, i, a) {
+				self.suppData.ServiceRates.push(ko.validatedObservable(new ServiceRate(e, true)));
+			});
+
+			self.selectedSubCon = ko.observable();
+
+			self.currentSubCon = ko.observable();
+
+			self.newCon = ko.observable(null);
+
+			self.newSubCon = function() {
+				self.newCon(new Consultant());
+				self.newCon().errors = ko.validation.group(self.newCon, { deep: true, observable: false });
+				self.newCon().isValid = function() {
+					return self.newCon().errors().length < 1;
+				};
+				newSubConsultantDialog.dialog('open');
+			};
+
+			self.editSubCon = function(line) {
+				var data = line;
+				self.currentSubCon(new Consultant(data));
+				$('#quickEditConsultantDialog').dialog('open');
+			};
+			//Operations
+
+			var submitError = function(jqXHR, textStatus, errorThrown) {
+				throw new Error("Submit Error");
+			};
+			var submitSuccess = function(data, textStatus, jqXHR) {
+				if (data.Status === 'OK') {
+					window.location = '@Url.Action("Details", "Contracts")/' + self.contractData.Contract.ContractCode;
+				}
+			}
+
+			//check if an allotment has funding priority
+			function allotmentPriority(e, i, a) {
+				var n = Number(e.FundingPriority());
+
+				if (Math.floor(n) === n && n < 100 && n > 0) {
+					return true;
+				}
+				return false;
+			}
+
+			self.submit = function() {
+				var s = self.suppData;
+				if (s.isValid()) {
+					if (s.SubConT1CeilingTotal() <= (Number(s.T1SvcsCeiling()) || 0) && s.SubConT2CeilingTotal() <= (Number(s.T2SvcsCeiling()) || 0)) {
+						$.ajax({
+							url: '@Url.Action("AddSupplemental")',
+							data: ko.toJSON(self.suppData),
+							contentType: 'application/json; charset=utf-8',
+							dataType: 'json',
+							error: submitError,
+							success: submitSuccess,
+							type: 'POST'
+						});
+					} else alert('Subconsultant service ceilings higher than Prime\'s service ceilings');
+				} else {
+					self.suppData.errors.showAllMessages();
+				}
+			};
+
+			@*self.cancel = function(){
+				$.ajax({
+					url: '@Url.Action("Details","Contracts")' + '/' + self.contractData.Contract.ContractCode,
+					contentType: 'application/json; charset=utf-8',
+					dataType: 'json',
+					type: 'GET'
+				})
+
+			};*@
+			
+			self.RateImport = ko.observable().extend({ digit: true });
+
+			self.RateImportClick = function() {
+				if (!self.RateImport) return;
+
+				$.get("@Url.Action("GetRates")", { contractCode: self.RateImport },
+					function(data) {
+						self.suppData.SalaryRates([]);
+						self.suppData.ServiceRates([]);
+
+						if (data.salaryRates) {
+							data.salaryRates.forEach(function(e, i, a) {
+								var sr = new SalaryRate();
+								sr.JobTitle(e.name);
+								sr.RateMin(e.min);
+								sr.RateMax(e.max);
+
+								self.suppData.SalaryRates.push(sr);
+							});
+						}
+						if (data.serviceRates) {
+							data.serviceRates.forEach(function(e, i, a) {
+								var sr = new ServiceRate();
+								sr.ServiceName(e.name);
+								sr.RateMin(e.min);
+								sr.RateMax(e.max);
+
+								self.suppData.ServiceRates.push(sr);
+							});
+						}
+					});
+			};
+
+			self.addSalaryRate = function() {
+				self.suppData.SalaryRates.push(ko.validatedObservable(new SalaryRate(null, false)));
+			};
+
+			self.addServiceRate = function() {
+				self.suppData.ServiceRates.push(ko.validatedObservable(new ServiceRate(null, false)));
+			};
+
+			self.removeSalary = function(idx, line) {
+				self.suppData.SalaryRates.remove(function(i) {
+					if (i().existingRecord === true)
+						return false;
+					return i().JobTitle === line.JobTitle;
+				});
+				//removeTableRow(salaryRateAccumulator, idx());
+			};
+
+			self.removeSubCon = function(line, event) {
+				if(!this.ConsultantId)
+					return
+				self.suppData.SubConsultants.remove(function(i) {
+					return i.ConsultantId === line.ConsultantId;
+				});
+			};
+
+			self.removeService = function(idx, line) {
+				self.suppData.ServiceRates.remove(function(i) {
+					if (i().existingRecord === true)
+						return false;
+					return i().ServiceName === line.ServiceName;
+				});
+				//removeTableRow(serviceRateAccumulator, idx());
+			};
+
+			self.selectedSubCon.subscribe(function(newValue) {
+				if (newValue) {
+					self.addSubCon();
+					$('#selectSubCon').focus().select();
+				}
+			});
+
+			self.addSubCon = function() {
+				if (! self.selectedSubCon())
+					return;
+
+				var dup = self.suppData.SubConsultants().find(function(e) {
+					if (e === self.selectedSubCon())
+						return true;
+					else
+						return false;
+				});
+				if (!dup) {
+					var sc = {SubConsultant: self.selectedSubCon()};
+					sc.SubConsultant.ConsultantId = sc.SubConsultant.ConId;
+					self.suppData.SubConsultants.push(new SubCon(sc));
+					filterflag = self.selectedSubCon().ConId;
+					self.selectedSubCon('');
+				}
+
+			};
+
+			self.removeAllotment = function(line) {
+				self.suppData.T1Allotments.remove(function(i) {
+					return i.Func === line.Func
+						&& i.FAP === line.FAP;
+				});
+				self.suppData.T2Allotments.remove(function(i) {
+					return i.Func === line.Func
+						&& i.FAP === line.FAP;
+				});
+			};
+
+			//utility functions
+
+			self.getAllotments = function() {
+				$.ajax({
+					url: '@Url.Action("AllotmentsList", "AllotmentsLookup")',
+					type: 'POST',
+					dataType: 'json',
+					data: JSON.stringify({
+						jobNo: self.contractData.Contract.JobNo,
+						workTypes: self.contractData.Contract.WorkTypes.map(function(e) {
+							return e.WorkTypeName;
+						})
+					}),
+					contentType: 'application/json; charset=utf-8'
+				}).done(function(data) {
+
+					var oriAllotments = [];
+
+					self.contractData.Contract.ContractAllotments.forEach(function(e, i, a) {
+						oriAllotments[e.Func + e.FAP] = e.AllottedAmt;
+					});
+
+
+					self.suppData.T1Allotments([]);
+					self.suppData.T2Allotments([]);
+					data.t1.forEach(function(e, i, a) {
+						self.suppData.T1Allotments.push(new Allotment(e, oriAllotments));
+					});
+					data.t2.forEach(function(e, i, a) {
+						self.suppData.T2Allotments.push(new Allotment(e, oriAllotments));
+					});
+				});
+			};
+
+			self.getAllotments();
+
+			self.consultantQuery = function(term, callback) {
+				$.ajax({
+					url: '@Url.Action("Search", "Consultants")',
+					type: 'GET',
+					dataType: 'json',
+					data: { term: term }
+				}).done(callback);
+			};
+
+			self.jobQuery = function(term, callback) {
+				$.ajax({
+					url: '@Url.Action("JobSearch", "AllotmentsLookup")',
+					type: 'GET',
+					dataType: 'json',
+					data: { term: term }
+				}).done(callback);
+			};
+
+			self.addRow = function(data, list) {
+				//prevent dupes
+				if (list.indexOf(data) < 0)
+					list.push(data);
+			};
+
+			var handleSubConSalaryRecords = function(subConIndex, rates) {
+				var sc = self.suppData.SubConsultants()[subConIndex];
+
+				sc.SalaryRates([]);
+
+				rates.forEach(function(e, i, a) {
+					var r = new SalaryRate();
+					r.existingRecord = true;
+					r.JobTitle(e.name);
+					r.RateMin(e.min);
+					r.RateMax(e.max);
+
+					sc.SalaryRates.push(ko.observable(r));
+				});
+			};
+
+			var handleSubConServiceRecords = function(subConIndex, rates) {
+				var sc = self.suppData.SubConsultants()[subConIndex];
+
+				sc.ServiceRates([]);
+
+				rates.forEach(function(e, i, a) {
+					var r = new ServiceRate();
+					r.existingRecord = true;
+					r.ServiceName(e.name);
+					r.RateMin(e.min);
+					r.RateMax(e.max);
+
+					sc.ServiceRates.push(ko.observable(r));
+				});
+			};
+
+			self.handleSubConSalaryPaste = function (i, event) {
+				var index = this.dataset.index;
+				handlepaste(this, event.originalEvent, function (e, s) {
+					processpaste(e, s, function (rates) { handleSubConSalaryRecords(Number(index), rates); });
+				});
+				return true;
+			};
+
+			self.handleSubConServicePaste = function (i, event) {
+				var index = this.dataset.index;
+				handlepaste(this, event.originalEvent, function (e, s) {
+					processpaste(e, s, function (rates) { handleSubConServiceRecords(Number(index), rates); });
+				});
+
+				return true;
+			};
+			
+			// two new functions to allow filtering of subconsultants to display only one screen per consultant
+			self.filter = function (consultant) {
+				if(consultant){
+					self.suppData.SubConsultants().map(function(c){
+						var cObj = ko.unwrap(c);
+						cObj.filterFlag(cObj.ConsultantId() == consultant.ConsultantId());
+					});
+				}
+			};
+
+			self.uppercaseValue = function(e, s){
+				alert('from dialog');
+			};
+		};
+
+		var vm = new NewSuppVM();
+		ko.applyBindings(vm);
+
+		$(function() {
+			$( ".date" ).datepicker({
+				changeMonth: true,
+				changeYear: true,
+				maxDate: "+10Y"
+			});
+
+			$('#conSalaryRatePaste').on('paste', function () {
+				handlepaste(this, event, function (e, s) {
+					processpaste(e, s, handleSalary,'salaryRateArray');
+				});
+			});
+
+			$('#conServiceRatePaste').on('paste', function () {
+				handlepaste(this, event, function (e, s) {
+					processpaste(e, s, handleService,'serviceRateArray');
+				});
+			});
+			var handleSalary = function (rates) {
+				//vm.suppData.SalaryRates([]);
+				rates.forEach(function (e, i, a) {
+					var r = new SalaryRate();
+					r.JobTitle(e.name);
+					r.RateMin(e.min);
+					r.RateMax(e.max);
+
+					vm.suppData.SalaryRates.push(ko.observable(r));
+				});
+			};
+
+			var handleService = function (rates) {
+				//vm.suppData.ServiceRates([]);
+				rates.forEach(function (e, i, a) {
+					var r = new ServiceRate();
+					r.ServiceName(e.name);
+					r.RateMin(e.min);
+					r.RateMax(e.max);
+
+					vm.suppData.ServiceRates.push(ko.observable(r));
+				});
+			};
+
+@*
+			$('#quickEditConsultantDialog').dialog({
+				autoOpen: false,
+				height: 800,
+				width: 600,
+				buttons: {
+					"Update": function() {
+						vm.newCon().errors.showAllMessages();
+						if (vm.newCon().isValid()) {
+							//console.log(ko.toJSON(self.Consultant()));
+							$.ajax({
+								url: '@Url.Action("Edit", "Consultants")',
+								data: ko.toJSON(this),
+								contentType: 'application/json; charset=utf-8',
+								dataType: 'json',
+								error: function() {
+									/*alert("something went wrong");*/
+									throw new Error("Error in Edit Supplemental Data Consultant Dialog");
+								},
+								type: 'POST'
+							});
+
+
+							$(this).dialog('close');
+						}
+
+					},
+					"Cancel": function() {
+						$(this).dialog('close');
+					}
+				}
+			});
+*@
+		});
+	</script>
+}
+<div class="generalData">
+	<div>
+		<label for="SuppNo">Supplemental Agreement Number:</label>
+		<input type="text" id="SuppNo" name="SuppNo" size="50" data-bind="selectOnFocus: true, jqAuto: { source: jobQuery, value: suppData.SuppNo, valueProp: 'JobNo', labelProp: 'label', options: { minLength: 2 } }" />
+		<span class="validationMessage" data-bind="validationMessage: suppData.SuppNo"></span>
+	</div>
+	<div>
+		<label for="SuppAgreementDate">Supplemental Agreement Date:</label>
+		<div>
+			<input type="text" id="SuppAgreementDate" name="SuppAgreementDate" class="date" data-bind="value: suppData.SuppAgreementDate" />
+			<span class="validationMessage" data-bind="validationMessage: suppData.SuppAgreementDate"></span>
+		</div>
+	</div>
+	<div>
+		<label for="ContractCeiling">Contract Ceiling:</label>
+		<input class="money" type="text" id="ContractCeiling" name="ContractCeiling" data-bind="moneyvalue: suppData.ContractCeiling, css:{changed: suppData.ContractCeilingChanged}" />
+		@*<span id="ContractCeiling" data-bind="moneytext: contractData.Contract.ContractCeiling"></span>*@
+		<span class="validationMessage" data-bind="validationMessage: suppData.ContractCeiling"></span>
+	</div>
+	<div>
+		<label for="T1SvcsCeiling" style="padding-top: 10px">Title I Services Ceiling:</label>
+		<input class="money" type="text" id="T1SvcsCeiling" name="T1SvcsCeiling" data-bind="moneyvalue: suppData.T1SvcsCeiling, css: {changed: suppData.T1SvcsCeilingChanged}" />
+		@*<span data-bind="moneytext: contractData.Contract.T1SvcsCeiling"></span>*@
+		<span class="validationMessage" data-bind="validationMessage: suppData.T1SvcsCeiling"></span>
+	</div>
+	<div>
+		<label for="T1FixedFeeMax">Title I Fixed Fee Max:</label>
+		<input class="money resetableField" type="text" id="T1FixedFeeMax" name="T1FixedFeeMax" data-bind="moneyvalue: suppData.T1FixedFeeMax, css: {changed: suppData.T1FixedFeeMaxChanged}" />
+		@*<span data-bind="moneytext: contractData.Contract.T1FixedFeeMax"></span>*@
+		<span class="validationMessage" data-bind="validationMessage: suppData.T1FixedFeeMax"></span>
+	</div>
+	<div>
+		<label for="T2SvcsCeiling" style="padding-top: 10px">Title II Services Ceiling:</label>
+		<input class="money resetableField" type="text" id="T2SvcsCeiling" name="T2SvcsCeiling" data-bind="moneyvalue: suppData.T2SvcsCeiling, css: {changed: suppData.T2SvcsCeilingChanged}" />
+		@*<span data-bind="moneytext: contractData.Contract.T2SvcsCeiling"></span>*@
+		<span class="validationMessage" data-bind="validationMessage: suppData.T2SvcsCeiling"></span>
+	</div>
+	<div>
+		<label for="T2FixedFeeMax">Title II Fixed Fee Max:</label>
+		<input class="money resetableField" type="text" id="T2FixedFeeMax" name="T2FixedFeeMax" data-bind="moneyvalue: suppData.T2FixedFeeMax, css: {changed: suppData.T2FixedFeeMaxChanged}" />
+		@*<span data-bind="moneytext: contractData.Contract.T2FixedFeeMax"></span>*@
+		<span class="validationMessage" data-bind="validationMessage: suppData.T2FixedFeeMax"></span>
+	</div>
+	<div>
+		<label for="HomeOfficeOverheadRateMax" style="padding-top: 10px">Home Office Overhead Rate Max:</label>
+		<input type="text" class="resetableField" id="HomeOfficeOverheadRateMax" name="HomeOfficeOverheadRateMax" data-bind="percentvalue: suppData.HomeOfficeOverheadRateMax, css: {changed: suppData.HomeOfficeOverheadRateMaxChanged}" />
+		@*<span data-bind="percenttext: contractData.Contract.HomeOfficeOverheadRateMax"></span>*@
+		<span class="validationMessage" data-bind="validationMessage: suppData.HomeOfficeOverheadRateMax"></span>
+	</div>
+	<div>
+		<label for="FieldServiceOverheadRateMax">Field Service Overhead Rate Max:</label>
+		<input type="text" class="resetableField" id="FieldServiceOverheadRateMax" name="FieldServiceOverheadRateMax" data-bind="percentvalue: suppData.FieldServiceOverheadRateMax, css: {changed: suppData.FieldServiceOverheadRateMaxChanged}" />
+		<span class="validationMessage" data-bind="validationMessage: suppData.FieldServiceOverheadRateMax"></span>
+		@*<span data-bind="percenttext: contractData.Contract.FieldServiceOverheadRateMax"></span>*@
+	</div>
+	<div>
+		<label for="FCCM">FCCM:</label>
+		<input type="text" class="resetableField" id="FCCM" name="FCCM" data-bind="percentvalue: suppData.FCCM, css: {changed: suppData.FCCMChanged}" />
+		<span class="validationMessage" data-bind="validationMessage: suppData.FCCM"></span>
+		@*<span data-bind="percenttext: contractData.Contract.FCCM"></span>*@
+	</div>
+	<div>
+		<label for="Multiplier">Multiplier:</label>
+		<input type="text" class="resetableField" id="Multiplier" name="Multiplier" data-bind="numeralvalue: suppData.Multiplier, css: {changed: suppData.MultiplierChanged}" />
+		<span class="validationMessage" data-bind="validationMessage: suppData.Multiplier"></span>
+		@*<span data-bind="numeraltext: contractData.Contract.Multiplier"></span>*@
+	</div>
+	<div>
+		<label for="CompletionDate">Scheduled Completion Date:</label>
+		<input type="text" class="resetableField" id="CompletionDate" name="CompletionDate" class="date" data-bind="value: suppData.CompletionDate" />
+		<span class="validationMessage" data-bind="validationMessage: suppData.CompletionDate"></span>
+	</div>	
+</div>
+
+<div>
+	<div class="inlineTableTitle">
+		<h3>Salary Rates</h3>
+		<a href="#" data-bind="click: addSalaryRate">+Add</a>
+	</div>
+		<div>
+			<div id="conSalaryRatePaste" contenteditable>Paste</div>
+		</div>
+	<table>
+		<thead data-bind="visible: suppData.SalaryRates().length > 0">
+			<tr>
+				<td>Job Title</td>
+				<td>Rate Min</td>
+				<td>Rate Max</td>
+				<td></td>
+			</tr>
+		</thead>
+		<tbody data-bind="foreach: suppData.SalaryRates">
+			<tr>
+				<td>
+					<input type="text" data-bind="value: JobTitle, disable: PendingDelete() || existingRecord" /></td>
+				<td>
+					<input class="money" type="text" data-bind="moneyvalue: RateMin, css: {changed: RateMinChanged}, disable: PendingDelete" /></td>
+				<td>
+					<input class="money" type="text" data-bind="moneyvalue: RateMax, css: {changed: RateMaxChanged}, disable: PendingDelete" /></td>
+				<td data-bind="visible: existingRecord">
+					<label>Remove<input type="checkbox" data-bind="checked: PendingDelete"/></label>
+				</td>
+				<td data-bind="visible: !existingRecord">
+					<!--<a href="#" tabindex="-1" data-bind="click: function(data) {$root.removeSalary($index, data);}">Remove</a>-->
+				</td>
+			</tr>
+			<tr>
+				<td><span class="validationMessage" data-bind="validationMessage: JobTitle"></span></td>
+				<td><span class="validationMessage" data-bind="validationMessage: RateMin"></span></td>
+				<td><span class="validationMessage" data-bind="validationMessage: RateMax"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div>
+	<div class="inlineTableTitle">
+		<h3>Service Rates</h3>
+		<a href="#" data-bind="click: addServiceRate">+Add</a>
+	</div>
+		<div>
+			<div class="subConService" id="conServiceRatePaste" contenteditable>Paste</div>
+		</div>
+	<table>
+		<thead data-bind="visible: suppData.ServiceRates().length > 0">
+			<tr>
+				<td>Service Name</td>
+				<td>Rate Min</td>
+				<td>Rate Max</td>
+				<td></td>
+			</tr>
+		</thead>
+		<tbody data-bind="foreach: suppData.ServiceRates">
+			<tr>
+				<td>
+					<input type="text" data-bind="value: ServiceName, disable: PendingDelete() || existingRecord" /></td>
+				<td>
+					<input class="money" type="text" data-bind="moneyvalue: RateMin, css: {changed: RateMinChanged}, disable: PendingDelete" /></td>
+				<td>
+					<input class="money" type="text" data-bind="moneyvalue: RateMax, css: {changed: RateMaxChanged}, disable: PendingDelete" /></td>
+				<td data-bind="visible: existingRecord">
+					<label>Remove<input type="checkbox" data-bind="checked: PendingDelete"/></label>
+				</td>
+				<td data-bind="visible: !existingRecord">
+					<!--<a href="#" tabindex="-1" data-bind="click: function(data) {$root.removeService($index, data);}">Remove</a>-->
+				</td>
+			</tr>
+			<tr>
+				<td><span class="validationMessage" data-bind="validationMessage: ServiceName"></span></td>
+				<td><span class="validationMessage" data-bind="validationMessage: RateMin"></span></td>
+				<td><span class="validationMessage" data-bind="validationMessage: RateMax"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div>
+	<div class="inlineTableTitle">
+		<h3>Allotments</h3>
+		<a href="#" data-bind="click: getAllotments">Reset</a>
+	</div>
+	<div data-bind="visible: suppData.T1Allotments().length > 0">
+		<h4>Title I</h4>
+		<table class="allotment-table">
+			<thead>
+				<tr>
+					<th>Func</th>
+					<th> </th>
+					<th>FAP</th>
+					<th> </th>
+					<th>Fed Percent</th>
+					<th> </th>
+					<th>State Percent</th>
+					<th> </th>
+					<th>State Aid Percent</th>
+					<th> </th>
+					<th>Other Percent</th>
+					<th> </th>
+					<th>Allotted Amount</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: suppData.T1Allotments">
+				<tr>
+					<td data-bind="text: Func"></td>
+					<td> </td>
+					<td data-bind="text: FAP"></td>
+					<td> </td>
+					<td data-bind="percenttext: FedPct"></td>
+					<td> </td>
+					<td data-bind="percenttext: StatePct"></td>
+					<td> </td>
+					<td data-bind="percenttext: StateAidPct"></td>
+					<td> </td>
+					<td data-bind="percenttext: OtherPct"></td>
+					<td> </td>
+					<td><input class="money" type="text" size="12" data-bind="moneyvalue: AllottedAmount, css: {changed: AllottedAmountChanged}" /></td>
+				</tr>
+				<tr>
+					<td><span class="validationMessage" data-bind="validationMessage: Func"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: FAP"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: FedPct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: StatePct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: StateAidPct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: OtherPct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: AllottedAmount"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div data-bind="visible: suppData.T2Allotments().length > 0">
+		<h4>Title II</h4>
+		<table class="allotment-table">
+			<thead>
+				<tr>
+					<th>Func</th>
+					<th> </th>
+					<th>FAP</th>
+					<th> </th>
+					<th>Fed Percent</th>
+					<th> </th>
+					<th>State Percent</th>
+					<th> </th>
+					<th>State Aid Percent</th>
+					<th> </th>
+					<th>Other Percent</th>
+					<th> </th>
+					<th>Allotted Amount</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: suppData.T2Allotments">
+				<tr>
+					<td data-bind="text: Func"></td>
+					<td> </td>
+					<td data-bind="text: FAP"></td>
+					<td> </td>
+					<td data-bind="percenttext: FedPct"></td>
+					<td> </td>
+					<td data-bind="percenttext: StatePct"></td>
+					<td> </td>
+					<td data-bind="percenttext: StateAidPct"></td>
+					<td> </td>
+					<td data-bind="percenttext: OtherPct"></td>
+					<td> </td>
+					<td><input type="text" size="12" data-bind="moneyvalue: AllottedAmount" /></td>
+				</tr>
+				<tr>
+					<td><span class="validationMessage" data-bind="validationMessage: Func"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: FAP"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: FedPct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: StatePct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: StateAidPct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: OtherPct"></span></td>
+					<td></td>
+					<td><span class="validationMessage" data-bind="validationMessage: AllottedAmount"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div id="Subconsultant">
+	<div class="TableFormat">
+		<div>
+			<h3>SubConsultants</h3>
+			<br/>
+			<div>
+				<input type="text" id="selectSubCon" name="selectSubCon" size="50" class="searchBar"
+					data-bind="selectOnFocus: true, jqAuto: { source: consultantQuery, value: selectedSubCon, valueProp: 'data', labelProp: 'label', ignoreBlur: true, options: { minLength: 2, change: function () { return null; } } }" />
+				<span><a href="#" data-bind="click: newSubCon">+New</a></span>
+			</div>
+		</div>
+	</div>
+	<div id="Subconsultantlist" data-bind="visible: suppData.SubConsultants().length">
+		<table style="padding-right: 4em" >
+			<tbody data-bind="foreach: suppData.SubConsultants">
+				<tr>
+						<td><a class="hyperlink" href="#" tabindex="-1" data-bind="click: $parent.filter">Select</a></td>
+						<td><a class="hyperlink" href="#" tabindex="-1" data-bind="click: $parent.removeSubCon">Remove</a></td>
+						<td data-bind="text: TaxId() + '  ' + Name(), css: $parent.subconsultantdiv, attr: { id: 'div-' + TaxId() }"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div data-bind="foreach: suppData.SubConsultants">
+		<div data-bind="if: filterFlag">
+			<div data-bind="attr: { id: 'tab-' + TaxId() }">
+				<table style="border-color: black" >
+					<tbody>
+						<tr>
+							<td style="font-weight: 600" data-bind="text: TaxId() + '  ' + Name()"></td>
+						<tr>
+							<td>Contract Ceiling:</td>
+							<td><input class="money" data-bind="moneyvalue: ContractCeiling"/></td>
+							<td class="validationMessage" data-bind="validationMessage: ContractCeiling"></td>
+						</tr>
+						<tr>
+							<td>Title I Services Ceiling:</td>
+							<td><input class="money" data-bind="moneyvalue: T1Services"/></td>
+							<td class="validationMessage" data-bind="validationMessage: T1Services"></td>
+						</tr>
+						<tr>
+							<td>Title I Fixed Fee Max:</td>
+							<td><input class="money" data-bind="moneyvalue: T1FixedFee @*, disable: vm.contractData.Contract.ContractTypeId === 1*@" /></td>
+							<td class="validationMessage" data-bind="validationMessage: T1FixedFee"></td>
+						</tr>
+						<tr>
+							<td>Title II Services Ceiling:</td>
+							<td><input class="money" data-bind="moneyvalue: T2Services"/></td>
+							<td class="validationMessage" data-bind="validationMessage: T2Services"></td>
+						</tr>
+						<tr>
+							<td>Title II Fixed Fee Max:</td>
+							<td><input class="money" data-bind="moneyvalue: T2FixedFee @*, disable: vm.contractData.Contract.ContractTypeId === 1*@"/></td>
+							<td class="validationMessage" data-bind="validationMessage: T2FixedFee"></td>
+						</tr>
+						<tr>
+							<td>Home Office Overhead Rate Max:</td>
+							<td><input data-bind="percentvalue: HomeOfficeOverhead @*, disable: vm.contractData.Contract.ContractTypeId === 1*@"/></td>
+							<td><input type="button" value="Default" data-bind="click: UseConsultantHOOverhead, visible: ConsultantHOOverheadExists() && vm.contractData.Contract.ContractTypeId !== 1"/></td>
+							<td class="validationMessage" data-bind="validationMessage: HomeOfficeOverhead"></td>
+						</tr>
+						<tr>
+							<td>Field Service Overhead Rate Max:</td>
+							<td><input data-bind="percentvalue: FieldServiceOverhead @*, disable: vm.contractData.Contract.ContractTypeId === 1*@"/></td>
+							<td><input type="button" value="Default" data-bind="click: UseConsultantFSOverhead, visible: ConsultantFSOverheadExists() && vm.contractData.Contract.ContractTypeId !== 1"/></td>
+							<td class="validationMessage" data-bind="validationMessage: FieldServiceOverhead"></td>
+						</tr>
+						<tr>
+							<td>FCCM:</td>
+							<td><input data-bind="percentvalue: FCCM @*, disable: vm.contractData.Contract.ContractTypeId === 1*@"/></td>
+							<td><input type="button" value="Default" data-bind="click: UseConsultantFCCM, visible: ConsultantFCCMExists() && vm.contractData.Contract.ContractTypeId !== 1"/></td>
+							<td class="validationMessage" data-bind="validationMessage: FCCM"></td>
+						</tr>
+						<tr>
+							<td>Multiplier:</td>
+							<td><input data-bind="numeralvalue: Multiplier"/></td>
+							<td><input type="button" value="Default" data-bind="click: UseConsultantMultiplier, visible: ConsultantMultiplierExists()"/></td>
+							<td class="validationMessage" data-bind="validationMessage: Multiplier"></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div>
+					<div class="inlineTableTitle">
+						<h3>Salary Rates</h3>
+						<a href="#" data-bind="click: addSalaryRate">+Add</a>
+					</div>
+
+					<div>
+						<!--<div id="conSalaryRatePaste2">Paste</div>-->
+						<div class="subConSalary" data-bind="attr: { 'data-index': $index }, event: { paste: $root.handleSubConSalaryPaste.bind($element) }" contenteditable>Paste</div>
+					</div>
+
+					<table>
+						<thead data-bind="visible: SalaryRates().length > 0">
+							<tr>
+								<td>JobTitle</td>
+								<td>RateMin</td>
+								<td>RateMax</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody data-bind="foreach: SalaryRates">
+							<tr>
+								<td>
+									<input type="text" data-bind="value: JobTitle" /></td>
+								<td>
+									<input class="money" type="text" data-bind="moneyvalue: RateMin" /></td>
+								<td>
+									<input class="money" type="text" data-bind="moneyvalue: RateMax" /></td>
+								<td><a href="#" tabindex="-1" data-bind="click: $parent.removeSalary">Remove</a></td>
+							</tr>
+							<tr>
+								<td>
+									<span class="validationMessage" data-bind="validationMessage: JobTitle"></span>
+								</td>
+								<td>
+									<span class="validationMessage" data-bind="validationMessage: RateMin"></span>
+								</td>
+								<td>
+									<span class="validationMessage" data-bind="validationMessage: RateMax"></span>
+								</td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div>
+						<div class="inlineTableTitle">
+							<h3>Service Rates</h3>
+							<a href="#" data-bind="click: addServiceRate">+Add</a>
+						</div>
+						<div>
+							<!--<div id="conSalaryRatePaste3">Paste</div> -->
+							<div class="subConSalary" data-bind="attr: { 'data-index': $index }, event: { paste: $root.handleSubConServicePaste.bind($element) }" contenteditable>Paste</div>
+						</div>
+						<table>
+							<thead data-bind="visible: ServiceRates().length > 0">
+								<tr>
+									<td>ServiceName</td>
+									<td>RateMin</td>
+									<td>RateMax</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody data-bind="foreach: ServiceRates">
+								<tr>
+									<td>
+										<input type="text" data-bind="value: ServiceName" /></td>
+									<td>
+										<input class="money" type="text" data-bind="moneyvalue: RateMin" /></td>
+									<td>
+										<input class="money" type="text" data-bind="moneyvalue: RateMax" /></td>
+									<td><a href="#" tabindex="-1" data-bind="click: $parent.removeService">Remove</a></td>
+								</tr>
+								<tr>
+									<td>
+										<span class="validationMessage" data-bind="validationMessage: ServiceName"></span>
+									</td>
+									<td>
+										<span class="validationMessage" data-bind="validationMessage: RateMin"></span>
+									</td>
+									<td>
+										<span class="validationMessage" data-bind="validationMessage: RateMax"></span>
+									</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div>
+	<h3>Remarks</h3>
+	<textarea data-bind="value: suppData.Remarks"></textarea>
+</div>
+<br />
+<input type="button" data-bind="click:submit" value="Submit" />
+<br />
+@Html.ActionLink("Back","Details","Contracts", new {id = ViewBag.contractId}, new { @style = "color:#0066CC;",@class = "hyperlink"})
+@*<button data-bind="click:cancel">cancel</button>*@
+<div id="quickAddConsultantDialog" title="New Sub Consultant">
+	<table data-bind="if: newCon() != null">
+		<tbody>
+			<tr>
+				<td>Name</td>
+				<td>
+					<input id="consultantName" type="text" style="text-transform: uppercase" data-bind="value: newCon().Name" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().Name" ></td>
+			</tr>
+			<tr>
+				<td>Tax Id</td>
+				<td>
+					<input type="text" data-bind="value: newCon().TaxId" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().TaxId"></td>
+			</tr>
+			<tr>
+				<td>Seq No</td>
+				<td>
+					<input type="text" data-bind="value: newCon().SeqNo" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().SeqNo"></td>
+			</tr>
+			<tr>
+				<td>Primary Contact First Name</td>
+				<td>
+					<input type="text" data-bind="value: newCon().PrimaryContactFirstName" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().PrimaryContactFirstName"></td>
+			</tr>
+			<tr>
+				<td>Primary Contact Last Name</td>
+				<td>
+					<input type="text" data-bind="value: newCon().PrimaryContactLastName" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().PrimaryContactLastName"></td>
+			</tr>
+			<tr>
+				<td>Address</td>
+				<td>
+					<input type="text" data-bind="value: newCon().PhysicalAddress" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().PhysicalAddress"></td>
+			</tr>
+			<tr>
+				<td>City</td>
+				<td>
+					<input type="text" data-bind="value: newCon().City" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().City"></td>
+			</tr>
+			<tr>
+				<td>State</td>
+				<td>
+					<input type="text" data-bind="value: newCon().State" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().State"></td>
+			</tr>
+			<tr>
+				<td>Zip</td>
+				<td>
+					<input type="text" data-bind="value: newCon().PostalCode" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().PostalCode"></td>
+			</tr>
+			<tr>
+				<td>Country</td>
+				<td>
+					<input type="text" data-bind="value: newCon().CountryCode" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().CountryCode"></td>
+			</tr>
+			<tr>
+				<td>Email Address</td>
+				<td>
+					<input type="text" data-bind="value: newCon().EmailAddress" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().EmailAddress"></td>
+			</tr>
+			<tr>
+				<td>Home Office Overhead</td>
+				<td>
+					<input type="text" data-bind="percentvalue: newCon().HomeOfficeOverheadRateMax" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().HomeOfficeOverheadRateMax"></td>
+			</tr>
+			<tr>
+				<td>FCCM</td>
+				<td>
+					<input type="text" data-bind="percentvalue: newCon().FCCM" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().FCCM"></td>
+			</tr>
+			<tr>
+				<td>Field Service Overhead</td>
+				<td>
+					<input type="text" data-bind="percentvalue: newCon().FieldServiceOverheadRateMax" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().FieldServiceOverheadRateMax"></td>
+			</tr>
+			<tr>
+				<td>Multiplier</td>
+				<td>
+					<input type="text" data-bind="numeralvalue: newCon().Multiplier" /></td>
+				<td class="validationMessage" data-bind="validationMessage: newCon().Multiplier"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

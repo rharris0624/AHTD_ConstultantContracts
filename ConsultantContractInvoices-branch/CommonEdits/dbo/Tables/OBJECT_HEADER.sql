@@ -1,0 +1,36 @@
+﻿CREATE TABLE [dbo].[OBJECT_HEADER] (
+    [OBJ]    CHAR (3)  NOT NULL,
+    [O_DESC] CHAR (20) NOT NULL,
+    CONSTRAINT [PK_OBJECT_HEADER] PRIMARY KEY CLUSTERED ([OBJ] ASC)
+);
+
+
+GO
+GRANT UPDATE
+    ON OBJECT::[dbo].[OBJECT_HEADER] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[OBJECT_HEADER] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT INSERT
+    ON OBJECT::[dbo].[OBJECT_HEADER] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT DELETE
+    ON OBJECT::[dbo].[OBJECT_HEADER] TO [JournalEntry_DOTNETAD]
+    AS [dbo];
+
+
+GO
+GRANT SELECT
+    ON OBJECT::[dbo].[OBJECT_HEADER] TO [VoucherVendors]
+    AS [dbo];
+

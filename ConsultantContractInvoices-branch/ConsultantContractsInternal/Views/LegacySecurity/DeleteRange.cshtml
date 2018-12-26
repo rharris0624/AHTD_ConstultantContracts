@@ -1,0 +1,50 @@
+﻿@model List<ConsultantContractsInternal.Models.LegacySecurity>
+
+@{
+    ViewBag.Title = "DeleteRangeConfirmed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>DeleteRangeConfirmed</h2>
+
+<h3>Are you sure you want to delete this/these?</h3>
+<fieldset>
+    <legend>Budgets</legend>
+    <div class="datagrid" id="budgetData">
+        <table class="homepagetable" id="assignedBudgetsTable">
+            <thead>
+                <tr>
+                    <th>
+                        <label>User Id</label>
+                    </th>
+                    <th>
+                        <label>Role Id</label>
+                    </th>
+                    <th>
+                        <label>Resource Id</label>
+                    </th>
+                </tr>
+            </thead>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td class="RoleId">
+                    @Html.DisplayFor(modelItem => item.RoleId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ResourceId)
+                </td>
+            </tr>
+        }
+        </table>
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="DeleteRange" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

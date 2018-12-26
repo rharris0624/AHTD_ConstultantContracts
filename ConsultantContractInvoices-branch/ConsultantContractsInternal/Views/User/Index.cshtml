@@ -1,0 +1,65 @@
+@model IEnumerable<ConsultantContractsInternal.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            EmployeeNumber
+        </th>
+        <th>
+            FirstName
+        </th>
+        <th>
+            LastName
+        </th>
+        <th>
+            Budget
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            ApplicationSecurities
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.UserId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
+        </td>
+        <td>
+			@item.EmployeeNumber
+        </td>
+        <td>
+			@item.FirstName
+        </td>
+        <td>
+			@item.LastName
+        </td>
+        <td>
+			@item.Budget
+        </td>
+        <td>
+			@item.Status
+        </td>
+        <td>
+			@(item.ApplicationSecurities == null ? "None" : item.ApplicationSecurities.Count.ToString())
+        </td>
+    </tr>
+}
+
+</table>
+
+

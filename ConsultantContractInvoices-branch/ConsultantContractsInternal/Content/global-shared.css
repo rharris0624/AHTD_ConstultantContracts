@@ -1,0 +1,181 @@
+﻿html
+{
+	padding: 0;
+	margin: 0;
+}
+body
+{
+	font-family: 'Segoe UI', Verdana, Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+    background: #EAEFF2;
+}
+header, nav, article, footer, address, hgroup
+{
+	display: block;
+}
+form
+{
+	margin: 0;
+	padding: 0;
+}
+h1
+{
+	color: #333333;
+	font-size: 32px;
+	font-weight: normal;
+}
+header {
+    background: #6A7990;
+}
+header h1
+{
+	margin: 0;
+	padding: 0;
+    color: #fcfcfc;
+}
+h2
+{
+	color: #333333;
+	font-size: 24px;
+	font-weight: normal;
+	margin: 8px 0;
+}
+h3
+{
+	color: #333333;
+	font-size: 20px;
+	font-weight: normal;
+	margin: 6px 0;
+}
+a
+{
+	color: #0066CC;
+	text-decoration: none;
+}
+a:hover
+{
+	text-decoration: underline;
+}
+a img
+{
+	border: 0 none transparent;
+}
+footer
+{
+	font-size: 10px;
+	text-align: center;
+	color: #666666;
+}
+fieldset
+{
+	border-style: none;
+	padding: 0;
+	margin: 8px 0;
+}
+
+header, #content, footer
+{
+	padding: 8px;
+}
+header
+{
+	border-bottom: 1px solid #CCCCCC;
+}
+#content
+{
+	padding: 0 8px;
+}
+#content-wrapper
+{
+	float: left;
+	width: 100%;
+}
+#content-wrapper #content
+{
+	margin-left: 200px;
+	margin-right: 200px;
+}
+#sidebar-left
+{
+	float: left;
+	margin-left: -100%;
+	width: 200px;
+}
+#sidebar-right
+{
+	float: left;
+	margin-left: -200px;
+	width: 200px;
+}
+#sidebar-left-content, #sidebar-right-content
+{
+	padding: 8px;
+}
+
+.linkList h2
+{
+	display: none;
+}
+.linkList h3
+{
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+.linkList ul
+{
+	list-style-type: none;
+	margin: 0;
+	font-size: 14px;
+	padding-left: 16px;
+}
+.linkList ul ul
+{
+	font-size: 12px;
+}
+.linkList a, .linkList a:visited
+{
+	color: #2b3277;
+	text-decoration: none;
+	display: block;
+}
+.linkList a:hover
+{
+	color: #ffc20e;
+}
+
+#breadcrumbs
+{
+	clear: both;
+	display: block;
+	font-size: 12px;
+}
+#table-container
+{
+	clear: both;
+}
+#filters legend
+{
+	color: #999999;
+	font-size: 18px;
+	display: none;
+}
+#filters > span
+{
+	float: left;
+	margin-right: 8px;
+}
+#filters > span label
+{
+	font-size: 14px;
+	display: block;
+}
+#filters > span input
+{
+}
+#filters-button-container
+{
+	text-align: right;
+	font-size: 14px;
+	clear: both;
+}

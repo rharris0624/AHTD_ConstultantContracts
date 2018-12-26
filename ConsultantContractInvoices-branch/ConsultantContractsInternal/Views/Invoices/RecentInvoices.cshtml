@@ -1,0 +1,92 @@
+﻿@using System.Security.Cryptography.X509Certificates
+@using System.Text
+@using ConsultantContractsInternal.Models
+@using ConsultantContractsInternal.Utilities
+@model List<Invoice>
+
+@{
+    bool isSimple = ViewBag.simple;
+}
+@functions{
+
+    private decimal NullAdd(decimal? d1, decimal? d2)
+    {
+        return d1.GetValueOrDefault() + d2.GetValueOrDefault();
+    }
+
+    private IHtmlString SubmittedBy(Invoice i)
+    {
+        var sb = new StringBuilder();
+        var con = i.Contract.Consultant;
+        sb.Append(Html.ActionLink(con.Name, "Details", "Consultants", new { id = con.ConsultantId }, new { @class = "hyperlink" }));
+        if (i.SubConsultant != null)
+        {
+            var sc = i.SubConsultant;
+            sb.Append(" for ");
+
+            sb.Append(Html.ActionLink(sc.Name, "Details", "Consultants", new { id = sc.ConsultantId }, new { @class = "hyperlink" }));
+        }
+
+        return Html.Raw(sb.ToString());
+    }
+
+    private string ResolveDate(DateTime? dt)
+    {
+        if (dt.HasValue)
+        {
+            return dt.Value.ToShortDateString();
+        }
+        return String.Empty;
+    }
+}
+
+
+<table id="RecentInvoice" class="homepagetable">
+    <thead>
+        <tr>
+            <th style="text-align:center">Date</th>
+            <th style="text-align:center">Invoice No</th>
+            <th style="text-align:center">Amount</th>
+            <th style="text-align:center">Contract</th>
+            <th style="text-align:center">Submitted By</th>
+            @if (!isSimple)
+            {
+                <th style="text-align:center">Prime Approval</th>
+                <th style="text-align:center">Recommended</th>
+                <th style="text-align:center">Approved</th>
+                @*<th style="text-align:center">Paid</th>*@
+                <th style="text-align:center">Status</th>
+                <th style="text-align:center">Audit Reviewed</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+            <td>@i.InvoiceDate.ToShortDateString()</td>
+            <td style="text-align:center">@Html.ActionLink(i.InvoiceNo.ToString(), "Details", new { id = i.InvoiceId }, new { @class = "hyperlink" })</td>
+            <td style="text-align:left">@(NullAdd(i.T1Svcs, i.T2Svcs).ToString("C2"))</td>
+            <td>@Html.Raw(String.Format("{0} - {1}", Html.ActionLink(i.Contract.JobNo, "Details", "Contracts", new { id = i.ContractCode }, new { @class = "hyperlink" }), i.ContractCode.ToString()))</td>
+            <td style="text-align:left">@SubmittedBy(i)</td>
+            @if (!isSimple)
+            {
+                var status = "";
+                var invoiceApproval = i.InvoiceApproval.Where(p => p.InvoiceId == i.InvoiceId && p.ActiveStatus == true);
+                if (invoiceApproval != null && invoiceApproval.Count() > 0)
+                {
+                    status = invoiceApproval.FirstOrDefault().Status;
+                }
+                
+                var _recommendDate = i.InvoiceApproval.Where(p => p.InvoiceId == i.InvoiceId && p.Status == InvoiceStatus.InvoiceRecommended).OrderByDescending(p => p.StatusDate).FirstOrDefault();
+                var _approvedate = i.InvoiceApproval.Where(p => p.InvoiceId == i.InvoiceId && p.Status == InvoiceStatus.InvoiceApproval).OrderByDescending(p => p.StatusDate).FirstOrDefault();
+                <td style="text-align:center">N/A</td>
+                <td style="text-align:center">@(i.InvoiceApproval != null && _recommendDate != null ? _recommendDate.StatusDate.ToString() : "")</td>
+                <td style="text-align:center">@(i.InvoiceApproval != null && _approvedate != null ? _approvedate.StatusDate.ToString() : "")</td>
+                <td style="text-align:center">@(status)</td>
+                <td style="text-align:center">@(i.InvoiceApproval != null ? i.InvoiceApproval.Select(s => s.AuditReview).FirstOrDefault().ToString() : "")</td>                
+            }
+            </tr>
+        }
+    </tbody>
+</table>

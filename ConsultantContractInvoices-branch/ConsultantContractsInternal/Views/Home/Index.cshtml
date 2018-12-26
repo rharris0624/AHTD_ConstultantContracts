@@ -1,0 +1,13 @@
+﻿@using MvcSiteMapProvider.Web.Html
+@{
+	ViewBag.Title = "Home";
+}
+
+<h2>Welcome!</h2>
+<p>
+	Put some text here!
+</p>
+
+<div style="margin: 0 auto; max-width: 800px;">
+	@Html.MvcSiteMap().Menu(false, true, false)
+</div>

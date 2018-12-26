@@ -1,0 +1,635 @@
+﻿@using System.Web.Optimization
+@using ConsultantContractsInternal.Utilities
+@model ConsultantContractsInternal.Models.Contract
+/// <script src="~/Scripts/_references.js"></script>
+
+@{
+    ViewBag.Title = "Details";
+    ViewBag.Location = "../Contracts/Details/" + Model.ContractCode;
+}
+
+@functions{
+
+    private string ResolveDate(DateTime? dt)
+    {
+        if (dt.HasValue)
+        {
+            return dt.Value.ToShortDateString();
+        }
+        return String.Empty;
+    }
+
+    //write money fields
+    private string ResolveMoney(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("$##,##0.00");
+        }
+        return "0.00";
+    }
+    
+    private string ResolvePercent(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("P", System.Globalization.CultureInfo.InvariantCulture);
+        }
+        return "0.000";
+    }
+
+    private string ResolveNumeral(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+        }
+        return "0.000";
+    }
+}
+
+@section styles{
+    <style type="text/css">
+        #contractInfo div {
+            margin: .2em;
+        }
+
+        .titlediv div {
+            color: black;
+        }
+
+        .contract-remark, .supp-remark {
+            height: 5.2em;
+            width: 60em;
+        }
+
+        .funding-priority {
+            width: 2em;
+        }
+
+        .saved {
+            display: none;
+        }
+
+        .saved-suppr {
+            -ms-opacity: 0;
+            opacity: 0;
+        }
+
+        .subCon {
+            list-style: none;
+        }
+
+            .subCon h4 {
+                margin-bottom: 4px;
+            }
+
+        .padding {
+            padding-bottom: .2em;
+        }
+
+        .rightJustify {
+            text-align: right;
+        }
+
+        td, th {
+            padding: 0 35px 0 0;
+        }
+        #File1 {
+             width: 500px;
+        }
+    </style>
+}
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+
+            $.fn.scrollView = function () {
+                return this.each(function () {
+                    $('html, body').animate({
+                        scrollTop: $(this).offset().top
+                    }, 1000);
+                });
+            }
+
+            $('#EditDiv').hidden = true;
+            
+            var contractCode = @Model.ContractCode
+            $('.tab-me').tabs({
+                activate: function (event, ui) {
+                    ui.newTab.scrollView();
+                }
+            });
+            $('.big-accordion').accordion({
+                collapsible: true,
+                active: false,
+                heightStyle: "content"
+            });
+            $('.titlediv').accordion({
+                collapsible: true,
+                active: false
+            });
+
+
+            var jsonload = { "contractCode": contractCode };
+ @*           $.ajax({
+                url: '@Url.Action("loadfile")',
+                data: JSON.stringify(jsonload),
+                dataType: 'json',
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (d) {
+                    if (jQuery.isEmptyObject(d)) {
+                        console.log("Empty Object");
+                    }
+                    else {
+                        console.log(d);
+                        loadFiles(d);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("Ajax Failed!!!");
+                    alert(thrownError);
+
+                }
+            });
+            function loadFiles(data) {
+                var tab = $('<table class="myTableNew2" id="links2"></table>');
+                var thead = $('<thead></thead>');
+                thead.append('<th>Link</th>');
+                thead.append('<th>Size</th>');
+                tab.append(thead);
+                $.each(data, function (i, val) {
+
+                    var trow = $('<tr></tr>');
+                    var plink = '"http://devsp2010srv/"' + val.FileRef;
+                    var splink = '<td><a href=' + '"' + plink + '"' + '>' + val.FileRef + '  </a></td>';
+                    trow.append('<td><a href="http://devsp2010srv/"' + val.FileRef + '>' + val.FileRef + '  </a></td>');
+                    trow.append('<td>' + val.File_x0020_Size + '</td>');
+                    tab.append(trow);
+
+                });
+                $("#UpdatePanel2").html(tab);
+
+                $("#links2 td a").each(function () {
+                    var oldVal = $(this).attr("href");
+                    var newval = $(this).text();
+                    $(this).attr("href", oldVal + newval);
+                });
+            };
+*@
+
+
+            var changePrioirty = function (priority, func, fap, e) {
+
+                $.post('@Url.Action("ChangeFundingPriority")',
+                    {
+                        priority: priority,
+                        contractCode: contractCode,
+                        func: func,
+                        fap: fap
+                    },
+                    function () {
+                        $(e).nextAll('.saved').fadeIn(50).fadeOut(500);
+                    });
+            };
+
+            $.ajax({
+                url: '@Url.Action("GetCommentsByContractCode", new { contractCode = @Model.ContractCode })',
+                    type: 'GET',
+                    dataType: "json",                  
+                }).done(function (data) {
+                    for (var i = 0; i < data.commentsList.length; i++) {                   
+                        $('#CommentsHistory').append("<span style= 'padding:10px;'>" + data.commentsList[i].Comment + " (" + data.commentsList[i].UserId + "  " + data.commentsList[i].DateEntered.substring(7, 6) + "/" + data.commentsList[i].DateEntered.substring(10, 8) + "/" + data.commentsList[i].DateEntered.substring(0, 4) + ")" + "</span> </br>");
+                    }                 
+                });
+                      
+            $('.funding-priority').change(function (e) {
+                $('.saved').stop().hide();
+
+                var n = Number(e.target.value);
+                var func = $(e.target).nextAll('.func')[0].value;
+                var fap = $(e.target).nextAll('.fap')[0].value;
+
+                if (Math.floor(n) === n && n < 100 && n > 0) {
+                    changePrioirty(n, func, fap, e.target);
+                } else if (n === 0) {
+                    changePrioirty(null, func, fap, e.target);
+                }
+            });
+            $('#remarksSubmit').click(function (e) {
+                $('.saved').stop().hide();
+                var text = $(e.target).prevAll('textarea')[0].value;
+                $.post('@Url.Action("SaveRemark")', {
+                    text: text,
+                    contractCode: contractCode
+                }, function (d) {
+                    $(e.target).prevAll('.saved').fadeIn(50).fadeOut(500);
+                });
+            });
+
+
+
+            $('#uploadfile').click(function (e) {
+                //var files = e.target.files;
+                //if ($('#File1').files.length > 0) {
+                //    alert($('#File1').files.length);
+
+                //}
+
+                // Send the file first
+
+                // code below works but problems with session variable...
+
+
+                @*var xhr = new XMLHttpRequest();
+                var fd = new FormData();
+                fd.append("file", document.getElementById('File1').files[0]);
+                xhr.open("POST",'@Url.Action("Preload")', true);
+                xhr.send(fd);
+                xhr.addEventListener("load", function (event) {
+                    alert(event.target.response);
+                }, false);*@
+                // another way to send the file
+                var fd = new FormData();
+                fd.append("file", document.getElementById('File1').files[0]);
+
+                var text = " ";
+                var filen = $('#File1').val();
+                var jobno = '@Model.JobNo';
+                var json = { "contractCode": contractCode, "jobno": jobno, "filen": filen };
+                if (filen == "") {
+                    alert('You need to select a file to upload');
+                }
+                else {
+                $.ajax({  
+                    url: '@Url.Action("Preload2")',  
+                      type: "POST",  
+                      contentType: false, // Not to set any content header  
+                      processData: false, // Not to process data  
+                      data: fd,  
+                      success: function (result) {  
+                          //alert(result);
+                          // adding the second ajax call
+
+                          $.ajax({
+                              url: '@Url.Action("uploadfile")',
+                               data: JSON.stringify(json),
+                               dataType: 'json',
+                               type: 'POST',
+                               contentType: 'application/json; charset=utf-8',
+                               success: function (d) {
+                                   if (jQuery.isEmptyObject(d)) {
+                                       console.log("Empty Object");
+                                   }
+                                   else {
+                                       loadData(d);
+                                   }
+                               },
+                               error: function (xhr, ajaxOptions, thrownError) {
+                                   alert("Ajax Failed!!!");
+                                   alert(thrownError);
+                                   var errData = { "message": json.contractCode + ';' + json.jobno + ';' + json.filen, "status": thrownError };
+                                   $.ajax({
+                                       url: '@Url.Action("ErrorMessage","ErrorPage")',
+                                       data: JSON.stringify(errData),
+                                       dataType: 'json',
+                                       type: 'GET',
+                                       contentType: 'application/json; charset=utf-8'
+                                   })
+                               }
+                           });
+                           },  
+                        error: function (err) {  
+                            alert(err.statusText);  
+                         }  
+                });  
+                $('.saved').stop().hide();
+                    $('#File1').val('');
+                }
+            });
+
+            function loadData(data) {
+                var tab = $('<table class="myTableNew" id="links"></table>');
+                var thead = $('<thead></thead>');
+                thead.append('<th>Link</th>');
+                thead.append('<th>Size</th>');
+                tab.append(thead);
+                $.each(data, function (i, val) {
+                    var trow = $('<tr></tr>');
+                    var plink = '"http://devsp2010srv/"' + val.FileRef;
+                    var splink = '<td><a href=' + '"' + plink + '"' + '>' + val.FileRef + '  </a></td>';
+                    trow.append('<td><a href="http://devsp2010srv/"' + val.FileRef + '>' + val.FileRef + '  </a></td>');
+                    trow.append('<td>' + val.File_x0020_Size + '</td>');
+                    tab.append(trow);
+                });
+                $("#UpdatePanel").html(tab);
+
+                $("#links td a").each(function () {
+                    var oldVal = $(this).attr("href");
+                    var newval = $(this).text();
+                    $(this).attr("href", oldVal + newval);
+                });
+            };
+
+
+            $('.updtAllotmentAmt').click(function (e) {
+                var id = e.target['id'];
+                var i = id.substring(id.lastIndexOf('_')+1, id.length);
+                var x = id.substring(id.lastIndexOf('T')+1,id.lastIndexOf('T')+2);
+                var func = $('#t'+x+'Func_'+i).val();
+                var fap = $('#t'+x+'Fap_'+i).val();
+                var priority = $('#t'+x+'Priority_'+i).val() ? Number($('#t'+x+'Priority_'+i).val()) : 0.00;
+                var amt = $('#t'+x+'AllotmentAmount_'+i).val() ? $('#t'+x+'AllotmentAmount_'+i).val() : 0.00;
+                amt = amt.replace('$','').replace(',','');
+
+
+                $.ajax({
+                    url: '@Url.Action("UpdateContractAllotment")',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify({'contractCode': @Model.ContractCode, 'fap': fap, 'func': func, 'priority': priority, 'amt': amt}),
+                        error: function(e){ alert(e.message);},
+                        type: 'POST'
+                    }).done(function(data) {
+                        if (data.Status === 'OK') {
+                            alert('Allotment updated');
+                            //window.location.href='@Url.Action("Index", "Home")';
+                    } else if (data.Status === "ERROR") {
+                        alert('Allotment update failed');
+                        throw new Error("Submit Recommend Button");
+                    }
+                });
+            });
+
+            $('.updtSubConRates').click(function (e) {
+
+                var id = e.target['id'];
+                var i = id.substring(id.lastIndexOf('_')+1, id.length);
+                var fieldServiceRateMax = unformatPercentage($('#fieldServiceRateMax_'+i).val(), false);
+                var homeOfficeRateMax = unformatPercentage($('#homeOfficeRateMax_'+i).val(), false);
+                var fccm = unformatPercentage($('#FCCMRate_'+i).val(), false);
+                var subConId = $('#subConId_'+i).val();
+                var multiplier = $('#multiplier_' + i).val();
+
+                $.ajax({
+                    url: '@Url.Action("UpdateSubconsultantRates")',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({'contractCode': @Model.ContractCode, 'subConId': subConId, 'fccm': fccm, 
+                        'fieldServiceRateMax': fieldServiceRateMax, 'homeOfficeRateMax': homeOfficeRateMax,
+                        'multiplier': multiplier
+                    }),
+                        error: function(e){ alert(e.message);},
+                        type: 'POST'
+                }).done(function(data) {
+                    if (data.Status === 'OK') {
+                        alert('Allotment updated');
+                        //window.location.href='@Url.Action("Details", "Contracts", new { id = @Model.ContractCode })';
+                        } else if (data.Status === "ERROR") {
+                            alert('Subconsultant rates update failed');
+                            throw new Error("Submit Recommend Button");
+                        }
+                    });
+            });
+
+            $('.supp-remark-save').click(function (e) {
+                $('.saved').stop().hide();
+                var text = $(e.target).prevAll('textarea')[0].value;
+                var supp = $(e.target).prevAll('input[type=hidden]')[0].value;
+                $.post('@Url.Action("SaveRemark", "SuppAgreement")', {
+                    text: text,
+                    contractCode: contractCode,
+                    suppAgreement: supp
+                }, function (d) {
+
+                    $(e.target).prevAll('.saved-suppr').fadeTo(50, 1).fadeTo(500, 0);
+                });
+            });
+            Window.GetJobName('@Model.JobNo', function (data) { $('#JobName').html(data); });
+        });
+    </script>
+}
+
+<h2>Contract Details</h2>
+@if (ViewBag.Permission == "Write")
+{ 
+    <div id="EditDiv">@Html.ActionLink("Edit", "Edit", new { id = Model.ContractCode }, new { @class="hyperlink" })</div>
+    <div>@Html.ActionLink("New Simple Invoice", "AddSimpleInvoice", "Invoices", new { id = Model.ContractCode}, new { @class="hyperlink" })</div>
+}
+<br />
+<div class="tab-me">
+
+    <ul>
+        <li>
+            <a href="#contractInfoTab">General Tab</a></li>
+        <li>
+            <a href="#SalaryRates">Salary Rates</a></li>
+        <li>
+            <a href="#ServicesRates">Services Rates</a></li>
+        <li>
+            <a href="#ContractAllotments">Contract Allotments</a></li>
+        <li>
+            <a href="#Subconsultants">Subconsultants</a></li>
+        <li>
+            <a href="#RecentInvoices">Recent Invoices</a></li>
+        <li>
+            <a href="#SupplementAgreements">Supplemental Agreements</a></li>
+    </ul>
+
+    <div id="contractInfoTab">
+        <hr />
+        <table>
+            <tr>
+                <td class="rightJustify">Contract Code:  </td>
+                <td>@Model.ContractCode</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Job No:  </td>
+                <td>@Model.JobNo</td>
+            </tr>
+            @*<tr>
+                <td class="rightJustify">Job Name:  </td>
+                <td><span id="JobName"></span></td>
+            </tr>*@
+            <tr>
+                <td class="rightJustify">Consultant:  </td>
+                <td>@Html.ActionLink(Model.Consultant.Name, "Details", "Consultants", new { id = Model.Consultant.ConsultantId }, new { @style = "color:#0066CC;" })</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Tax Id: </td>
+                <td>@Model.Consultant.TaxId - @Model.Consultant.SeqNo</td>
+            </tr>
+            <tr>
+                <td class="rightJustify ">Remit To:   </td>
+                <td>@(Model.RemitToCon != null ? Model.RemitToCon.Name : String.Empty)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Contract Status:  </td>
+                <td>@(Model.ContractStatus == "A" ? "Active" : Model.ContractStatus == "I" ? "Inactive" : Model.ContractStatus == "F" ? "Final" : @Model.ContractStatus)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Phase:  </td>
+                <td>Title @(Model.TitlePhase == 3 ? "I & II" : Model.TitlePhase == 0 ? "I" : Model.TitlePhase.AsRomanNumeral())</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Agreement Date:  </td>
+                <td>@Extensions.FormatNullDate(Model.AgreementDate)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Notice Proceed Date:  </td>
+                <td>@Extensions.FormatNullDate(Model.NoticeProceedDate)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Agreement Type:  </td>
+                <td>@Model.AgreementType.AgreementTypeName</td>
+                @if (Model.TaskOrderNo != null)
+                { 
+                    <td class="rightJustify">Task Order:  </td>
+                    <td>@Model.TaskOrderNo</td>
+                }
+            </tr>
+            <tr>
+                <td class="rightJustify">Contract Type:  </td>
+                <td>@Model.ContractType.TypeShortName</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Responsible Division:  </td>
+                <td>@Model.ResponsibleDivision.ShortName</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Type Of Work:  </td>
+                <td>@Model.TypeWorkList()</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Contract Ceiling:  </td>
+                <td>@ResolveMoney(Model.ContractCeiling)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Field Service Overhead Rate Max:  </td>
+                <td>@ResolvePercent(Model.FieldServiceOverheadRateMax)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Home Office Overhead Rate Max:  </td>
+                <td>@ResolvePercent(Model.HomeOfficeOverheadRateMax)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">FCCM:  </td>
+                <td>@ResolvePercent(Model.FCCM)</td>
+            </tr>
+            <tr>
+                <td class="rightJustify">Multiplier:  </td>
+                <td>@ResolveNumeral(Model.Multiplier)</td>
+            </tr>
+        </table>
+
+        <div>
+            <h4>Title I</h4>
+            <div>
+                <div>Title I Service Ceiling: <label class="money">@ResolveMoney(Model.T1SvcsCeiling)</label></div>
+                <div>Title I Fixed Fee Max: <label class="money">@ResolveMoney(Model.T1FixedFeeMax)</label></div>
+            </div>
+        </div>
+
+        <div>
+            <h4>Title II</h4>
+            <div>
+                <div>Title II Services Ceiling: <label class="money">@ResolveMoney(Model.T2SvcsCeiling)</label></div>
+                <div>Title II Fixed Fee Max: <label class="money">@ResolveMoney(Model.T2FixedFeeMax)</label></div>
+            </div>
+        </div>
+
+        <div class="titlediv">
+            <h3>Contract Indirect Cost Rate</h3>
+            <div>
+                <div>Office Overhead Rate Max: <label class="rateAmt">@ResolvePercent(Model.HomeOfficeOverheadRateMax)</label></div>
+                <div>FCCM: <label class="rateAmt">@ResolvePercent(Model.FCCM)</label></div>
+                <div>Field Office Overhead Rate Max: <label class="rateAmt">@ResolvePercent(Model.FieldServiceOverheadRateMax)</label></div>
+                <div>Title II Multiplier: <label class="numericAmt">@ResolveNumeral(Model.Multiplier)</label></div>
+            </div>
+        </div>
+
+        <div>
+            <div>Scheduled Completion Date: @Extensions.FormatNullDate(Model.ScheduledCompletionDate)</div>
+            <span>Completion Date: @Extensions.FormatNullDate(Model.CompletionDate)</span>
+        </div>
+
+        <p />
+    </div>
+
+    <div id="SalaryRates">
+        <hr />
+        <h3>Salary Rates</h3>
+        @Html.Action("SalaryList", new { id = Model.ContractCode })
+        <p />
+    </div>
+
+    <div id="ServicesRates">
+        <hr />
+        <h3>Services Rates</h3>
+        @Html.Action("ServiceList", new { id = Model.ContractCode })
+        <p />
+    </div>
+
+    <div id="ContractAllotments" style="overflow: auto">
+        <hr />
+        <h3>Contract Allotments</h3>
+        @Html.Action("AllotmentList", new { id = Model.ContractCode })
+        <p />
+    </div>
+
+    <div id="Subconsultants" style="overflow: auto">
+        <hr />
+        <h3>Subconsultants</h3>
+        @Html.Action("SubConsultantList", new { id = Model.ContractCode })
+        <p />
+    </div>
+
+    <div id="RecentInvoices" style="overflow: auto">
+        <hr />
+        <h3>Recent Invoices</h3>
+        @Html.Action("RecentInvoices", "Invoices", new { contractCode = Model.ContractCode })
+        <p />
+    </div>
+
+    <div id="SupplementAgreements" style="overflow: auto">
+        <hr />
+        <h3>Supplemental Agreements</h3>
+        @Html.Action("SuppAgreementsByContract", "SuppAgreement", new { id = Model.ContractCode })
+        <p />
+    </div>
+</div>
+<div>   
+    <h2>Remarks</h2>
+     <div id="CommentsHistory"></div>
+    <div>
+        <span class="saved">Saved.</span>
+        <textarea style="width: 100%; max-width: 1200px" class="contract-remark" >@Model.Remarks</textarea>
+        <input type="button" id="remarksSubmit" value="Save Remark" />
+
+
+     <h2> Files Uploaded and Approved</h2>
+            <div id="UpdatePanel2">
+
+            </div>
+     <h2> Files Uploaded and Not Approved Yet</h2>
+            <div id="UpdatePanel">
+            </div>
+          <p>
+        <label for="File1">Select File, then Upload</label>
+         <input id="File1" type="file" accept=".pdf,.xls,.xlsx,.docx" runat="server" title="upldFileBox">
+         </p>
+        <p>
+        <input type="button" id="uploadfile" value="Upload File" />
+        </p>
+    </div>
+    <div>@Html.ActionLink("Home", "Index", "Home", new {}, new { @class = "hyperlink" })</div>
+    <a href="javascript:void(0);" onclick="history.go(-1);") class="hyperlink">Back</a>
+</div>
+
+
+
+

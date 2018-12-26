@@ -1,0 +1,629 @@
+﻿@using ConsultantContractsInternal.Utilities;
+@model ConsultantContractsInternal.Controllers.InvoicesController.SimpleInvoiceVM
+/// <script src="~/Scripts/_references.js"></script>@using System.Linq;
+
+@{
+    ViewBag.Title = "Revise Simple Invoice";
+}
+
+<h2>Revise Simple Invoice</h2>
+
+@section styles{
+    <style>
+        table th {
+            padding-right: 15px;
+        }
+
+        #dateSpan {
+            display: table;
+        }
+
+            #dateSpan .row {
+                display: table-row;
+            }
+
+            #dateSpan .cell {
+                display: table-cell;
+            }
+
+        .TDalignment {
+            text-align: right;
+        }
+    </style>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function formatDate(d) {
+            var x = new Date(d);
+            x = moment(x);
+
+            return x.format('MM/DD/YYYY');
+        }
+
+        ko.validation.init({ insertMessages: false });
+
+        var SimpleInvoiceVM = function(d, i) {
+            var self = this;
+
+            self.ContractCode = ko.observable(d ? d.contractCode : '');
+            self.T1FixedFeeMax = ko.observable(d ? d.T1FixedFeeMax : '');
+            self.T2FixedFeeMax = ko.observable(d ? d.T2FixedFeeMax : '');
+            T1FixedFeeBal = self.T1FixedFeeMax();
+
+            self.InvoiceId = i.InvoiceId;
+            self.ConsultantInvoiceNo = ko.observable(i.ConsultantInvoiceNo);
+         
+            self.InvoiceDate = ko.observable('');
+            self.BeginDate = ko.observable(formatDate(i.BeginDate)).extend({ required: true, properDateFormat: true });
+            self.EndDate = ko.observable(formatDate(i.EndDate)).extend({ required: true, properDateFormat: true });
+            
+            self.T1FixedFee = ko.observable(i.T1FixedFee);
+            self.T2FixedFee = ko.observable(i.T2FixedFee);
+
+            self.T1FixedFeeToDate = d.T1FixedFeeTotal.toFixed(2);
+            self.T2FixedFeeToDate = d.T2FixedFeeTotal.toFixed(2);
+
+            self.T1Allotments = ko.observableArray([]);
+            self.T2Allotments = ko.observableArray([]);
+
+            self.addAllotments = function(allotments, amts) {
+                allotments.forEach(function(e, a, i) {
+
+                    var allotment = e;
+
+                    var amt = amts.find(function(e, a, i) {
+                        return e.Func === allotment.Func && e.FAP === allotment.FAP;
+                    });
+
+                    if (e.IsT1) {
+                        self.T1Allotments.push(ko.observable(new AllotmentPayment(e, amt)));
+                    }
+                    if (e.IsT2) {
+                        self.T2Allotments.push(ko.observable(new AllotmentPayment(e, amt)));
+                    }
+                });
+            };
+
+            self.T1FixedFeeBalance = ko.pureComputed(function() {
+                var curr = Number(self.T1FixedFee());
+                if (curr)
+                    return Number(self.T1FixedFeeMax())- Number(self.T1FixedFeeToDate) - Number(self.T1FixedFee()).toFixed(2);
+                else {
+                    return Number(self.T1FixedFeeMax())- Number(self.T1FixedFeeToDate).toFixed(2);
+                }
+            }).extend({ min: 0 });
+            self.T2FixedFeeBalance = ko.pureComputed(function() {
+                var curr = Number(self.T2FixedFee());
+                if (curr)
+                    return Number(self.T2FixedFeeMax())- Number(self.T2FixedFeeToDate) - Number(self.T2FixedFee()).toFixed(2);
+                else {
+                    return Number(self.T2FixedFeeMax())- Number(self.T2FixedFeeToDate).toFixed(2);
+                }
+            }).extend({min: 0});
+
+
+            self.T1AllotmentPaidSum = ko.pureComputed(function() {
+                if (self.T1Allotments().length > 0)
+                    return self.T1Allotments().reduce(function(p, c) {
+                        return +p + +c().PaidAmt();
+                    }, 0);
+                return 0;
+            });
+
+            self.T2AllotmentPaidSum = ko.pureComputed(function() {
+                if (self.T2Allotments().length > 0)
+                    return self.T2Allotments().reduce(function(p, c) {
+                        return +p + +c().PaidAmt();
+                    }, 0);
+                return 0;
+            });
+
+            self.T1AllotedSum = ko.pureComputed(function() {
+                if (self.T1Allotments().length > 0)
+                    return self.T1Allotments().reduce(function(p, c) {
+                        return +p + +c().AllottedAmt();
+                    }, 0);
+                return 0;
+            }).extend({ min: 0 });
+
+            self.T2AllotedSum = ko.pureComputed(function() {
+                if (self.T2Allotments().length > 0)
+                    return self.T2Allotments().reduce(function(p, c) {
+                        return +p + +c().AllottedAmt();
+                    }, 0);
+                return 0;
+            }).extend({ min: 0 });
+
+            self.T1AllotmentToBePaidSum = ko.pureComputed(function() {
+                if (self.T1Allotments().length > 0)
+                    return self.T1Allotments().reduce(function(p, c) {
+                        var a = +c().AmountToPay();
+                        if (isNaN(a))
+                            return 0;
+                        return +p + a;
+                    }, 0);
+                return 0;
+            });
+
+            self.T2AllotmentToBePaidSum = ko.pureComputed(function() {
+                if (self.T2Allotments().length > 0)
+                    return self.T2Allotments().reduce(function(p, c) {
+                        var a = +c().AmountToPay();
+                        if (isNaN(a))
+                            return 0;
+                        return +p + a;
+                    }, 0);
+                return 0;
+            });
+
+            self.T1TotalBalance = ko.pureComputed(function() {
+                return (self.T1AllotedSum() - self.T1AllotmentPaidSum()) - self.T1AllotmentToBePaidSum();
+            }).extend({ min: 0 });
+            self.T2TotalBalance = ko.pureComputed(function() {
+                return (self.T2AllotedSum() - self.T2AllotmentPaidSum()) - self.T2AllotmentToBePaidSum();
+            }).extend({ min: 0 });          
+            
+            self.T1FixedFee.extend({ number: true, max: Number(self.T1FixedFeeMax())- Number(self.T1FixedFeeToDate) });
+            
+            self.T2FixedFee.extend({ number: true, max: Number(self.T2FixedFeeMax())- Number(self.T2FixedFeeToDate) });
+
+            //self.AllotedSum = ko.pureComputed(function () {
+            //    return self.T1AllotedSum + self.T2AllotedSum;
+            //}).extend({ min: 1 });
+
+            self.errors = ko.validation.group(this, { deep: true, observable: false });
+            
+            self.isValid = function() {
+                return self.errors().length < 1;
+            };
+            self.HomeOfficeOverheadRateMax = ko.observable(d.HomeOfficeOverheadRateMax);
+            self.FieldServiceOverheadRateMax = ko.observable(d.FieldServiceOverheadRateMax);
+        };
+
+        var AllotmentPayment = function(d, amt) {
+            var self = this;
+            
+            self.Func = ko.observable(d ? d.Func : '');
+            self.FAP = ko.observable(d ? d.FAP : '');
+            self.FundingPriority = ko.observable(d ? d.FundingPriority : '');
+            self.AllottedAmt = ko.observable(d ? d.AllottedAmt : '');
+            self.PaidAmt = ko.observable(d ? d.Total : '');
+            self.RemainingAmt = ko.computed(function() {
+                return Number(self.AllottedAmt()) - Number(self.PaidAmt());
+            });
+            self.AmountToPay = ko.observable(amt? amt.AmountToPay:0).extend({ number: true });
+            self.RemainingBalance = ko.pureComputed(function() {
+                var curr = Number(self.AmountToPay());
+                if (curr)
+                    return Number(self.RemainingAmt()) - Number(self.AmountToPay());
+                else {
+                    return self.RemainingAmt();
+                }
+            }).extend({ min: 0 });
+        };
+
+        var ContractSummary = function(d) {
+            var self = this;
+
+            self.contractCode = ko.observable(d ? d.contractCode : '');
+            self.jobNo = ko.observable(d ? d.jobNo : '');
+            self.jobName = ko.observable('');
+            self.consultantId = ko.observable(d ? d.consultantId : '');
+            self.taxId = ko.observable(d ? d.taxId : '');
+            self.consultantName = ko.observable(d ? d.consultantName : '');
+            self.consultantEmail = ko.observable(d ? d.consultantEmail : '');
+            self.primaryContact = ko.observable(d ? d.primaryContact : '');
+            self.totalAmount = ko.observable(d ? d.totalAmount : '');
+            self.T1SvcsCeiling = ko.observable(d ? d.T1SvcsCeiling : '');
+            self.T1FixedFeeMax = ko.observable(d ? d.T1FixedFeeMax : '');
+            self.FCCM = ko.observable(d ? d.FCCM : '');
+            self.HomeOfficeOverheadRateMax = ko.observable(d ? d.HomeOfficeOverheadRateMax : '');
+            self.T2SvcsCeiling = ko.observable(d ? d.T2SvcsCeiling : '');
+            self.T2FixedFeeMax = ko.observable(d ? d.T2FixedFeeMax : '');
+            self.FieldServiceOverheadRateMax = ko.observable(d ? d.FieldServiceOverheadRateMax : '');
+            self.Multiplier = ko.observable(d ? d.Multiplier : '');
+        };
+        
+        var formatMoney = function(num) {
+            if (!num) {
+                return '';
+            }
+            var n = Number(ko.unwrap(num));
+            if (n === 0 || n)
+                return accounting.formatMoney(n);
+
+            return "FORMAT MONEY ERROR";
+        };
+
+        var NewSimpleInvoiceVM = function() {
+            var self = this;
+            self.simpleInvoice = ko.observable();           
+
+            self.invoice = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))
+
+            self.selectedContractCode = ko.observable();
+
+            self.contract = ko.observable();
+
+            self.haveContract = ko.observable(self.contractCode !== null ? true : false);
+
+            self.status = ko.observable('');
+
+            //self.statusList = ["Review","Submitted","Recommended","Approved","Waiting"];
+            self.statusList = ["Review", "Submitted", "Recommended"];
+
+            self.contractLoaded = ko.computed(function() {
+                if (self.contract()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+            self.getContract = function(contractCode) {
+                $.ajax({
+                    url: '@Url.Action("ContractSummary", "Contracts")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { id: self.invoice.ContractCode }
+                }).done(function(data) {
+                    self.simpleInvoice(new SimpleInvoiceVM(data, self.invoice));
+                    self.contract(new ContractSummary(data));
+                    self.getAllotments(contractCode);
+                    setUpDatePicker();
+                    Window.GetJobName(data.jobNo, function (d) {
+                        self.contract().jobName(d);
+                    });
+                });
+            };
+
+            self.getAllotments = function (contractCode) {
+                $.ajax({
+                    url: '@Url.Action("AllotmentsForInvoicing", "Contracts")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { id: self.invoice.ContractCode }
+                }).done(function(data) {
+                    self.simpleInvoice().addAllotments(data, self.invoice.T1Allotments.concat(self.invoice.T2Allotments));
+                    initializeNegativeHandlers();
+                    makeNegativeRed();
+                });
+            };
+
+            if (self.haveContract() === true) {
+                self.getContract(self.contractCode);
+            }
+
+            var submitError = function(jqXHR, textStatus, errorThrown) {
+                alert('internal server error');
+            };
+            var submitSuccess = function(data, textStatus, jqXHR) {
+                if (data.Status === 'OK') {
+                    @*  window.location = '@Url.Action("Details")/{0}'.format(data.id, self.contractCode);*@
+                    window.location.href='@Url.Action("Index", "Home")';
+                } else if (data.Status === "ERROR") {
+                    alert('internal server error - update failed');
+                }
+            }
+
+            self.submit = function() {
+                if (self.simpleInvoice().isValid()) {                    
+                    $.ajax({
+                        url: '@Url.Action("ReviseSimpleInvoice")',                        
+                        data: ko.toJSON(self.simpleInvoice),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        error: submitError,
+                        success: submitSuccess,
+                        type: 'POST'
+                    });
+                }
+                self.simpleInvoice().errors.showAllMessages();
+            };
+        };
+        
+        function setUpDatePicker() {
+            $(".date").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                maxDate: "+10Y"
+            });
+        }
+
+        var vm = new NewSimpleInvoiceVM();
+        ko.applyBindings(vm);
+    </script>
+}
+
+
+<h3>Contract</h3>
+<div>
+    <div style="width: 50%">
+        <table data-bind="if: contractLoaded">
+            <tr>
+                <td class="TDalignment">Invoice No: </td>
+                <td>@Model.InvoiceNo</td>
+            </tr>
+
+            @*<tr>
+                <td class="TDalignment">Consultant Invoice No: </td>
+                <td>@Model.ConsultantInvoiceNo</td>
+            </tr>*@
+
+            <tr>
+                <td class="TDalignment">Consultant Invoice No: </td>
+                <td>
+                    <input type="text" id="ConsultantInvoiceNo" name="ConsultantInvoiceNo" data-bind="value: simpleInvoice().ConsultantInvoiceNo" />
+                </td>
+            </tr>
+
+            <tr>
+                <td class="TDalignment">Contract Code: </td>
+                <td><span data-bind="text: contract().contractCode"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Job No: </td>
+                <td><span data-bind="text: contract().jobNo"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Job: </td>
+                <td><span data-bind="text: contract().jobName"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">TaxId: </td>
+                <td><span data-bind="text: contract().taxId"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Consultant: </td>
+                <td><span data-bind="text: contract().consultantName"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Consultant Email: </td>
+                <td><span data-bind="text: contract().consultantEmail"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Primary Contact: </td>
+                <td><span data-bind="text: contract().primaryContact"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Contract Ceiling: </td>
+                <td><span data-bind="moneytext: contract().totalAmount"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Title I Services Ceiling: </td>
+                <td><span data-bind="moneytext: contract().T1SvcsCeiling"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Title I Fixed Fee Max </td>
+                <td><span></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">FCCM: </td>
+                <td><span data-bind="percenttext: contract().FCCM"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Home Office Overhead Rate Max: </td>
+                <td>
+                    <input data-bind="percentvalue: contract().HomeOfficeOverheadRateMax"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Title II Services Ceiling: </td>
+                <td><span data-bind="moneytext: contract().T2SvcsCeiling"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Title II Fixed Fee Max: </td>
+                <td><span data-bind="moneytext: contract().T2FixedFeeMax"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Field Service Overhead Rate Max: </td>
+                <td>
+                    <input type="text" data-bind="percentvalue: contract().FieldServiceOverheadRateMax"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Multiplier: </td>
+                <td><span data-bind="numeraltext: contract().Multiplier"></span></td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Rejected:</td>
+                <td>@Model.RejectDate</td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Rejected Reason:</td>
+                <td>@Model.RejectReason</td>
+            </tr>
+              <tr>
+                <td class="TDalignment">Change Status:</td>
+                <td>
+                        <select id="status" name="status" data-bind="value:simpleInvoice().status, options: statusList"></select>                 
+                </td>
+            </tr>
+            <tr>
+                <td class="TDalignment">Begin Date:</td>
+                <td>
+                    <input type="text" id="BeginDate" class="date" name="BeginDate" data-bind="value: simpleInvoice().BeginDate" />
+                     <span class="validationMessage" data-bind="validationMessage: simpleInvoice().BeginDate"></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="TDalignment">End Date:</td>
+                <td>
+                    <input type="text" id="EndDate" class="date" name="EndDate" data-bind="value: simpleInvoice().EndDate" />
+                    <span class="validationMessage" data-bind="validationMessage: simpleInvoice().EndDate"></span>
+                </td>
+            </tr>
+            @*<tr>
+                <td>
+                    <span class="validationMessage: simpleInvoice().AllotedSum"></span>
+                </td>
+            </tr>*@
+        </table>
+    </div>
+
+    <div data-bind="if: contractLoaded">
+        <h4>Title I</h4>
+        <!-- ko if: simpleInvoice().T1Allotments().length > 0 -->
+        <table class="allotment-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Allotted Amount</th>
+                    <th>Billed To Date</th>
+                    <th>To Be Paid</th>
+                    <th>Balance Remaining</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right; padding-right: 2em">Billable Title I</td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T1AllotedSum)"></td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T1AllotmentPaidSum)"></td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T1AllotmentToBePaidSum)"></td>
+                    <td class="money" data-bind="moneytext: simpleInvoice().T1TotalBalance"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right; padding-right: 2em">Billable Fixed Fee Title I</td>
+                    <td data-bind="text: formatMoney(contract().T1FixedFeeMax)"></td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T1FixedFeeToDate)"></td>
+                    <td><input class="money" data-bind="moneyvalue: simpleInvoice().T1FixedFee, valueUpdate:'afterkeydown'" /></td>
+                    <td class="money" data-bind="moneytext: simpleInvoice().T1FixedFeeBalance"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="validationMessage" data-bind="text: simpleInvoice().T1FixedFee.error"/></td>
+                    <td><span class="validationMessage" data-bind="text: simpleInvoice().T1FixedFeeBalance.error"/></td>
+                </tr>
+                <!-- ko foreach: simpleInvoice().T1Allotments -->
+                <tr>
+                    <td>FAP:</td>
+                    <td data-bind="text: FAP"></td>
+                    <td>Func:</td>
+                    <td data-bind="text: Func"></td>
+                    <td data-bind="text: formatMoney(AllottedAmt)"></td>
+                    <td data-bind="text: formatMoney(PaidAmt)"></td>
+                    <td><input class="money" data-bind="moneyvalue: AmountToPay, valueUpdate:'afterkeydown'" type="text" /></td>
+                    <td class="money" data-bind="moneytext: RemainingBalance"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="validationMessage" data-bind="text: AmountToPay.error"/></td>
+                    <td><span class="validationMessage" data-bind="text: RemainingBalance.error"/></td>
+                </tr>
+                <!-- /ko -->
+            </tbody>
+        </table>
+        <!-- /ko -->
+        <!-- ko ifnot: simpleInvoice().T1Allotments().length > 0-->
+        <span>No Title I Allotments Found</span>
+        <!-- /ko -->
+
+        <h4>Title II</h4>
+        <!-- ko if: simpleInvoice().T2Allotments().length > 0 -->
+        <table class="allotment-table classname">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Allotted Amount</th>
+                    <th>Billed To Date</th>
+                    <th>To Be Paid</th>
+                    <th>Balance Remaining</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right; padding-right: 2em">Billable Title II</td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T2Alloted)"></td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T2AllotmentPaidSum)"></td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T2AllotmentToBePaidSum)"></td>
+                    <td class="money" data-bind="moneytext: simpleInvoice().T2TotalBalance"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right; padding-right: 2em">Billable Fixed Fee Title II</td>
+                    <td data-bind="text: formatMoney(contract().T2FixedFeeMax)"></td>
+                    <td data-bind="text: formatMoney(simpleInvoice().T2FixedFeeToDate)"></td>
+                    <td>
+                        <input class="money" data-bind="moneyvalue: simpleInvoice().T2FixedFee, valueUpdate:'afterkeydown'" /></td>
+                    <td class="money" data-bind="moneytext: simpleInvoice().T2FixedFeeBalance"></td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="validationMessage" data-bind="text: simpleInvoice().T2FixedFee.error"/></td>
+                    <td><span class="validationMessage" data-bind="text: simpleInvoice().T2FixedFeeBalance.error"/></td>
+                </tr>
+                <!-- ko foreach: simpleInvoice().T2Allotments -->
+                <tr>
+                    <td>FAP:</td>
+                    <td data-bind="text: FAP"></td>
+                    <td>Func:</td>
+                    <td data-bind="text: Func"></td>
+                    <td data-bind="text: formatMoney(AllottedAmt)"></td>
+                    <td data-bind="text: formatMoney(PaidAmt)"></td>
+                    <td><input class="money" data-bind="moneyvalue: AmountToPay, valueUpdate:'afterkeydown'" type="text" /></td>
+                    <td class="money" data-bind="moneytext: RemainingBalance"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="validationMessage" data-bind="text: AmountToPay.error"/></td>
+                    <td><span class="validationMessage" data-bind="text: RemainingBalance.error"/></td>
+                </tr>
+                <!-- /ko -->
+            </tbody>
+        </table>
+        <!-- /ko -->
+        <!-- ko ifnot: simpleInvoice().T2Allotments().length > 0 -->
+        <span>No Title II Allotments Found</span>
+        <!-- /ko -->
+    </div>
+
+    <div style="height: 23px;padding: 4px;text-align: center;">
+    
+         <input type="button" value="Submit" data-bind="click: submit"  class="ButtonStyle"/>
+        
+    </div>
+    <a href="@Url.Action("Index","Home")" class="hyperlink">Home</a>
+    <br />
+    <a href="javascript:void(0);" onclick="history.go(-1);") , class="hyperlink">Back</a>
+</div>
+ 

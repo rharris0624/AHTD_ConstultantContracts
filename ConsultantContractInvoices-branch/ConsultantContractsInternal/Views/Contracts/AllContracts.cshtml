@@ -1,0 +1,57 @@
+﻿@model System.Collections.Generic.List<ConsultantContractsInternal.Models.Contract>
+
+@{
+    ViewBag.Title = "AllContracts";
+    var orderedContracts = Model.Select(c => Tuple.Create(StatusOrder(c.ContractStatus), c)).OrderBy(c => c.Item1).ThenByDescending(c => c.Item2.ContractCode).Select(c => c.Item2);
+}
+@functions
+{
+
+    int StatusOrder(string status)
+    {
+        if (status == "A")
+        {
+            return 0;
+        }
+        if (status == "I")
+        {
+            return 1;
+        }
+        if (status == "F")
+        {
+            return 2;
+        }
+
+        return 3;
+    }
+
+}
+
+<h2>All Contracts for @ViewBag.ConsultantName</h2>
+
+ <div class="datagrid">
+<table>
+    <thead>
+        <tr>
+            <th style="text-align:center">Job No</th>
+            <th style="text-align:center">Contract</th>
+            <th style="text-align:center">Prime Consultant</th>
+            <th style="text-align:center">Contract Status</th>
+            <th style="text-align:center">Schd Completion Date</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: list">
+        @foreach (var item in orderedContracts)
+        {
+            <tr>
+                <td><a href="@Url.Action("Details", new {id = item.ContractCode})">@item.JobNo</a></td>
+                <td>@item.ContractCode</td>
+                <td><a href="@Url.Action("Details", "Consultants", new {id = item.ConsultantId})">@item.Consultant.Name</a></td>
+                <td>@(item.ContractStatus == "A" ? "Active" : item.ContractStatus == "I" ? "Inactive" : item.ContractStatus == "F" ? "Final" : @item.ContractStatus)</td>
+                <td>@(item.ScheduledCompletionDate == null ? "none" : item.ScheduledCompletionDate.Value.ToShortDateString())</td>
+            </tr>
+        }
+    </tbody>
+</table>
+     <div>@Html.ActionLink("Back","Details","Consultants",new {id = ViewBag.consultantId}, new {@class =  "hyperlink"})</div>
+     </div>

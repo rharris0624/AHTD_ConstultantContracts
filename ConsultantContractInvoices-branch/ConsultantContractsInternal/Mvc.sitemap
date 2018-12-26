@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index" >
+    <mvcSiteMapNode title="Contracts" clickable="false">
+      <mvcSiteMapNode title="Consultants" controller="Consultants" action="Index" />
+      <mvcSiteMapNode title="Contracts" controller="Contracts" action="Index">
+        <mvcSiteMapNode title="New Contract" controller="Contracts" action="Create" />
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Invoices" controller="Invoices" action="Index" >
+        <mvcSiteMapNode title="New Simple Invoice" controller="Invoices" action="AddSimpleInvoice" />
+      </mvcSiteMapNode>
+      <!--<mvcSiteMapNode title="Admin" controller="User" action="Index" >-->
+      <mvcSiteMapNode title="Admin" clickable="false" controller="ApplicationSecurity" action="Index">
+        <mvcSiteMapNode title="User Role" controller="ApplicationSecurity" action="Index"/>
+        <mvcSiteMapNode title="Budget Access" controller="LegacySecurity" action="Index"/>
+        <!--<mvcSiteMapNode title="Change Roll" controller="Shared" action="ChangeRole"/>-->
+      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Reports" clickable="false" controller="Report" action="Search">
+        <mvcSiteMapNode title="UnpaidInvoices" clickable="true" controller="Report" action="Search" />
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+    <!--<mvcSiteMapNode title="Other" clickable="false">
+      <mvcSiteMapNode title="Approve Invoices" controller="Invoices" action="ApproveInvoices" />
+      <mvcSiteMapNode title="Recommend Invoices" controller="Invoices" action="RecommendInvoices" />
+      <mvcSiteMapNode title="Rejected Invoices" controller="Invoices" action="RejectedInvoices" />
+    </mvcSiteMapNode>-->
+  </mvcSiteMapNode>
+
+</mvcSiteMap>

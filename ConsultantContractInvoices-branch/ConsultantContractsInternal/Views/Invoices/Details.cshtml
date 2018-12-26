@@ -1,0 +1,682 @@
+﻿@using ConsultantContractsInternal.Controllers
+@using ConsultantContractsInternal.Utilities
+@model ConsultantContractsInternal.Models.Invoice
+
+
+@{
+    ViewBag.Title = "Invoice Details";	
+}
+
+
+@functions{
+
+    private string ResolveDate(DateTime? dt)
+    {
+        if (dt.HasValue)
+        {
+            return dt.Value.ToShortDateString();
+        }
+        return String.Empty;
+    }
+
+    //write money fields
+    private string ResolveMoney(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("C2");
+        }
+        return "0.00";
+    }
+
+    private string ResolvePercent(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("P", System.Globalization.CultureInfo.InvariantCulture);
+        }
+        return "0.000";
+    }
+
+    private string ResolveNumeral(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+        }
+        return "0.000";
+    }
+}
+
+@section styles{
+
+    <style type="text/css">
+        /*div {
+            margin: .2em;
+        }*/
+
+        td, th {
+            padding: 0 35px 0 0;
+        }
+
+        .rightJustify {
+            text-align: right;
+        }
+
+        .leftJustify {
+            text-align: left;
+        }
+
+        .title {
+            margin: 0px;
+            border-spacing: 5px;
+        }
+
+            .title td {
+                text-align: center;
+            }
+
+            .title th {
+                font-size: medium;
+                font-weight: 600;
+            }
+    </style>
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $(function() {
+            $('#rate-stuff').accordion({
+                collapsible: true,
+                active: false
+            });
+
+            var invoiceId = parseInt("@Model.InvoiceId");
+            var state = "@ViewBag.state.ToString()";	
+            var contractCode = @Model.ContractCode;
+            var invoiceNo = @Model.InvoiceNo;
+
+            var submitError = function(jqXHR, textStatus, errorThrown) {
+                //alert('something else went wrong');
+                throw new Error("Submit Error");
+            };
+
+            //if (state === "Submitted") {
+            if (state === "Review") {
+                $('#submit').button()
+                .click(function(evt) {
+                    $.ajax({
+                        url: '@Url.Action("SubmitInvoice", "Invoices")',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        error: submitError,
+                        data: JSON.stringify({'id': @Model.InvoiceId, 'status': state}),
+                        type: 'POST'
+                    }).done(function(data) {
+                        if (data.Status === 'OK') {
+                            window.location.href='@Url.Action("Index", "Home")';
+                    } else if (data.Status === "ERROR") {
+                        //alert('something went wrong');
+                        throw new Error("Submit for Review Error");
+                    }
+                    });
+                });              
+        }
+
+            //if (state === "Recommended") {
+            if (state === "Submitted") {
+                $('#recommend').button()
+                    .click(function(evt) {
+                        $.ajax({
+                            url: '@Url.Action("RecommendInvoice", "Invoices")',
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            error: submitError,
+                            data: JSON.stringify({'id': @Model.InvoiceId}),
+                            type: 'POST'
+                        }).done(function(data) {
+                            if (data.Status === 'OK') {
+                                window.location.href='@Url.Action("Index", "Home")';
+                        } else if (data.Status === "ERROR") {
+                            //alert('something went wrong');
+                            throw new Error("Submit button Error");
+                        }
+                        });
+                    });
+            }
+
+
+            //if (state === "Approved") {
+            if (state === "Recommended") {
+                $('#approve').button()
+                    .click(function(evt) {
+                        $.ajax({
+                            url: '@Url.Action("ApproveInvoice", "Invoices")',
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            data: JSON.stringify({'id': @Model.InvoiceId, 'status': state}),
+                            error: submitError,
+                            type: 'POST'
+                        }).done(function(data) {
+                            if (data.Status === 'OK') {
+                                window.location.href='@Url.Action("Index", "Home")';
+                        } else if (data.Status === "ERROR") {
+                            //alert('something went wrong');
+                            throw new Error("Submit Recommend Button");
+                        }
+                        });
+                    });
+            }
+
+            $('#reject').button()
+                .click(function(evt) {
+                    var reason = prompt('Enter a reason for rejection:', 'Not Recommended');
+                    if (reason === null)return;
+                    $.ajax({
+                        url: '@Url.Action("RejectInvoice", "Invoices")',
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        error: submitError,
+                        data: JSON.stringify({'id': @Model.InvoiceId, 'source': 'list', 'reason': reason }),
+                        type: 'POST'
+                    }).done(function(data) {
+                        if (data.Status === 'OK') {
+                            window.location.href='@Url.Action("Index", "Home")';
+                    } else if (data.Status === "ERROR") {
+                        //alert('something went wrong');
+                        throw new Error("Rejection Button Error");
+                    }
+                    });
+                });
+
+            if (state === "Paid") {
+                $('#audit').button()
+                .click(function(evt) {
+                    alert("Not yet Implemented");
+                });
+            }
+            $('#uploadfile').click(function (e) {
+                //var files = e.target.files;
+                //if ($('#File1').files.length > 0) {
+                //    alert($('#File1').files.length);
+
+                //}
+
+                // Send the file first
+
+                // code below works but problems with session variable...
+
+
+                @*var xhr = new XMLHttpRequest();
+                var fd = new FormData();
+                fd.append("file", document.getElementById('File1').files[0]);
+                xhr.open("POST",'@Url.Action("Preload")', true);
+                xhr.send(fd);
+                xhr.addEventListener("load", function (event) {
+                    alert(event.target.response);
+                }, false);*@
+
+
+
+                // another way to send the file
+                var fd = new FormData();
+                fd.append("file", document.getElementById('File1').files[0]);
+
+                var text = " ";
+                var filen = $('#File1').val();
+                var json = { "contractCode": contractCode, "invoiceNo": invoiceNo, "filen": filen };
+                if (filen == "") {
+
+                    alert('You need to select a file to upload');
+                }
+                else {
+                    $.ajax({  
+                        url: '@Url.Action("Preload2")',  
+                        type: "POST",  
+                        contentType: false, // Not to set any content header  
+                        processData: false, // Not to process data  
+                        data: fd,  
+                        success: function (result) {  
+                            //alert(result);
+                            // adding the second ajax call
+
+                            $.ajax({
+                                url: '@Url.Action("uploadfile")',
+                                data: JSON.stringify(json),
+                                dataType: 'json',
+                                type: 'POST',
+                                contentType: 'application/json; charset=utf-8',
+                                success: function (d) {
+                                    if (jQuery.isEmptyObject(d)) {
+                                        console.log("Empty Object");
+                                    }
+                                    else {
+                                        loadData(d);
+                                    }
+                                },
+                                error: function (xhr, ajaxOptions, thrownError) {
+                                    alert("Ajax Failed!!!");
+                                    alert(thrownError);
+                                    var errData = { "message": json.contractCode + ';' + json.invoiceNo + ';' + json.filen, "status": thrownError };
+                                    $.ajax({
+                                        url: '@Url.Action("ErrorMessage", "ErrorPage")',
+                                            data: JSON.stringify(errData),
+                                            dataType: 'json',
+                                            type: 'GET',
+                                            contentType: 'application/json; charset=utf-8'
+                                        })
+
+                                    }
+                            });
+                        },  
+                        error: function (err) {  
+                            alert(err.statusText);  
+                        }  
+                    });  
+                        $('.saved').stop().hide();
+                        $('#File1').val('');
+                    }
+            });
+            function loadData(data) {
+                var tab = $('<table class="myTableNew" id="links"></table>');
+                var thead = $('<thead></thead>');
+                thead.append('<th>Link</th>');
+                thead.append('<th>Size</th>');
+                tab.append(thead);
+                $.each(data, function (i, val) {
+                    var trow = $('<tr></tr>');
+                    var plink = '"http://devsp2010srv/"' + val.FileRef;
+                    var splink = '<td><a href=' + '"' + plink + '"' + '>' + val.FileRef + '  </a></td>';
+                    trow.append('<td><a href="http://devsp2010srv/"' + val.FileRef + '>' + val.FileRef + '  </a></td>');
+                    trow.append('<td>' + val.File_x0020_Size + '</td>');
+                    tab.append(trow);
+                });
+                $("#UpdatePanel").html(tab);
+
+                $("#links td a").each(function () {
+                    var oldVal = $(this).attr("href");
+                    var newval = $(this).text();
+                    $(this).attr("href", oldVal + newval);
+                });
+            };
+        });
+    </script>
+}
+
+<h2>Invoice Details</h2>
+@{
+    var _ActiveInvoice = Model.InvoiceApproval.Where(i => i.InvoiceId == Model.InvoiceId).Select(s => s).FirstOrDefault();
+    var _recommendInvoice = Model.InvoiceApproval.Where(i => i.InvoiceId == Model.InvoiceId && i.Status == InvoiceStatus.InvoiceRecommended).Select(s => s).OrderByDescending(s => s.StatusDate).FirstOrDefault();
+    var _approveInvoice = Model.InvoiceApproval.Where(i => i.InvoiceId == Model.InvoiceId && i.Status == InvoiceStatus.InvoiceApproval).Select(s => s).OrderByDescending(s => s.StatusDate).FirstOrDefault();
+    var _rejectInvoice = Model.InvoiceApproval.Where(i => i.InvoiceId == Model.InvoiceId && i.Status == InvoiceStatus.InvoiceRejected && i.ActiveStatus == true).Select(s => s).OrderByDescending(s => s.StatusDate).FirstOrDefault();
+    var _submittedInvoice = Model.InvoiceApproval.Where(i => i.InvoiceId.Equals(Model.InvoiceId) && i.Status.Equals(InvoiceStatus.InvoiceSubmitted) && i.ActiveStatus.Equals(true)).Select(s => s).OrderByDescending(s => s.StatusDate).FirstOrDefault();
+    //JL40985  2/20/2017  Do not show the Recommended and Approved Date/User if the invoice status is currently "Rejected".
+    if (_rejectInvoice != null)
+    {
+        _recommendInvoice = null;
+        _approveInvoice = null;
+    }
+}
+
+<table>
+    <tr>
+        <td class="rightJustify">Contract Code: </td>
+        <td>@Html.ActionLink(Model.ContractCode.ToString(), "Details", "Contracts", new { id = Model.ContractCode }, null) </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Job No: </td>
+        <td>@Model.Contract.JobNo </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Consultant: </td>
+        <td>@Html.ActionLink(Model.Contract.Consultant.Name, "Details", "Consultants", new { id = Model.Contract.ConsultantId }, null) </td>
+    </tr>
+    @if (Model.SubConsultant != null)
+    {
+        <tr>
+            <td class="rightJustify">For: </td>
+            <td>@Html.ActionLink(Model.SubConsultant.Name, "Details", "Consultants", new { id = Model.SubConsultantId }) </td>
+        </tr>
+    }
+    <tr>
+        <td class="rightJustify">Invoice No: </td>
+        <td>@Model.InvoiceNo </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Consultant Job No: </td>
+        <td> @Model.ConsultantJobNo </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Consultant Invoice No: </td>
+        <td>@Model.ConsultantInvoiceNo </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Invoice Date: </td>
+        <td>@Model.InvoiceDate.ToShortDateString() </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Begin Date: </td>
+        <td>@Model.BeginDate.ToShortDateString() </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">End Date: </td>
+        <td>@Model.EndDate.ToShortDateString() </td>
+    </tr>
+    @if (@ViewBag.state.ToString() == "Approved" || @ViewBag.state.ToString() == "Paid")
+    { 
+        <tr>
+            <td class="rightJustify">Voucher No: </td>
+            <td>@(Model.InvoiceApproval != null && Model.InvoiceApproval.Count() > 0 ? Model.InvoiceApproval.FirstOrDefault().VoucherNo : "") </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Voucher Date: </td>
+            <td>@(Model.InvoiceApproval != null && Model.InvoiceApproval.Count() > 0 ? ResolveDate(Model.InvoiceApproval.FirstOrDefault().VoucherDate) : "") </td>
+        </tr>
+    }
+    @if (!Model.PrimeInvoice)
+    {
+        <tr>
+            <td class="rightJustify">Prime Invoice: </td>
+            <td>@Model.PrimeInvoice </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Prime Approval: </td>
+            <td>@Model.PrimeApproval </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Prime Approval User: </td>
+            <td>@Model.PrimeApprovalBy </td>
+        </tr>
+    }
+    <tr>
+        <td class="rightJustify">Recommend User: </td>
+        <td>@(_recommendInvoice != null ? _recommendInvoice.UserID : "") </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Recommend Date:  </td>
+        <td>@(_recommendInvoice != null ? _recommendInvoice.StatusDate.ToShortDateString() : "") </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Approved User:  </td>
+        <td>@(_approveInvoice != null ? _approveInvoice.UserID : "") </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Approved Date: </td>
+        <td>@(_approveInvoice != null ? _approveInvoice.StatusDate.ToShortDateString() : "") </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Audit Review User: </td>
+        <td>@(_submittedInvoice != null ? _submittedInvoice.UserID : "") </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Audit Review Date: </td>
+        <td>@(_submittedInvoice != null ? _submittedInvoice.StatusDate.ToShortDateString() : "") </td>
+    </tr>
+    <tr>
+        <td class="rightJustify">Status: </td>
+        <td>@(ViewBag.state)</td>
+    </tr>
+    @if (!Model.FieldServiceOverheadRateMax.Equals(null))
+    { 
+    <tr>
+        <td class="rightJustify">Field Service Overhead Rate Max: </td>
+        <td>@ResolvePercent(Model.FieldServiceOverheadRateMax)</td>
+    </tr>
+    }
+    @if (!Model.HomeOfficeOverheadRateMax.Equals(null))
+    { 
+    <tr>
+        <td class="rightJustify">Home Office Overhead Rate Max: </td>
+        <td>@ResolvePercent(Model.HomeOfficeOverheadRateMax)</td>
+    </tr>
+    }
+    @if (!Model.FCCM.Equals(null))
+    {
+    <tr>
+        <td class="rightJustify">FCCM: </td>
+        <td>@ResolvePercent(Model.FCCM)</td>
+    </tr> 
+    }
+    @if (Model.Multiplier.Equals(null))
+    {
+    <tr>
+        <td class="rightJustify">Multiplier: </td>
+        <td>@ResolveNumeral(Model.Multiplier)</td>
+    </tr>
+    }
+</table>
+
+<div data-bind="if: contractLoaded">
+    <h4>Title I</h4>
+    @if (Model.InvoicePayments.Any(i => i.IsT1()))
+    {
+        <table class="allotment-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Allotted Amount</th>
+                    <th>Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Title I Ceiling</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T1SvcsCeiling)</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T1Svcs)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Title I Fixed Fee</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T1FixedFeeMax)</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T1FixedFee)</td>
+                </tr>
+                @foreach (var p in Model.InvoicePayments.Where(ip => ip.IsT1()))
+                {
+                    <tr>
+                        <td>FAP:</td>
+                        <td>@p.FAP</td>
+                        <td>Func:</td>
+                        <td data-bind="text: Func">@p.Func</td>
+                        <td></td>
+                        <td class="rightJustify">@ResolveMoney(p.Amount)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <span>No Title I Allotments Found</span>
+    }
+    <h4>Title II</h4>
+    @if (Model.InvoicePayments.Any(i => i.IsT2()))
+    {
+        <table class="allotment-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>Allotted Amount</th>
+                    <th>Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Title II Ceiling</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T2SvcsCeiling)</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T2Svcs)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Title II Fixed Fee Title</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T2FixedFeeMax)</td>
+                    <td class="rightJustify">@ResolveMoney(Model.T2FixedFee)</td>
+                </tr>
+                @foreach (var p in Model.InvoicePayments.Where(ip => ip.IsT2()))
+                {
+                    <tr>
+                        <td>FAP:</td>
+                        <td>@p.FAP</td>
+                        <td>Func:</td>
+                        <td data-bind="text: Func">@p.Func</td>
+                        <td class="rightJustify">@ResolveMoney(p.Amount)</td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <span>No Title II Allotments Found</span>
+    }
+</div>
+
+<div style="text-align: center; padding: 2px;">
+
+    @if (ViewBag.state == InvoicesController.InvoiceState.Review && ViewBag.WriteAccess)
+    {
+        <a id="submit" class="button approve-button" href="#">Submit</a>
+        <a id="reject" href="#" class="button reject-button">Reject</a>
+    }
+
+    @if (ViewBag.state == InvoicesController.InvoiceState.Submitted && ViewBag.WriteAccess)
+    {
+        <a id="recommend" class="button approve-button" href="#">Recommend</a>
+        <a id="reject" href="#" class="button reject-button">Reject</a>
+    }
+
+    @if (ViewBag.state == InvoicesController.InvoiceState.Recommended && ViewBag.Role != "Recommend" && ViewBag.WriteAccess)
+    {
+        <a id="approve" class="button approve-button" href="#">Approve</a>
+        <a id="reject" href="#" class="button reject-button">Reject</a>
+    }
+
+    @if (ViewBag.state == InvoicesController.InvoiceState.waitingtobePaid)
+    {
+        @*<a id="waiting" class="button" href="#">Waiting To Be Paid</a>
+        <a id="reject" href="#" class="button reject-button">Reject</a>*@
+    }
+
+    @if (ViewBag.state == InvoicesController.InvoiceState.Paid)
+    {
+        <a id="audit" href="#">Audit</a>
+    }
+
+    @if (ViewBag.state == InvoicesController.InvoiceState.Rejected)
+    {
+        @*<a id="submit" class="button approve-button" href="#">Submit</a>
+        <a id="reject" href="#" class="button reject-button">Reject</a>*@
+    }
+</div>
+
+<div id="rate-stuff">
+    <h3>Salary Rates</h3>
+    @{if (Model != null && Model.Contract != null && Model.Contract.SalaryRates.Count() > 0)
+      {
+        <table style="height: 48px; display: table; width: 100%; text-align: center;">
+            <thead>
+                <tr>
+                    <th>Job Title </th>
+                    <th>Min Rate </th>
+                    <th>Max Rate </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var i in Model.Contract.SalaryRates)
+                {
+                    <!-- ko foreach: Model. -->
+                    <tr>
+                        <td>@i.JobTitle</td>
+                        <td>@i.RateMin</td>
+                        <td>@i.RateMax</td>
+                    </tr>
+                }
+            </tbody>
+        </table>	
+      }
+      else
+      {<span style="height: 48px; display: table; width: 100%; text-align: center;">No Salary Rates are found</span>}
+    }
+
+</div>
+
+<div>
+    @*      <h3>Title 1</h3>*@
+    <table class="title">
+        <thead>
+            <tr>
+                <th>Title I</th>
+                <th>Service Ceiling</th>
+                <th>Fixed Fee Max</th>
+                <th>FCCM</th>
+                <th>Home Office Overhead Rate Max</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="leftJustify"></td>
+                <td class="leftJustify">@ResolveMoney(Model.T1SvcsCeiling)</td>
+                <td class="leftJustify">@ResolveMoney(Model.T1FixedFeeMax)</td>
+                <td class="leftJustify">@ResolvePercent(Model.FCCM)</td>
+                <td class="leftJustify">@ResolvePercent(Model.HomeOfficeOverheadRateMax)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="title">
+        <thead style="margin: 2px;">
+            <tr>
+                <th>Title II</th>
+                <th>Service Ceiling</th>
+                <th>Fixed Fee Max</th>
+                <th>Field Service Overhead Rate Max</th>
+                <th>Multiplier</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="leftJustify"></td>
+                <td class="leftJustify">@ResolveMoney(Model.T2SvcsCeiling)</td>
+                <td class="leftJustify">@ResolveMoney(Model.T2FixedFeeMax)</td>
+                <td class="leftJustify">@ResolvePercent(Model.FieldServiceOverheadRateMax)</td>
+                <td class="leftJustify">@ResolveNumeral(Model.Multiplier)</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+<div>   
+    <h2> Files Uploaded and Approved</h2>
+        <div id="UpdatePanel2">
+
+        </div>
+    <h2> Files Uploaded and Not Approved Yet</h2>
+        <div id="UpdatePanel">
+        </div>
+        <p>
+    <label for="File1">Select File, then Upload</label>
+        <input id="File1" type="file" accept=".pdf,.xls,.xlsx,.docx" runat="server" title="upldFileBox">
+        </p>
+    <p>
+    <input type="button" id="uploadfile" value="Upload File" />
+    </p>
+</div>
+<div>@Html.ActionLink("Home", "Index", "Home", new {}, new {@class =  "hyperlink"})</div>
+<a href="javascript:void(0);" onclick="history.go(-1);" class="hyperlink">Back</a>

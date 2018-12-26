@@ -1,0 +1,17 @@
+﻿@model string[][]
+@*
+Accepts a string[][] for a model where the first index is the order and the 
+first element of inside array is the link that it should go to and the second
+ element of the isnside array is the display text on the link.
+
+This is using SharedFunctions PagerArray.
+
+The style will be in the common.css file.
+*@
+<div class="pager">
+@foreach (string[] stArray in Model)
+{
+    string current = stArray[1].Equals(ViewBag.CurrentPage+"")?"current-page":"";
+    <a class="pager-link @current" href="@stArray[0]">@stArray[1]</a>
+}
+</div>

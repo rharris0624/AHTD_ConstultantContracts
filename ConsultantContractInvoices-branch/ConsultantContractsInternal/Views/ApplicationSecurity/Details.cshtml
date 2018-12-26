@@ -1,0 +1,37 @@
+﻿@model ConsultantContractsInternal.Models.ApplicationSecurity
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>RoleListVm</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.ApplicationId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ApplicationId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.UserId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.RoleId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.RoleId)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index", new { userId = @Model.UserId })
+</p>

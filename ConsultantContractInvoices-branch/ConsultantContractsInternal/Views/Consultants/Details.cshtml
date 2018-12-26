@@ -1,0 +1,225 @@
+﻿@model ConsultantContractsInternal.Models.Consultant
+@using System.Web.Optimization
+@using System.Web.Mvc.Html
+
+@{
+    ViewBag.Title = Model.Name + " Details";
+}
+
+@section styles{
+
+    <style type="text/css">
+        div {
+            margin: .2em;
+        }
+
+        .section {
+            margin-top: 1em;
+        }
+
+        .saved {
+            display: none;
+        }
+
+        table td {
+            padding: 0 10px 0 0;
+            text-align: left;
+        }
+
+        .rightJustify {
+            text-align: right;
+        }
+    </style>
+}
+
+@functions{
+
+    private string ResolveDate(DateTime? dt)
+    {
+        if (dt.HasValue)
+        {
+            return dt.Value.ToShortDateString();
+        }
+        return String.Empty;
+    }
+
+    //write money fields
+    private string ResolveMoney(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("C2");
+        }
+        return "0.00";
+    }
+
+    private string ResolvePercent(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("P", System.Globalization.CultureInfo.InvariantCulture);
+        }
+        return "0.000";
+    }
+
+    private string ResolveNumeral(Decimal? n)
+    {
+        if (n.HasValue)
+        {
+            return n.Value.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+        }
+        return "0.000";
+    }
+}
+
+@section scripts{
+    <script type="text/javascript">
+        //This needs to be here to be on everypage
+        var logErrorUrl = '@Url.Action("LogJavaScriptError", "Home")';
+
+        $(function () {
+            var setInactive = function(setInactive) {
+                var conId = @Model.ConsultantId
+
+                $.post('@Url.Action("SetInactive")',
+					{ setInactive: setInactive, conId: conId },
+					function() {
+					    $('.saved').fadeIn(50).fadeOut(500);
+					});
+            }
+
+            $('#inactive').change(function(e) {
+                $('.saved').stop().hide();
+
+                if (e.target.checked === true) {
+                    setInactive(true);
+                } else {
+                    setInactive(false);
+                }
+            });
+
+            $('#EditConsultant').click(function(event) {
+                window.location.href = '@Url.Action("Edit", new { id = @Model.ConsultantId })';
+            });
+        });
+
+
+        $('[data-mask]').each(function () {
+            console.log('mask');
+            $this = $(this);
+            var mask = $this.attr('data-mask') || 'error...', mask_placeholder = $this.attr('data-mask-placeholder') || 'X';
+
+            $this.mask(mask, {
+                placeholder: mask_placeholder
+            });
+        })
+    </script>
+}
+<div style="white-space:nowrap;">
+    <span style="font-size:20px;font-weight:600;">Consultant</span><br />
+    @if (ViewBag.WriteAccess)
+    {
+        <a id="EditConsultant" href="#" class="button Edit-button">Edit</a>
+    }
+</div>
+
+<table>
+    <tbody>
+        <tr>
+            <td class="rightJustify">Tax Id: </td>
+            <td>@Model.TaxId</td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Sequence No: </td>
+            <td>@Model.SeqNo</td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Name: </td>
+            <td>@Model.Name </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Primary Contact: </td>
+            <td>@String.Format("{0} {1}", Model.PrimaryContactFirstName, Model.PrimaryContactLastName) </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Secondary Contact: </td>
+            <td>@String.Format("{0} {1}", Model.SecondaryContactFirstName, Model.SecondaryContactLastName) </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Physical Address: </td>
+            <td>@Model.PhysicalAddress </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">City: </td>
+            <td>@Model.City </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">State: </td>
+            <td>@Model.State </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Country Code: </td>
+            <td>@Model.CountryCode </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Zip Code: </td>
+            <td>@Model.PostalCode </td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Email Address: </td>
+            <td><a href="mailto:@Model.EmailAddress">@Model.EmailAddress</a></td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Contact Phone:</td>>
+            <td>@Model.ContactPhoneNumber</td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Business Phone:</td>
+            <td>@Model.BusinessPhoneNumber</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="section">
+    <label>Inactive?</label><input id="inactive" type="checkbox" @(Model.Inactive ? "checked=\"checked\"" : string.Empty) /><span class="saved">Saved</span>
+</div>
+
+@*<table>
+        <tr>
+            <th style="text-align:left;">Overhead Rates</th>
+        </tr>
+        <tr>
+            <td class="rightJustify">Home Office Overhead Rate Max: </td>
+            <td>@ResolvePercent(Model.HomeOfficeOverheadRateMax)</td>
+        </tr>
+        <tr>
+            <td class="rightJustify">FCCM: </td>
+            <td>@ResolvePercent(Model.FCCM)</td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Field Office Overhead Rate Max: </td>
+            <td>@ResolvePercent(Model.FieldServiceOverheadRateMax)</td>
+        </tr>
+        <tr>
+            <td class="rightJustify">Title II Multiplier: </td>
+            <td>@ResolveNumeral(Model.Multiplier)</td>
+        </tr>
+    </table>*@
+
+<div>
+    <h3>Recent Contracts</h3>
+    <div class="datagrid">
+        @Html.Action("TopContractsByConsultant", "Contracts", new { id = Model.ConsultantId })
+    </div>
+</div>
+
+<div>
+    <h3>Recent Invoices</h3>
+    <div class="datagrid">
+        @Html.Action("RecentInvoices", "Invoices", new { consultantId = Model.ConsultantId })
+    </div>
+</div>
+<a href="@Url.Action("Index", "Home")" class="hyperlink">Home</a>
+<br />
+<a href="javascript:void(0);" onclick="history.go(-1);" ) , class="hyperlink">Back</a>
+

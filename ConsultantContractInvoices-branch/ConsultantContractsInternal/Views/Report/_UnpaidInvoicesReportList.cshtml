@@ -1,0 +1,117 @@
+﻿@model ConsultantContractsInternal.ViewModels.InvoiceSearchVM
+
+<script src="~/Scripts/jquery-1.11.2.js"></script>
+<script src="~/Scripts/jquery-ui-1.10.2.js"></script>
+@{
+	Func<decimal?, string> formatNullMoney = d => d.HasValue ? d.Value.ToString("C2") : String.Empty;
+	Func<decimal?, string> formatNullPercent = d => d.HasValue ? d.Value.ToString("0.0###") : "None";
+}
+@functions{
+
+	private string ResolveDate(DateTime? dt)
+	{
+		if (dt.HasValue)
+		{
+			return dt.Value.ToShortDateString();
+		}
+		return String.Empty;
+	}
+
+	//write money fields
+	private string ResolveMoney(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("C2");
+		}
+		return "0.00";
+	}
+	
+	private string ResolvePercent(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("P", System.Globalization.CultureInfo.InvariantCulture);
+		}
+		return "0.000";
+	}
+
+	private string ResolveNumeral(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+		}
+		return "0.000";
+	}
+}
+
+@using (Html.BeginForm("ExportDataToExcel", "Report", FormMethod.Post, new {enctype = "multipart/form-data"}))
+{
+    <div style="text-align: right;">
+        <input type="submit" name="ExportToExcel" value="ExportToExcel" />
+    </div>
+    <br />
+    <table id="tblSearch" class="highlight">
+        <tr>
+            <th style="font-size: 0.7em">Contract Code</th>
+            <th style="font-size: 0.7em">Consultant</th>
+            <th style="font-size: 0.7em">Invoice No.</th>
+            <th style="font-size: 0.7em">FAP</th>
+            <th style="font-size: 0.7em">Amount</th>
+            <th style="font-size: 0.7em">Invoice Date</th>
+            <th style="font-size: 0.7em">T1 Fixed Fee</th>
+            <th style="font-size: 0.7em">T1 Svcs</th>
+            <th style="font-size: 0.7em">T2 Fixed Fee</th>
+            <th style="font-size: 0.7em">Status</th>
+        </tr>
+        @foreach(ConsultantContractsInternal.Models.UnpaidInvoice unpaidInvoice in Model.UnpaidInvoices)
+        {
+        <tr>
+            <td>
+                @unpaidInvoice.ContractCode
+            </td>
+            <td>
+                @unpaidInvoice.ConsultantName
+            </td>
+            <td>
+                @unpaidInvoice.InvoiceNo
+            </td>
+            <td>
+                @unpaidInvoice.FAP
+            </td>
+            <td>
+                @ResolveMoney(unpaidInvoice.Amount)
+            </td>
+            <td>
+                @ResolveDate(unpaidInvoice.InvoiceDate)
+            </td>
+            <td>
+                @ResolveMoney(unpaidInvoice.T1FixedFee)
+            </td>
+            <td>
+                @ResolveMoney(unpaidInvoice.T1Svcs)
+            </td>
+            <td>
+                @ResolveMoney(unpaidInvoice.T2FixedFee)
+            </td>
+            <td>
+                @unpaidInvoice.Status
+            </td>
+        </tr>
+        }
+    </table>
+    <br />
+    <div style="text-align: right;">
+        <input type="submit" name="ExportToExcel" value="ExportToExcel" />
+    </div>
+}
+
+<!DOCTYPE html>
+
+<script>
+    $(document).ready(function () {
+        $("#tblSearch tr:nth-child(even)").addClass("even");
+        $("#tblSearch tr:nth-child(odd)").addClass("odd");
+    });
+</script>

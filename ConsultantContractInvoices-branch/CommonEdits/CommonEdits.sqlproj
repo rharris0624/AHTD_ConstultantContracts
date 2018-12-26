@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>CommonEdits</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{ce4dacbc-926d-4fab-9514-3524e6404194}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>CommonEdits</RootNamespace>
+    <AssemblyName>CommonEdits</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\STATES.sql" />
+    <Build Include="dbo\Tables\SPECIAL_PROJECT.sql" />
+    <Build Include="dbo\Tables\PLANNING_JOB.sql" />
+    <Build Include="dbo\Tables\PARKS.sql" />
+    <Build Include="dbo\Tables\OBJECT_HEADER.sql" />
+    <Build Include="dbo\Tables\FUNCTION_HEADER.sql" />
+    <Build Include="dbo\Tables\County.sql" />
+    <Build Include="dbo\Tables\COUNTRIES.sql" />
+    <Build Include="dbo\Tables\CO_RTE_SEC.sql" />
+    <Build Include="dbo\Tables\BUILDING_INVENTORY.sql" />
+    <Build Include="dbo\Tables\BUDGET_HEADER.sql" />
+    <Build Include="dbo\Tables\BUD_FUNCTN.sql" />
+    <Build Include="dbo\Tables\ACCOUNT_HEADER.sql" />
+    <Build Include="Security\VoucherVendors.sql" />
+    <Build Include="Security\ROWVehiclePool.sql" />
+    <Build Include="Security\MiscInventory.sql" />
+    <Build Include="Security\LogoAdvertising.sql" />
+    <Build Include="Security\LegalDemands.sql" />
+    <Build Include="Security\JournalEntry_DOTNETAD.sql" />
+    <Build Include="Security\JournalEntry.sql" />
+    <Build Include="Security\DozerPool.sql" />
+    <Build Include="Security\ConsultantContracts.sql" />
+    <Build Include="Security\BillboardAdvertising.sql" />
+    <Build Include="Security\AHTD_HttpDevWeb.sql" />
+    <Build Include="Security\AHTD_DeveloperView.sql" />
+    <Build Include="Security\AHTD_App_Retainage_Dev_Test.sql" />
+    <Build Include="Security\AHTD_App_RestArea_Dev_Test.sql" />
+    <Build Include="Security\AHTD_App_RadioRoom_Developer_Test.sql" />
+    <Build Include="Security\AHTD_App_Misc_Dev_Test.sql" />
+    <Build Include="Security\AHTD_App_LegalDmd_Dev_Test.sql" />
+    <Build Include="Security\AHTD_App_ConsultContr_Dev_Test.sql" />
+    <Build Include="Security\AHTD_App_ComStip_Dev_Test.sql" />
+    <Build Include="Security\AHTD_App_AHPApplicants_Dev_Test.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="Security\AHTD_App_Retainage_User_Test.sql" />
+    <Build Include="Security\AHTD_App_RestArea_User_Test.sql" />
+    <Build Include="Security\AHTD_App_RadioRoom_ViewAll_Test.sql" />
+    <Build Include="Security\AHTD_App_RadioRoom_Supervisor_Test.sql" />
+    <Build Include="Security\AHTD_App_RadioRoom_Operator_Test.sql" />
+    <Build Include="Security\AHTD_App_RadioRoom_Captains_Test.sql" />
+    <Build Include="Security\AHTD_App_MiscViewAll_Test.sql" />
+    <Build Include="Security\AHTD_App_MiscBudget_Test.sql" />
+    <Build Include="Security\AHTD_App_LegalDmd_User_Test.sql" />
+    <Build Include="Security\AHTD_App_LegalDmd_Supervisors_Test.sql" />
+    <Build Include="Security\AHTD_App_LegalDmd_FSUser_Test.sql" />
+    <Build Include="Security\AHTD_App_LegalDmd_CSUser_Test.sql" />
+    <Build Include="Security\AHTD_App_ConsultContr_Read_Test.sql" />
+    <Build Include="Security\AHTD_App_ComStip_User_Test.sql" />
+    <Build Include="Security\AHTD_App_ComStip_SuperUser_Test.sql" />
+    <Build Include="Security\AHTD_App_AHPApplicants_NonInterviewerReadOnly_Test.sql" />
+    <Build Include="Security\AHTD_App_AHPApplicants_NonInterviewerEdit_Test.sql" />
+    <Build Include="Security\AHTD_App_AHPApplicants_Interviewer_Test.sql" />
+    <Build Include="BillboardAdvertising.sql" />
+    <Build Include="ConsultantContracts.sql" />
+    <Build Include="DozerPool.sql" />
+    <Build Include="JournalEntry.sql" />
+    <Build Include="JournalEntry_DOTNETAD.sql" />
+    <Build Include="LegalDemands.sql" />
+    <Build Include="LogoAdvertising.sql" />
+    <Build Include="MiscInventory.sql" />
+    <Build Include="ROWVehiclePool.sql" />
+    <Build Include="VoucherVendors.sql" />
+  </ItemGroup>
+</Project>

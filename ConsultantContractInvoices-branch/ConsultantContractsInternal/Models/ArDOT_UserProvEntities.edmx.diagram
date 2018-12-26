@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2d542c2ff8494a33ac16e6cd2e470cbd" Name="Diagram1">
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.Application" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.ApplicationSecurity" Width="1.5" PointX="3" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.HistoricalSecurity" Width="1.5" PointX="7.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.LegacySecurity" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.PermissionResource" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.Permission" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.Resource" Width="1.5" PointX="3" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.RolePermission" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.Role" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArDOT_UserProvModel.User" Width="1.5" PointX="0.75" PointY="12.5" IsExpanded="true" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_ApplicationSecurities_dbo_Applications_ApplicationId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_ApplicationSecurities_dbo_Roles_ApplicationId_RoleId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_ApplicationSecurities_dbo_Users_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_LegacySecurities_dbo_ApplicationSecurities_ApplicationId_UserId_RoleId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_LegacySecurities_dbo_Permissions_ApplicationId_PermissionId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_LegacySecurities_dbo_Resources_ApplicationId_ResourceId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_PermissionResources_dbo_Permissions_ApplicationId_PermissionId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_PermissionResources_dbo_Resources_ApplicationId_ResourceId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_RolePermissions_dbo_Permissions_ApplicationId_PermissionId" ManuallyRouted="false" />
+        <AssociationConnector Association="ArDOT_UserProvModel.FK_dbo_RolePermissions_dbo_Roles_ApplicationId_RoleId" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

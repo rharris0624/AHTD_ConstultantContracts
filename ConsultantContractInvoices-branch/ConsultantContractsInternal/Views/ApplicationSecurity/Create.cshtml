@@ -1,0 +1,116 @@
+﻿@model ConsultantContractsInternal.ViewModels.UserRoleVm
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script type="text/javascript">
+
+        var populateRoleDropDownList = function (userId) {
+                $.ajax({
+                    url: '@Url.Action("GetAvailableRoles")?userId=' + userId,
+                cache: false,
+                type: "GET",
+                success: function (data) {
+                    var markup = "<option value='0'> Select a role</option>";
+                    for (var x = 0; x < data.length; x++) {
+                        markup += "<option value=" + data[x].Text + ">" + data[x].Value + "</option>";
+                    }
+                    $("#ddlRole").html(markup).show();
+                },
+                error: function (response) {
+                    //alert("error : " + response);
+                }
+            });
+        };
+
+        $("#ddlRole").change(function (jsReturnArgs) {
+            if ($("#ddlRole option:selected").val().length > 3) {
+                $("#RoleId").val($("#ddlRole option:selected").val());
+            }
+        });
+        
+
+        var setForCurrentUser = function (userIdVal) {
+            if (userIdVal.length > 3) {
+                $("#currentUserId").text(userIdVal);
+                populateRoleDropDownList(userIdVal);
+            }
+        }
+
+        $(document).ready(function () {
+            if ('@Model.UserId' != '0') {
+                $('#UserId').val('@Model.UserId');
+                setForCurrentUser('@Model.UserId');
+            }
+        });
+
+        $(function () {
+            function log(message) {
+                $("<div>").text(message).prependTo("#log");
+            }
+            $('#UserId').autocomplete({
+                delay: 0,
+                source: '@Url.Action("GetUserList","User")',
+                minLength: 2,
+                select: function (event, ui) {
+                    if (ui.item.data.UserId != '0') {
+                        $('#currentUserId').val(ui.item.data.UserId);
+                        $('#UserId').val(ui.item.data.UserId);
+                        populateRoleDropDownList(ui.item.data.UserId);
+                    }
+                }
+            }).keypress(function (e) {
+                if (e.which === 13)
+                    window.location = '@Url.Action("Index")?q=' + this.value;
+            });
+        });
+    </script>
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>RoleListVm</legend>
+
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.UserId)
+        </div>*@
+        <div>
+            @Html.HiddenFor(model => model.ApplicationId, new { id = "ApplicationId", Value = @Model.ApplicationId })
+            @Html.HiddenFor(model => model.RoleId, new { id = "RoleId", Value = @Model.RoleId })
+            @Html.HiddenFor(model => model.UserId, new { id = "currentUserId", Value = @Model.UserId })
+        </div>
+        <div class="editor-field">
+            @*@Html.DropDownListFor(x => x.UserId, new SelectList(Model.UserList, "ID", "Name"),"Select a user")*@
+            <input type="text" id="UserId" class="searchBar" Name="UserId"/>
+            @Html.ValidationMessageFor(model => model.ApplicationSecurities)
+        </div>
+
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.RoleId)
+        </div>*@
+        <div class="editor-field" id="roleData">
+            <select id="ddlRole" name="ddlRole" style="width: 200px">
+
+            </select> 
+        <br /> <br />
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

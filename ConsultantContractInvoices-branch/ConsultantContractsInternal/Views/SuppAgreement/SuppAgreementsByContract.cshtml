@@ -1,0 +1,335 @@
+﻿@model List<ConsultantContractsInternal.Models.SuppAgreement>
+
+@{
+	Func<decimal?, string> formatNullMoney = d => d.HasValue ? d.Value.ToString("C2") : String.Empty;
+	Func<decimal?, string> formatNullPercent = d => d.HasValue ? d.Value.ToString("0.0###") : "None";
+}
+@functions{
+
+	private string ResolveDate(DateTime? dt)
+	{
+		if (dt.HasValue)
+		{
+			return dt.Value.ToShortDateString();
+		}
+		return String.Empty;
+	}
+
+	//write money fields
+	private string ResolveMoney(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("C2");
+		}
+		return "0.00";
+	}
+	
+	private string ResolvePercent(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("P", System.Globalization.CultureInfo.InvariantCulture);
+		}
+		return "0.000";
+	}
+
+	private string ResolveNumeral(Decimal? n)
+	{
+		if (n.HasValue)
+		{
+			return n.Value.ToString("N", System.Globalization.CultureInfo.InvariantCulture);
+		}
+		return "0.000";
+	}
+}
+
+<div>
+@if (ViewBag.WriteAccess)
+{ 
+@Html.ActionLink("Add Supplemental Agreement","AddSupplemental", new {id = ViewBag.ContractCode}, new { @style = "color:#0066CC;" })
+}
+<div><br /></div>
+@if (Model.Count > 0)
+{
+	<div class="tab-me">
+		<ul>
+			@foreach (var sa in Model)
+			{
+				var suppNo = sa.SuppNo.Replace(' ', '-');
+				<li><a href="#SuppNo@(suppNo)">@sa.SuppNo</a></li>
+			}
+		</ul>
+		@foreach (var sa in Model)
+		{
+			var suppNo = sa.SuppNo.Replace(' ', '-');
+			<div id="SuppNo@(suppNo)" class="supp-container" style="overflow: hidden">
+				<h2>Supplemental @sa.SuppNo</h2>
+				<div style="margin-bottom: .5em">
+					<p>Supp Agreement Date: @(sa.SuppAgreementDate.HasValue ? sa.SuppAgreementDate.Value.ToShortDateString() : "n/a" )</p>
+					<span class="saved-suppr">Saved.</span>
+					<textarea id="SuppNo@(suppNo)Remarks" class="supp-remark" >
+						@sa.Remarks
+					</textarea>
+					<input type="hidden" value="@sa.SuppNo" />
+					<br/>
+					<input type="button" class="supp-remark-save" value="Save Remark"  style="margin-top: 8px"/>
+				</div>
+
+				<div class="tab-me">
+					<ul>
+						<li><a href="#SuppDetail@(suppNo)">Details</a></li>
+						@if (sa.SuppAllotments != null)
+						{
+							<li><a href="#SuppAllotments@(suppNo)">Allotment Changes</a></li>
+						}
+						@if (sa.SuppSalaryRates != null)
+						{
+							<li><a href="#SuppSalary@(suppNo)">Salary Changes</a></li>
+						}
+						@if (sa.SuppServiceRates != null)
+						{
+							<li><a href="#SuppService@(suppNo)">Service Changes</a></li>
+						}
+						@if (sa.SuppSubConsultantInfoes != null)
+						{
+							<li><a href="#q@(suppNo)">Sub-Consultants</a></li>	 
+						}
+					</ul>
+
+					<div>
+						<div id="SuppDetail@(suppNo)">
+							@if (sa.ContractCeiling.HasValue)
+							{
+								<div>Contract Ceiling:
+									@ResolveMoney(sa.ContractCeiling.Value)</div>
+							}
+							@if (sa.T1SvcsCeiling.HasValue)
+							{
+								<div>T1 Svcs Ceiling:
+									@ResolveMoney(sa.T1SvcsCeiling.Value)</div>
+							}
+							@if (sa.T1FixedFeeMax.HasValue)
+							{
+								<div>T1 Fixed Fee:
+									@ResolveMoney(sa.T1FixedFeeMax.Value)</div>
+							}
+							@if (sa.FCCM.HasValue)
+							{
+								<div>
+									FCCM:
+									@ResolvePercent(@sa.FCCM.Value)
+								</div>
+							}
+							@if (sa.HomeOfficeOverheadRateMax.HasValue)
+							{
+								<div>
+									Home Office Overhead Rate Max:
+									@ResolvePercent(@sa.HomeOfficeOverheadRateMax.Value)</div>
+							}
+							@if (sa.T2SvcsCeiling.HasValue)
+							{
+								<div>T2 Svcs Ceiling:
+									@ResolveMoney(sa.T2SvcsCeiling.Value)</div>
+							}
+							@if (sa.T2FixedFeeMax.HasValue)
+							{
+								<div>T2 Fixed Fee:
+									@ResolveMoney(sa.T2FixedFeeMax)</div>
+							}
+							@if (sa.FieldServiceOverheadRateMax.HasValue)
+							{
+								<div>T2 Overhead Rate Field Service Overhead Rate Max:
+									@ResolvePercent(@sa.FieldServiceOverheadRateMax)</div>
+							}
+							@if (sa.Multiplier.HasValue)
+							{
+								<div>Multiplier:
+									@ResolveNumeral(sa.Multiplier)</div>
+							}
+							@if (sa.SuppAgreementDate.HasValue)
+							{
+								<div>Supp Agreement Date:
+									@sa.SuppAgreementDate.Value.ToShortDateString()</div>
+							}
+							@if (sa.CompletionDate.HasValue)
+							{
+								<div>Completion Date:
+									@ResolveDate(sa.CompletionDate)</div>
+							}
+						</div>
+					</div>
+
+					@if (sa.SuppAllotments != null)
+					{
+						<div id="SuppAllotments@(suppNo)">
+							<h3>Allotment Changes</h3>
+							<table>
+								<thead></thead>
+								<tbody>
+									@foreach (var a in sa.SuppAllotments)
+									{
+										<tr>
+											<td>@a.FAP</td>
+											<td>@a.Func</td>
+											<td>@ResolveMoney(a.AllottedAmt)</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+					@if (sa.SuppSalaryRates != null)
+					{
+						<div id="SuppSalary@(suppNo)">
+							<h3>Salary Rate Changes</h3>
+							<table>
+								<thead></thead>
+								<tbody>
+									@foreach (var sal in sa.SuppSalaryRates)
+									{
+										<tr>
+											<td>@sal.JobTitle</td>
+											<td>@ResolveMoney(sal.RateMin)</td>
+											<td>@ResolveMoney(sal.RateMax)</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+					@if (sa.SuppServiceRates != null)
+					{
+						<div id="SuppService@(suppNo)">
+							<h3>Service Rate Changes</h3>
+							<table>
+								<thead></thead>
+								<tbody>
+									@foreach (var ser in sa.SuppServiceRates)
+									{
+										<tr>
+											<td>@ser.ServiceName</td>
+											<td>@ResolveMoney(ser.RateMin)</td>
+											<td>@ResolveMoney(ser.RateMax)</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+					@if (sa.SuppSubConsultantInfoes != null)
+					{
+						<div id="SuppSubCon@(suppNo)">
+
+
+
+							<div class="tab-me">
+								<ul>
+									@foreach (var sc in sa.SuppSubConsultantInfoes)
+									{
+										<li><a href="#SubCon@(sc.SubConsultantId)">@sc.SubConsultant.Name</a></li>
+									}
+								</ul>
+								@foreach (var sc in sa.SuppSubConsultantInfoes)
+								{
+									<div id="SubCon@(sc.SubConsultantId)" class="sub-con-container">
+										<h3>
+											<a href="@Url.Action("Details", "Consultants", new {id = sc.SubConsultantId})">@sc.SubConsultant.Name</a>
+										</h3>
+										<div class="tab-me">
+											<ul>
+												<li><a href="#SubConRates@(sc.SubConsultantId)-@(suppNo)">Rates</a></li>
+												<li><a href="#SubConSalaryRates@(sc.SubConsultantId)-@(suppNo)">Salary Rates</a></li>
+												<li><a href="#SubConServiceRates@(sc.SubConsultantId)-@(suppNo)">Service Rates</a></li>
+											</ul>
+
+											<div id="SubConRates@(sc.SubConsultantId)-@(suppNo)">
+												<div>
+													<div>Contract Ceiling: @ResolveMoney(sc.ContractCeiling)</div>
+													<h4>Title I</h4>
+													<div>
+														<div>Title I Services Ceiling: @ResolveMoney(sc.T1SvcsCeiling)</div>
+														<div>Title I Fixed Fee Max: @ResolveMoney(sc.T1FixedFeeMax)</div>
+													</div>
+												</div>
+												<div>
+													<h4>Title II</h4>
+													<div>
+														<div>Title II Services Ceiling: @ResolveMoney(sc.T2SvcsCeiling)</div>
+														<div>Title II Fixed Fee Max: @ResolveMoney(sc.T2FixedFeeMax)</div>
+													</div>
+												</div>
+												<div>
+													<h4>Contract Indirect Cost Rate</h4>
+													<div>
+														<div>Home Office Overhead Rate Max: @ResolvePercent(sc.HomeOfficeOverheadRateMax)</div>
+														<div>FCCM: @ResolvePercent(sc.FCCM)</div>
+														<div>Field Service Overhead Rate Max: @ResolvePercent(sc.FieldServiceOverheadRateMax)</div>
+														<div>Title II Multiplier: @ResolveNumeral(sc.Multiplier)</div>
+													</div>
+												</div>
+											</div>
+											<div id="SubConSalaryRates@(sc.SubConsultantId)-@(suppNo)">
+												<h4>Salary Rates</h4>
+												<table>
+													<thead>
+														<tr>
+															<th>Job Title</th>
+															<th>Min</th>
+															<th>Max</th>
+														</tr>
+													</thead>
+													<tbody>
+														@foreach (var salaryRate in sc.SuppSubConsultantSalaryRates.OrderByDescending(r => r.RateMin))
+							{
+															<tr>
+																<td>@salaryRate.JobTitle</td>
+																<td>@ResolveMoney(salaryRate.RateMin)</td>
+																<td>@ResolveMoney(salaryRate.RateMax)</td>
+															</tr>
+							}
+													</tbody>
+												</table>
+											</div>
+											<div id="SubConServiceRates@(sc.SubConsultantId)-@(suppNo)">
+												<h4>Service Rates</h4>
+												<table>
+													<thead>
+														<tr>
+															<th>Service Name</th>
+															<th>Min</th>
+															<th>Max</th>
+														</tr>
+													</thead>
+													<tbody>
+														@foreach (var serviceRate in sc.SuppSubConsultantServiceRates.OrderByDescending(r => r.RateMin))
+							{
+															<tr>
+																<td>@serviceRate.ServiceName</td>
+																<td>@ResolveMoney(serviceRate.RateMin)</td>
+																<td>@ResolveMoney(serviceRate.RateMax)</td>
+															</tr>
+							}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+		}
+							</div>
+
+
+
+
+						</div>
+					}
+				</div>
+			</div>
+		}
+	</div>
+}
+else
+{
+	<div>None</div>
+}
+</div>

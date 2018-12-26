@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ConsultantContractsInternal.Models.Contract>
+
+
+@if (Model.Any())
+{    
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:center">Job No</th>
+                <th style="text-align:center">Contract</th>
+                <th style="text-align:center">Prime Consultant</th>
+                <th style="text-align:center">Contract Status</th>
+                <th style="text-align:center">Schd Completion Date</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: list">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a class="hyperlink" href="@Url.Action("Details", new {id = item.ContractCode})">@item.JobNo</a></td>
+                    <td>@item.ContractCode</td>
+                    <td><a class="hyperlink" href="@Url.Action("Details", "Consultants", new {id = item.ConsultantId})">@item.Consultant.Name</a></td>
+                    <td>@(item.ContractStatus == "A" ? "Active" : item.ContractStatus == "I" ? "Inactive" : item.ContractStatus == "F" ? "Final" : @item.ContractStatus)</td>
+                    <td>@(item.ScheduledCompletionDate == null ? "none" : item.ScheduledCompletionDate.Value.ToShortDateString())</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.ActionLink("View All", "AllContracts", "Contracts", new { consultantId = ViewBag.Id.ToString() }, new {@class =  "hyperlink"})
+}
+else
+{
+    <div>
+        No Contracts Found
+    </div>
+}

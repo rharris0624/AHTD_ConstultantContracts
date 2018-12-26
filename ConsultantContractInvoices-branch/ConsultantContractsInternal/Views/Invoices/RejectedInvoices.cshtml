@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Rejected Invoices";
+}
+
+@section styles
+{
+    <style type="text/css">
+        table {
+            border-spacing: 0;
+        }
+
+        td {
+            padding: 0 15px 0 15px;
+        }
+
+        .approve-color {
+            background: #11d47c;
+            background: rgba(17, 212, 124, .5);
+        }
+
+        .reject-color {
+            background: #d4117c;
+            background: rgba(212, 17, 124, .5);
+        }
+    </style>
+}
+
+    <table class="homepagetable">
+        <thead>
+            <tr>
+                <th>
+                    <!-- yes no -->
+                </th>
+                <th>Contract</th>
+                <th>Consultant</th>
+                <th>Invoice No</th>
+                <th>Amount</th>
+                <th>Rejected Date</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: RejectedInvoices">
+
+            <tr data-bind="attr: { id: InvoiceId }">
+                <td><a class="hyperlink" data-bind="attr: { href: InvoiceEditLink }">Edit</a></td>
+                <td><a class="hyperlink" data-bind="attr: { href: ContractLink }, text: JobNo"></a><span data-bind="    text: ' - ' + ContractCode"></span></td>
+                <td style="text-align:left"><a class="hyperlink" data-bind="attr: { href: ConsultantLink }, text: ConsultantName"></a></td>
+                <td style="text-align: center"><a class="hyperlink" data-bind="attr: { href: InvoiceLink }, text: InvoiceNo"></a></td>
+                <td style="text-align:left" data-bind="text: Total"></td>
+                <td data-bind="text: RejectedDate"></td>
+                <td data-bind="text: RejectedReason"></td>
+            </tr>
+            <!-- ko foreach: Allotments -->
+            <tr>
+                <td></td>
+                <td></td>
+                <td style="text-align:left" data-bind="text: Func + '&nbsp; &nbsp;' + FAP"></td>
+                <td></td>
+                <td style="text-align:left" data-bind="text: accounting.formatMoney(Amount)"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- /ko -->
+            <!-- /ko -->
+        </tbody>
+    </table>

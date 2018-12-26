@@ -1,0 +1,21 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.MenuHelperModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+
+<nav class="dropdown">
+	<ul>
+	@foreach (var node in Model.Nodes)
+	{
+		if (node.Children.Any())
+		{
+		<li class="dropdown">@Html.DisplayFor(m => node, "DropdownSiteMapNodeModel", new { IsTopLevel = true })
+			@Html.DisplayFor(m => node.Children, "DropdownSiteMapNodeModelList")
+		</li>
+		}
+		else
+		{
+		<li>@Html.DisplayFor(m => node, "DropdownSiteMapNodeModel")</li>
+		}
+	}
+	</ul>
+</nav>
