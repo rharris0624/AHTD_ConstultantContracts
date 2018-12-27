@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
 
 namespace ConsultantContracts.Interfaces.DAL
 {
@@ -16,7 +14,7 @@ namespace ConsultantContracts.Interfaces.DAL
         /// </summary>
         /// <value>The unit of work.</value>
         IUnitOfWork UnitOfWork { get; }
- 
+
         /// <summary>
         ///     Gets entity by key.
         /// </summary>
@@ -24,14 +22,14 @@ namespace ConsultantContracts.Interfaces.DAL
         /// <param name="keyValue">The key value.</param>
         /// <returns></returns>
         TEntity GetByKey<TEntity>(object keyValue) where TEntity : class;
- 
+
         /// <summary>
         ///     Gets the query.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
         IQueryable<TEntity> GetQuery<TEntity>() where TEntity : class;
- 
+
         /// <summary>
         ///     Gets the query.
         /// </summary>
@@ -40,15 +38,15 @@ namespace ConsultantContracts.Interfaces.DAL
         /// <returns></returns>
         IQueryable<TEntity> GetQuery<TEntity>
         (Expression<Func<TEntity, bool>> predicate) where TEntity : class;
- 
- 
+
+
         /// <summary>
         ///     Gets all.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
         IEnumerable<TEntity> GetAll<TEntity>() where TEntity : class;
- 
+
         /// <summary>
         ///     Gets the specified order by.
         /// </summary>
@@ -59,10 +57,10 @@ namespace ConsultantContracts.Interfaces.DAL
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="sortOrder">The sort order.</param>
         /// <returns></returns>
-        IEnumerable<TEntity> Get<TEntity, 
+        IEnumerable<TEntity> Get<TEntity,
         TOrderBy>(Expression<Func<TEntity, TOrderBy>> orderBy, int pageIndex,
             int pageSize, SortOrder sortOrder = SortOrder.Ascending) where TEntity : class;
- 
+
         /// <summary>
         ///     Gets the specified criteria.
         /// </summary>
@@ -74,32 +72,32 @@ namespace ConsultantContracts.Interfaces.DAL
         /// <param name="pageSize">Size of the page.</param>
         /// <param name="sortOrder">The sort order.</param>
         /// <returns></returns>
-        IEnumerable<TEntity> Get<TEntity, 
+        IEnumerable<TEntity> Get<TEntity,
         TOrderBy>(Expression<Func<TEntity, bool>> criteria,
             Expression<Func<TEntity, TOrderBy>> orderBy, int pageIndex, int pageSize,
             SortOrder sortOrder = SortOrder.Ascending) where TEntity : class;
- 
- 
+
+
         /// <summary>
         ///     Gets one entity based on matching criteria
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="criteria">The criteria.</param>
         /// <returns></returns>
-        TEntity Single<TEntity>(Expression<Func<TEntity, 
+        TEntity Single<TEntity>(Expression<Func<TEntity,
         bool>> criteria) where TEntity : class;
- 
- 
- 
+
+
+
         /// <summary>
         ///     Firsts the specified predicate.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        TEntity First<TEntity>(Expression<Func<TEntity, 
+        TEntity First<TEntity>(Expression<Func<TEntity,
         bool>> predicate) where TEntity : class;
- 
+
         /// <summary>
         ///     Finds entities based on provided criteria.
         /// </summary>
@@ -108,52 +106,52 @@ namespace ConsultantContracts.Interfaces.DAL
         /// <returns></returns>
         IEnumerable<TEntity> Find<TEntity>
         (Expression<Func<TEntity, bool>> criteria) where TEntity : class;
- 
- 
- 
+
+
+
         /// <summary>
         ///     Finds one entity based on provided criteria.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="criteria">The criteria.</param>
         /// <returns></returns>
-        TEntity FindOne<TEntity>(Expression<Func<TEntity, 
+        TEntity FindOne<TEntity>(Expression<Func<TEntity,
         bool>> criteria) where TEntity : class;
- 
- 
- 
+
+
+
         /// <summary>
         ///     Counts the specified entities.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <returns></returns>
         int Count<TEntity>() where TEntity : class;
- 
+
         /// <summary>
         ///     Counts entities with the specified criteria.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="criteria">The criteria.</param>
         /// <returns></returns>
-        int Count<TEntity>(Expression<Func<TEntity, 
+        int Count<TEntity>(Expression<Func<TEntity,
         bool>> criteria) where TEntity : class;
- 
- 
- 
+
+
+
         /// <summary>
         ///     Adds the specified entity.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         void Add<TEntity>(TEntity entity) where TEntity : class;
- 
+
         /// <summary>
         ///     Attaches the specified entity.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         void Attach<TEntity>(TEntity entity) where TEntity : class;
- 
+
         /// <summary>
         ///     Updates changes of the existing entity.
         ///     The caller must later call SaveChanges() 
@@ -162,29 +160,29 @@ namespace ConsultantContracts.Interfaces.DAL
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         void Update<TEntity>(TEntity entity) where TEntity : class;
- 
+
         /// <summary>
         ///     Deletes the specified entity.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
         void Delete<TEntity>(TEntity entity) where TEntity : class;
- 
+
         /// <summary>
         ///     Deletes one or many entities matching the specified criteria
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="criteria">The criteria.</param>
-        void Delete<TEntity>(Expression<Func<TEntity, 
+        void Delete<TEntity>(Expression<Func<TEntity,
         bool>> criteria) where TEntity : class;
- 
+
         /// <summary>
         ///     Deletes entities which satisfy specificatiion
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="criteria">The criteria.</param>
         //void Delete<TEntity>(ISpecification<TEntity> criteria) where TEntity : class;
-
         //static IQueryable<TEntity> IncludeMultiple<TEntity>(this IDbSet<TEntity> dbSet, params Expression<Func<TEntity, object>>[] includes);
+        //IQueryable<TEntity> Include<TEntity>(Expression<Func<TEntity, object>> criteria) where TEntity : class;
     }
 }

@@ -114,9 +114,9 @@ namespace ConsultantContracts.Infrastructure.DAL
             return GetQuery<TEntity>().Count(criteria);
         }
 
-        public IQueryable<TEntity> Include<TEntity>(Expression<Func<TEntity, object>> criteria) where TEntity : class
+        public DbSet<TEntity> GetEntity<TEntity>() where TEntity : class
         {
-            return _context.Set<TEntity>().Include(criteria as string);
+            return _context.Set<TEntity>();
         }
 
         #region Transaction Methods
