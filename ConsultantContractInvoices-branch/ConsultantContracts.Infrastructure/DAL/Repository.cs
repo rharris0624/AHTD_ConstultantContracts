@@ -19,7 +19,6 @@ namespace ConsultantContracts.Infrastructure.DAL
         private ConsultantContractsEntities _context;
         private bool bDisposed;
         private IUnitOfWork _unitOfWork;
-
         public Repository() { }
 
         public Repository(ConsultantContractsEntities context)
