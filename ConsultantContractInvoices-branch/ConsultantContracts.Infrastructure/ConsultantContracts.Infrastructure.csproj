@@ -84,6 +84,7 @@
     <Compile Include="DAL\Core\InfrastructureExtensionMethods.cs" />
     <Compile Include="DAL\Repository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="Helpers\LinqHelpers.cs" />
     <Compile Include="Interfaces\DAL\IAppicationRepository.cs" />
     <Compile Include="Interfaces\DAL\IRepository.cs" />
     <Compile Include="Interfaces\DAL\ISpecification.cs" />
