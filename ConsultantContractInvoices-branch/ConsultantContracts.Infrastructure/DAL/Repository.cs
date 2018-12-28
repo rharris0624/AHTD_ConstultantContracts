@@ -38,6 +38,7 @@ namespace ConsultantContracts.Infrastructure.DAL
             }
         }
 
+        
         public TEntity GetByKey<TEntity>(object keyValue) where TEntity : class
         {
             EntityKey key = GetEntityKey<TEntity>(keyValue);

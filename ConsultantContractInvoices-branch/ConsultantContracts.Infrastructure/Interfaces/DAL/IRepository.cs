@@ -183,7 +183,6 @@ namespace ConsultantContracts.Interfaces.DAL
         /// <param name="criteria">The criteria.</param>
         //void Delete<TEntity>(ISpecification<TEntity> criteria) where TEntity : class;
         //static IQueryable<TEntity> IncludeMultiple<TEntity>(this IDbSet<TEntity> dbSet, params Expression<Func<TEntity, object>>[] includes);
-        //IQueryable<TEntity> Include<TEntity>(Expression<Func<TEntity, object>> criteria) where TEntity : class;
         DbSet<TEntity> GetEntity<TEntity>() where TEntity : class;
     }
 }
