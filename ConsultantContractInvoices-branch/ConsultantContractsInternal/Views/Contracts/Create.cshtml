@@ -1017,6 +1017,15 @@
                 }).done(callback);
             };
 
+            self.rateContractCodeLookup = function (term, callback) {
+                $.ajax({
+                    url: '@Url.Action("LookupContractCodeInSalaryRates")',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { term: term }
+                }).done(callback);
+            };
+
             self.addRow = function (data, list) {
                 //prevent dupes
                 if (list.indexOf(data) < 0)
@@ -1407,7 +1416,8 @@
                 <div>
                     <label>Rates Import</label>
                     <div>
-                        <input type="text" data-bind="value: RateImport" placeholder="ContractCode" />
+                        <input type="text" class="searchBar" data-bind="selectOnFocus: true, jqAuto: { source: rateContractCodeLookup, value: $root.RateImport, valueProp: 'data', labelProp: 'label', ignoreBlur: true, options: { minLength: 2 } }" />
+                        @*<input type="text" data-bind="value: RateImport" class="searchBar" />*@
                         <input id="importButton" type="button" value="Import" data-bind="click: RateImportClick" />
                     </div>
                 </div>

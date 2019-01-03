@@ -118,6 +118,20 @@ namespace ConsultantContractsInternal.Controllers
             return Json(r.Select(c => new { label = String.Format("{0} - {1} {2}", c.ContractCode, c.JobNo, c.Consultant.Name), value = c.ContractCode }), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult LookupContractCodeInSalaryRates(string term)
+        {
+            if( !string.IsNullOrEmpty(term))
+            {
+                using (var db = new ConsultantContractsEntities())
+                {
+                    var queryResult = db.Contracts.Join(db.SalaryRates, a => a.ContractCode, b => b.ConractCode, (a, b) => new { a, b }).Where(b => (b.a.ContractCode.ToString() + b.a.JobNo).Contains(term)).OrderBy(d => d.a.ContractCode).Select(c => new { data = c.b.ConractCode, label = c.a.ContractCode.ToString() + " - " + c.a.JobNo });
+                    var resultList = queryResult.ToList();
+                    return Json(resultList, JsonRequestBehavior.AllowGet);
+                }
+            }
+            return null;
+        }
+
         public ActionResult ContractSummary(int id)
         {
             if (id != 0)

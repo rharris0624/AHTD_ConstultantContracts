@@ -121,7 +121,7 @@ namespace ConsultantContract.Infrastructure.Tests
             }
         }
         [TestMethod]
-        public void TestAddConsultant()
+        public void TestAddAndDeleteConsultant()
         {
             using (var context = new ConsultantContractsEntities())
             {
