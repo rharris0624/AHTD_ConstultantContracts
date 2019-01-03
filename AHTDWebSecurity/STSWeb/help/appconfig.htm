@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Help: App.config - AHTD STS</title>
+	<meta name="author" content="Sean A. Hanley" />
+	<meta name="generator" content="Microsoft Visual Studio 2010" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+</head>
+<body>
+	<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;configuration&gt;
+	&lt;appSettings&gt;
+		&lt;add key=&quot;ClaimsService_AppName&quot; value=&quot;WPF STS Tester&quot;/&gt;
+	&lt;/appSettings&gt;
+	&lt;system.serviceModel&gt;
+		&lt;behaviors&gt;
+			&lt;endpointBehaviors&gt;
+				&lt;behavior name=&quot;ClientClaimsServiceBehavior&quot;&gt;
+					&lt;clientCredentials&gt;
+						&lt;serviceCertificate&gt;
+							&lt;authentication certificateValidationMode=&quot;None&quot; revocationMode=&quot;NoCheck&quot; /&gt;
+						&lt;/serviceCertificate&gt;
+					&lt;/clientCredentials&gt;
+				&lt;/behavior&gt;
+			&lt;/endpointBehaviors&gt;
+		&lt;/behaviors&gt;
+		&lt;bindings&gt;
+			&lt;ws2007FederationHttpBinding&gt;
+				&lt;binding name=&quot;WS2007FederationHttpBinding_IClaimsService&quot; closeTimeout=&quot;00:01:00&quot;
+					openTimeout=&quot;00:01:00&quot; receiveTimeout=&quot;00:10:00&quot; sendTimeout=&quot;00:01:00&quot;
+					bypassProxyOnLocal=&quot;false&quot; transactionFlow=&quot;false&quot; hostNameComparisonMode=&quot;StrongWildcard&quot;
+					maxBufferPoolSize=&quot;524288&quot; maxReceivedMessageSize=&quot;65536&quot; messageEncoding=&quot;Text&quot;
+					textEncoding=&quot;utf-8&quot; useDefaultWebProxy=&quot;true&quot;&gt;
+					&lt;readerQuotas maxDepth=&quot;32&quot; maxStringContentLength=&quot;8192&quot; maxArrayLength=&quot;16384&quot;
+						maxBytesPerRead=&quot;4096&quot; maxNameTableCharCount=&quot;16384&quot; /&gt;
+					&lt;reliableSession ordered=&quot;true&quot; inactivityTimeout=&quot;00:10:00&quot;
+						enabled=&quot;false&quot; /&gt;
+					&lt;security mode=&quot;Message&quot;&gt;
+						&lt;message algorithmSuite=&quot;Default&quot; issuedKeyType=&quot;SymmetricKey&quot;
+							negotiateServiceCredential=&quot;true&quot;&gt;
+							&lt;issuer address=&quot;http://devweb/STSWeb/Services/STSService.svc/IWSTrust13&quot;
+								binding=&quot;ws2007HttpBinding&quot; bindingConfiguration=&quot;http://devweb/STSWeb/Services/STSService.svc/IWSTrust13&quot;&gt;
+								&lt;identity&gt;
+									&lt;userPrincipalName value=&quot;HttpDevWeb@AHTD.com&quot; /&gt;
+								&lt;/identity&gt;
+							&lt;/issuer&gt;
+							&lt;issuerMetadata address=&quot;http://devweb/stsweb/Services/STSService.svc/mex&quot; /&gt;
+							&lt;tokenRequestParameters&gt;
+								&lt;trust:SecondaryParameters xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;
+									&lt;trust:KeyType xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;http://docs.oasis-open.org/ws-sx/ws-trust/200512/SymmetricKey&lt;/trust:KeyType&gt;
+									&lt;trust:KeySize xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;256&lt;/trust:KeySize&gt;
+									&lt;trust:Claims Dialect=&quot;http://schemas.xmlsoap.org/ws/2005/05/identity&quot;
+									xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;
+										&lt;wsid:ClaimType Uri=&quot;http://schemas.microsoft.com/ws/2008/06/identity/claims/windowsaccountname&quot;
+											xmlns:wsid=&quot;http://schemas.xmlsoap.org/ws/2005/05/identity&quot; /&gt;
+									&lt;/trust:Claims&gt;
+									&lt;trust:KeyWrapAlgorithm xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p&lt;/trust:KeyWrapAlgorithm&gt;
+									&lt;trust:EncryptWith xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;http://www.w3.org/2001/04/xmlenc#aes256-cbc&lt;/trust:EncryptWith&gt;
+									&lt;trust:SignWith xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;http://www.w3.org/2000/09/xmldsig#hmac-sha1&lt;/trust:SignWith&gt;
+									&lt;trust:CanonicalizationAlgorithm xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;http://www.w3.org/2001/10/xml-exc-c14n#&lt;/trust:CanonicalizationAlgorithm&gt;
+									&lt;trust:EncryptionAlgorithm xmlns:trust=&quot;http://docs.oasis-open.org/ws-sx/ws-trust/200512&quot;&gt;http://www.w3.org/2001/04/xmlenc#aes256-cbc&lt;/trust:EncryptionAlgorithm&gt;
+								&lt;/trust:SecondaryParameters&gt;
+							&lt;/tokenRequestParameters&gt;
+						&lt;/message&gt;
+					&lt;/security&gt;
+				&lt;/binding&gt;
+			&lt;/ws2007FederationHttpBinding&gt;
+			&lt;ws2007HttpBinding&gt;
+				&lt;binding name=&quot;http://devweb/STSWeb/Services/STSService.svc/IWSTrust13&quot;
+					closeTimeout=&quot;00:01:00&quot; openTimeout=&quot;00:01:00&quot; receiveTimeout=&quot;00:10:00&quot;
+					sendTimeout=&quot;00:01:00&quot; bypassProxyOnLocal=&quot;false&quot; transactionFlow=&quot;false&quot;
+					hostNameComparisonMode=&quot;StrongWildcard&quot; maxBufferPoolSize=&quot;524288&quot;
+					maxReceivedMessageSize=&quot;65536&quot; messageEncoding=&quot;Text&quot; textEncoding=&quot;utf-8&quot;
+					useDefaultWebProxy=&quot;true&quot; allowCookies=&quot;false&quot;&gt;
+					&lt;readerQuotas maxDepth=&quot;32&quot; maxStringContentLength=&quot;8192&quot; maxArrayLength=&quot;16384&quot;
+						maxBytesPerRead=&quot;4096&quot; maxNameTableCharCount=&quot;16384&quot; /&gt;
+					&lt;reliableSession ordered=&quot;true&quot; inactivityTimeout=&quot;00:10:00&quot;
+						enabled=&quot;false&quot; /&gt;
+					&lt;security mode=&quot;Message&quot;&gt;
+						&lt;transport clientCredentialType=&quot;Windows&quot; proxyCredentialType=&quot;None&quot;
+							realm=&quot;&quot; /&gt;
+						&lt;message clientCredentialType=&quot;Windows&quot; negotiateServiceCredential=&quot;true&quot;
+							algorithmSuite=&quot;Default&quot; establishSecurityContext=&quot;false&quot; /&gt;
+					&lt;/security&gt;
+				&lt;/binding&gt;
+			&lt;/ws2007HttpBinding&gt;
+		&lt;/bindings&gt;
+		&lt;client&gt;
+			&lt;endpoint address=&quot;http://devweb/stsweb/Services/ClaimsService.svc&quot;
+				behaviorConfiguration=&quot;ClientClaimsServiceBehavior&quot;
+				binding=&quot;ws2007FederationHttpBinding&quot; bindingConfiguration=&quot;WS2007FederationHttpBinding_IClaimsService&quot;
+				contract=&quot;ClaimsService.IClaimsService&quot; name=&quot;WS2007FederationHttpBinding_IClaimsService&quot;&gt;
+				&lt;identity&gt;
+					&lt;certificate encodedValue=&quot;AwAAAAEAAAAUAAAAzVxP2OoKEdztQ4Bib4RPqFzaotsgAAAAAQAAAOYCAAAwggLiMIIByqADAgECAhB+1JHiB4iIuEOO7XFGeL6UMA0GCSqGSIb3DQEBBQUAMBoxGDAWBgNVBAMTD2RldndlYi5haHRkLmNvbTAeFw0xMjA0MjUxNzA4MjdaFw0yMjA0MjUwMDAwMDBaMBoxGDAWBgNVBAMTD2RldndlYi5haHRkLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMLrwM2VXN+StofIHy3YU9IEIFR+EqCYWNhbbl0XrbSbxcj9qo+UaxHy6tODe3xwnBjrI6psi/IOZ90AofkFaq9KD69MbTiKw3Yt55SRSduBCPQngkM1VUYDE+40BeDW5KeeNmZqHTZI4vu9EzMYBKznvnr1ejUsVu3EAwVOahi9UmXjUSGHX4K/eCN5ulIkf+hwD4Grv9gIDRYDvu5ZuXNcG3/dFbYnnhulJKYoSyLGp7D8IJ197iJTdTfFe7kQl97hMgqyPtT5AWmv82Oax2uqu+xTqciSNMmUP8kDqxt9tblFxe16T7LE3P4u3GEuGbS5RTdxUPUl7WPOFMxS4N8CAwEAAaMkMCIwCwYDVR0PBAQDAgSwMBMGA1UdJQQMMAoGCCsGAQUFBwMBMA0GCSqGSIb3DQEBBQUAA4IBAQC0NkgiyAh0zm6NytScxUdfYJsM0a7EcUViNvCH8e5Udk6RubcpMsKGF5IEdQB6IyGuhidVnRqRepcroX8zI0jGSM3NcPimbog81nP635xrWL1Arnu2S/0LRgiBdfKigko2hDoYnlgFclBVGc53dYrWtySw1l2ZG4LNbvnepNbr/DeUwNP15VbN4nPgwMKM+4yx8Y7ru0hoXTmAlM66cFlNaXQw2/OR0zvfKgpk1gwgfJSPZVQXX94BhltZGTG25ymrM9tIydHpV+onhVMi9wZt2jRr4PMsexVat7VpEynmKNoC8ugtkAhcHC8upgwBf7NBmU/GnrmwkVVzu93jfUW2&quot; /&gt;
+				&lt;/identity&gt;
+			&lt;/endpoint&gt;
+		&lt;/client&gt;
+	&lt;/system.serviceModel&gt;
+&lt;/configuration&gt;
+	</pre>
+</body>
+</html>
