@@ -1,1 +1,0 @@
-﻿<%@ WebHandler Language="C#" CodeBehind="FederationMetadata.ashx.cs" Class="AHTD.Security.Web.FederationMetadataHandler" %>
