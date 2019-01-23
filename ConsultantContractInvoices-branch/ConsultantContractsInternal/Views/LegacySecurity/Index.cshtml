@@ -124,7 +124,7 @@
                 });
         };
         $(
-            $("#ddlRole").change(function (jsReturnArgs) {
+            $("#ddlRole").on("change", function (jsReturnArgs) {
                 var roleId = $("#ddlRole option:selected").val();
                 var userId = $("#SelectedUserId").val();
                 getAssignedBudgets(userId, roleId);

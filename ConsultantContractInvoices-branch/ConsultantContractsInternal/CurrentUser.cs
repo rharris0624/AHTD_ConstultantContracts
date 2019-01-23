@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Diagnostics;
-
+using System.Threading;
 using ConsultantContractsInternal.Models;
 using System.Configuration;
 using ConsultantContractsInternal.Properties;
 using ConsultantContractsInternal.Utilities;
-using System.Web.Http;
-using System.Web.SessionState;
 
 namespace ConsultantContractsInternal.Security
 {
@@ -31,7 +29,7 @@ namespace ConsultantContractsInternal.Security
         {
             _eventLog = new EventLog();
             _eventLog.Source = "ConsultantContracts.CurrentUser";
-            _windowsAccountName = HttpContext.Current.User.Identity.Name;
+            _windowsAccountName = Thread.CurrentPrincipal.Identity.Name;
             _clientClaims = new List<ClientClaim>();
             _clientClaims.Add(new ClientClaim(ClaimType.WindowsAccountName, UserName));
             var roles = UserProvHelpers.GetUserRoles();

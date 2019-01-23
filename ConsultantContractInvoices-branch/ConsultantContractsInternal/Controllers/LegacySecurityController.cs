@@ -72,7 +72,7 @@ namespace ConsultantContractsInternal.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult GetAssignedBudgets(string userId, string roleId)
         {
             ReturnArgs ra = new ReturnArgs();
