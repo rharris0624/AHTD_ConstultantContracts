@@ -15,6 +15,8 @@ using Elmah;
 using ConsultantContractsInternal.Security.Attributes;
 using System.Web;
 using System.IO;
+using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace ConsultantContractsInternal.Controllers
 {
@@ -27,8 +29,8 @@ namespace ConsultantContractsInternal.Controllers
         {
             using(var context = new ConsultantContractsEntities())
             {
-                _AvailableDivs = UserProvHelpers.AvailableDivisions(context, CurrentUser.UserName);
-                _ContractPermissions = ConsultantContractsInternal.Utilities.UserProvHelpers.GetContractPermissions(context, CurrentUser.UserName, _AvailableDivs);
+                _AvailableDivs = UserProvHelpers.AvailableDivisions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", ""));
+                _ContractPermissions = ConsultantContractsInternal.Utilities.UserProvHelpers.GetContractPermissions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", ""), _AvailableDivs);
             }
         }
 
@@ -259,7 +261,7 @@ namespace ConsultantContractsInternal.Controllers
         {
             using (var context = new ConsultantContractsEntities())
             {
-                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, CurrentUser.UserName);
+                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", ""));
                 var availableContractCodes = context.Contracts.Where(p => _AvailableDivs.Contains(p.ResponsibleDivisionId)).Select(i => i.ContractCode);
                 var invoice = context.Invoices.Where(p => availableContractCodes.Contains(p.ContractCode)).AsNoTracking()
                         .Include(i => i.Contract).AsNoTracking()
@@ -282,7 +284,7 @@ namespace ConsultantContractsInternal.Controllers
         {
             using (var context = new ConsultantContractsEntities())
             {
-                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, CurrentUser.UserName);
+                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", ""));
                 var RecommendedInvoices = context.Invoices.Where(p => _AvailableDivs.Contains(p.Contract.ResponsibleDivisionId))
                  .Include(i => i.InvoicePayments).AsNoTracking()
                  .Include(i => i.Contract).AsNoTracking()
@@ -319,7 +321,7 @@ namespace ConsultantContractsInternal.Controllers
         {
             using (var context = new ConsultantContractsEntities())
             {
-                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, CurrentUser.UserName);
+                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", ""));
                 var RecommendedInvoices = context.Invoices.Where(p => _AvailableDivs.Contains(p.Contract.ResponsibleDivisionId))
                  .Include(i => i.InvoicePayments).AsNoTracking()
                  .Include(i => i.Contract).AsNoTracking()
@@ -359,7 +361,7 @@ namespace ConsultantContractsInternal.Controllers
         {
             using (var context = new ConsultantContractsEntities())
             {
-                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, CurrentUser.UserName);
+                _AvailableDivs = ConsultantContractsInternal.Utilities.UserProvHelpers.AvailableDivisions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", ""));
                 var WaitingToBePaid = context.Invoices.Where(p => _AvailableDivs.Contains(p.Contract.ResponsibleDivisionId))
                     .Include(i => i.InvoicePayments).AsNoTracking()
                     .Include(i => i.Contract).AsNoTracking()
@@ -547,7 +549,7 @@ namespace ConsultantContractsInternal.Controllers
                     _invoiceApproval.Status = InvoiceStatus.InvoiceSubmitted;
                     _invoiceApproval.StatusDate = DateTime.Now;
                     _invoiceApproval.ActiveStatus = true;
-                    _invoiceApproval.UserID = CurrentUser.UserName;
+                    _invoiceApproval.UserID = Regex.Replace(@"ahtd\something", @".*\\", "");
                     _invoiceApproval.InvoiceId = id;
 
                     context.InvoiceApproval.Add(_invoiceApproval);
@@ -584,7 +586,7 @@ namespace ConsultantContractsInternal.Controllers
                     _invoiceApproval.Status = InvoiceStatus.InvoiceRecommended;
                     _invoiceApproval.StatusDate = DateTime.Now;
                     _invoiceApproval.ActiveStatus = true;
-                    _invoiceApproval.UserID = CurrentUser.UserName;
+                    _invoiceApproval.UserID = Regex.Replace(@"ahtd\something", @".*\\", "");
                     _invoiceApproval.InvoiceId = id;
 
                     context.InvoiceApproval.Add(_invoiceApproval);
@@ -621,7 +623,7 @@ namespace ConsultantContractsInternal.Controllers
                         _invoiceApproval.Status = InvoiceStatus.InvoiceApproval;
                         _invoiceApproval.StatusDate = DateTime.Now;
                         _invoiceApproval.ActiveStatus = true;
-                        _invoiceApproval.UserID = CurrentUser.UserName;
+                        _invoiceApproval.UserID = Regex.Replace(@"ahtd\something", @".*\\", "");
                         _invoiceApproval.InvoiceId = id;
 
                         context.InvoiceApproval.Add(_invoiceApproval);
@@ -656,7 +658,7 @@ namespace ConsultantContractsInternal.Controllers
                         _invoiceApproval.StatusDate = DateTime.Now;
                         _invoiceApproval.RejectedReason = reason;
                         _invoiceApproval.ActiveStatus = true;
-                        _invoiceApproval.UserID = CurrentUser.UserName;
+                        _invoiceApproval.UserID = Regex.Replace(@"ahtd\something", @".*\\", "");
                         _invoiceApproval.InvoiceId = id;
                         context.InvoiceApproval.Add(_invoiceApproval);
                         context.SaveChanges();
@@ -708,7 +710,7 @@ namespace ConsultantContractsInternal.Controllers
                 newInvoice.ConsultantInvoiceNo = model.ConsultantInvoiceNo;
                 newInvoice.ConsultantJobNo = model.ConsultantJobNo;
                 newInvoice.LastUpdateDate = now;
-                newInvoice.LastUpdateUser = CurrentUser.UserName;
+                newInvoice.LastUpdateUser = Regex.Replace(@"ahtd\something", @".*\\", "");
 
                 if (model.T1Allotments != null)
                 {
@@ -749,7 +751,7 @@ namespace ConsultantContractsInternal.Controllers
                 {
                     ActiveStatus = true,
                     Status = InvoiceStatus.InvoiceCreated,
-                    UserID = CurrentUser.UserName,
+                    UserID = Regex.Replace(@"ahtd\something", @".*\\", ""),
                     StatusDate = DateTime.Now
                 });
 
@@ -802,7 +804,7 @@ namespace ConsultantContractsInternal.Controllers
                     invoice.T1FixedFee = model.T1FixedFee;
                     invoice.T2FixedFee = model.T2FixedFee;
                     invoice.LastUpdateDate = now;
-                    invoice.LastUpdateUser = CurrentUser.UserName;
+                    invoice.LastUpdateUser = Regex.Replace(@"ahtd\something", @".*\\", "");
                     invoice.HomeOfficeOverheadRateMax = model.HomeOfficeOverheadRateMax;
                     invoice.FieldServiceOverheadRateMax = model.FieldServiceOverheadRateMax;
 
@@ -852,7 +854,7 @@ namespace ConsultantContractsInternal.Controllers
                     _invoiceApproval.Status = model.status;
                     _invoiceApproval.StatusDate = DateTime.Now;
                     _invoiceApproval.ActiveStatus = true;
-                    _invoiceApproval.UserID = CurrentUser.UserName;
+                    _invoiceApproval.UserID = Regex.Replace(@"ahtd\something", @".*\\", "");
                     _invoiceApproval.InvoiceId = invoice.InvoiceId;
                     context.InvoiceApproval.Add(_invoiceApproval);
 

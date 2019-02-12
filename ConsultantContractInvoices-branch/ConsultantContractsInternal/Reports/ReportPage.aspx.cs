@@ -3,6 +3,7 @@ using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.Mvc;
 using System.Web.UI;
@@ -28,7 +29,7 @@ namespace ConsultantContractsInternal.Reports
                     var parms = GetParameters();
                     var height = Request["Height"];
                     var userId2 = User.Identity.Name;
-                    var userid = Thread.CurrentPrincipal.Identity.Name;
+                    var userid = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                     ReportViewer1.Height = Unit.Pixel(Convert.ToInt32(height) - 100);
                     ReportViewer1.Width = Unit.Percentage(100);
                     ReportViewer1.ServerReport.ReportServerUrl = new Uri(ConfigurationManager.AppSettings["ReportServerURL"]); // Add the Reporting Server URL  

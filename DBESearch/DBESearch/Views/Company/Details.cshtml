@@ -1,0 +1,205 @@
+﻿@model DBESearch.Models.DBECompany
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<style>
+    table {
+        border: 1px solid black;
+        background-color: white;
+        border-collapse: collapse;
+        width: 75%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        height: 50px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    tr:hover {
+        background-color: #d1d1d1
+    }
+
+    tr:hover {
+        cursor: pointer
+    }
+</style>
+
+
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>DBECompany</legend>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.CompanyId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyId)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.CompanyName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.DBAName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DBAName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.OwnersFirstName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OwnersFirstName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.OwnersLastName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.OwnersLastName)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.CompanyAddress)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CompanyAddress)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Email)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.AltEmail)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AltEmail)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.City)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.City)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.State)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.State)
+    </div>
+
+   
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Phone)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Phone)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Fax)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Fax)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.AltFax)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AltFax)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.District)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.District)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.DBE)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DBE)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.ACDBE)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ACDBE)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.SBP)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SBP)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.MBE)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.MBE)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Certified)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Certified)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.CertificationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CertificationDate)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.DecertificationDate)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DecertificationDate)
+    </div>
+
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.DecertReason)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DecertReason)
+    </div>
+    <div></div>
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -8,6 +8,7 @@ using ConsultantContractsInternal.Security;
 using System.Web.Caching;
 using ConsultantContractsInternal.Security.Attributes;
 using ConsultantContractsInternal.Models;
+using AHTD.Security.Common;
 
 namespace ConsultantContractsInternal.Controllers
 {
@@ -20,7 +21,7 @@ namespace ConsultantContractsInternal.Controllers
 
         public ActionResult Claims()
         {
-            ViewBag.ClientClaims = CurrentUser.ClientClaims;
+            ViewBag.ClientClaims = CurrentUser.ClientClaims.Where(c => c.ClaimType.Equals(StandardClaimTypes.Role) || c.ClaimType.Equals(StandardClaimTypes.WindowsAccountName));
             ViewBag.CurrentUserRole = CurrentUser.Role;
 
             return PartialView();
@@ -29,7 +30,7 @@ namespace ConsultantContractsInternal.Controllers
         public ActionResult ChangeRole(string newRole)
         {
             Session["UserRole"] = newRole;
-            CurrentUser.Role = newRole;
+            //CurrentUser.Role = newRole;
             return View("Index","Home");
         }
         public JsonResult GetCurrentRole(string userName)

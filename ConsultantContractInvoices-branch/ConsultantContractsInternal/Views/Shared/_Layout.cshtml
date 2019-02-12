@@ -18,7 +18,6 @@
     @Styles.Render("~/Content/site")
     @Styles.Render("~/Styles/CommonCSS")
     @RenderSection("styles", required: false)
-    @Scripts.Render("~/scripts/modernizr")
     <style>
         a.approve-button {
             background: url(@Url.Content("~/Content/images/tick.png")) 6px 4px no-repeat #f3f3f3;
@@ -57,7 +56,7 @@
 </head>
 <body>
     <div id="global-topbar-container">
-        @Html.Hidden("allotmentLookupUrl",Url.Action("GetJobName","AllotmentsLookup"))
+        @Html.Hidden("allotmentLookupUrl", Url.Action("GetJobName", "AllotmentsLookup"))
         <section id="global-topbar">
             <div id="global-userinfo-container">
                 <span id="global-userinfo">
@@ -79,14 +78,14 @@
                 </span>
                 <span class="globalSeparator">|</span>
                 <span id="global-sitemap">Site list <span id="global-sitemap-dropdown">▾</span></span>
-            </div> 
+            </div>
         </section>
         <div id="global-sitemap-container">
             <div id="global-sitemap-flyout" style="display: none;"></div>
         </div>
     </div>
     <header>
-        @if(!(ViewContext.View as RazorView).ViewPath.Contains("AccessDenied"))
+        @if (!(ViewContext.View as RazorView).ViewPath.Contains("AccessDenied"))
         {
             @Html.MvcSiteMap().Menu("DropdownMenuHelperModel", false, true, true)
         }
@@ -101,6 +100,7 @@
     <footer>
         <p>&copy; @DateTime.Now.Year AHTD. All rights reserved.</p>
     </footer>
+    @Scripts.Render("~/scripts/modernizr")
     @Scripts.Render("~/scripts/global")
     @Scripts.Render("~/scripts/site")
     @Scripts.Render("~/scripts/jquery-dropdown")
@@ -110,7 +110,7 @@
         //This needs to be here to be on everypage
         var logErrorUrl = '@Url.Action( "LogJavaScriptError", "Home" )';
         var currentRole = '';
-        
+
         $(
             $("input[id ^= 'activate_']").change(function (e) {
                 var index = this.id.slice(-1);

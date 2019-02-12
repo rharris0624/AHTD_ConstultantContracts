@@ -1,0 +1,324 @@
+﻿@model DBESearch.ViewModels.CompanySearchViewModel
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    @*@Scripts.Render("~/bundles/jqueryui")*@
+
+    <script type="text/javascript">
+        $('#States').multiselect({
+            nonSelectedText: 'Select States',
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            buttonWidth: '400px',
+        });
+
+        $('#OwnerZipCodes').multiselect({
+            nonSelectedText: 'Select Zipcodes',
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            buttonWidth: '400px',
+        });
+
+
+        //Need this to test validation. If validates then call the search functionality.
+        function ValidatePage() {
+            if (!$('#DBE:checkbox').is(':checked') && !$('#ACDBE:checkbox').is(':checked') && !$('#SBE:checkbox').is(':checked') && !$('#MBE:checkbox').is(':checked')) {
+                alert('You must choose at Least one Certification');
+            }
+        };
+
+        var minLength = 2;
+
+        //Generates the NAICS Codes list to choose from
+        function getForm() {
+            $('#dialog').dialog({
+                autoOpen: true,
+                width: 800,
+                height: 400,
+                resizable: true,
+                position: {my: "center", at: "center", of: window},
+                title: 'NAICS Codes',
+                modal: true,
+                open: function (event, ui) {
+                    $(this).load('@Url.Action("PartialForm", "DBECompany")');
+                },
+                click: $("#dialog").on("click", "#NAICSCodesTable tr", function (event) { var rowdata = $(this).children("td").map(function () { return $(this).text();}).get();  $('#NAICS').val(rowdata[0]); }),
+
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    },
+                }
+            });
+        }
+
+        //Generates the Departmental Item Codes list to choose from
+        function getItemCodeForm() {
+            $('#ItemCodedialog').dialog({
+                autoOpen: true,
+                width: 800,
+                height: 400,
+                resizable: true,
+                position: { my: "center", at: "center", of: window },
+                title: 'Item Codes',
+                modal: true,
+                open: function (event, ui) {
+                    $(this).load('@Url.Action("ItemPartialForm", "DBECompany")');
+                },
+                click: $("#ItemCodedialog").on("click", "#ItemCodesTable tr", function (event) { var rowdata = $(this).children("td").map(function () { return $(this).text(); }).get(); $('#Item').val(rowdata[0]); }),
+
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    },
+                }
+            });
+            }
+
+        $('#Search').on('click', function (event) {
+
+            var formdata = {
+                DBE: $('#DBE').is(':checked')
+                , ACDBE: $('#ACDBE').is(':checked')
+                , SBE: $('#SBE').is(':checked')
+                , MBE: $('#MBE').is(':checked')
+                , Company: $('#Company').val()
+                , CompanyId: $('#currentCompanyId').val()
+                , BusinessDescription: $('#BusinessDescription').val()
+                , NAICS: $('#NAICS').val()                               //will become an array, ask Richard about using select2
+                , Item: $('#Item').val()
+                , OwnersFirstName: $('#OwnerFirstName').val()
+                , OwnersLastName: $('#OwnerLastName').val()
+                , Cities: $('#Cities').val()
+                , States: $('#States').val()
+                , OwnerZipCodes: $('#OwnerZipCodes').val()
+                , AreaCode: $('#AreaCode').val()
+                , Counties: $('#Counties').val()
+            }
+            $.ajax({
+                method: 'POST',
+                datatype: 'html',
+                data: formdata,
+                url: '@Url.Action("SearchResults")',
+                success: function (data) {
+                    $('#SearchResultsContainer').html(data);
+                }
+            });
+        });
+
+        //THIS IS IMPORTANT...THE DBA NAMES ARE NOT WORKING IN THE SEARCH RESULTS
+        //need to combine the dba names in this list
+        $("#Company").autocomplete({
+            minLength: 2,
+            delay: 0,
+            source: '@Url.Action("companies", "DBECompany")',
+            select: function (event, ui) {
+                if (ui.item.data) {
+                    $('#currentCompanyId').val(ui.item.data.CompanyId);
+                }
+            },
+            error: function (data) {
+                $("#companyList").removeClass('ui-autocomplete-loading');
+            }
+        }).keypress(function (e) {
+            if (e.which === 13)
+                window.location = '@Url.Action("Index")?q=' + this.value;
+        });
+
+            ///////
+            //allow user to search on known last names for company owners
+        $("#OwnersLastName").autocomplete({
+            minLength: minLength,
+            source: function (request, response) {
+                $.ajax({
+                    cache: 'false',
+                    dataType: "json",
+                    type: 'Get',
+                    url: '/DBECompany/lastName' + '?searchterm=' + $("#OwnersLastName").val(),
+                    success: function (data) {
+                        response(data);
+                    },
+                    error: function (data) {
+                        $("#OwnersLastName").removeClass('ui-autocomplete-loading');
+                    }
+                });
+            }
+        });
+
+        $("#OwnerFirstName").autocomplete({
+            minLength: 2,
+            source: '@Url.Action("firstName","DBECompany")',
+            select: function (event, ui) {
+                if (ui.item.data)
+                    $("#OwnerFirstName").val(ui.item.data);
+            },
+            error: function (data) {
+                $("#OwnerFirstName").removeClass('ui-autocomplete-loading');
+            }
+        }).keypress(function (e) {
+            if (e.which === 13)
+                window.location = '@Url.Action("Index")?q=' + this.value;
+        });
+
+
+        $("#OwnerLastName").autocomplete({
+            minLength: 2,
+            source: '@Url.Action("lastname","DBECompany")',
+            select: function (event, ui) {
+                if (ui.item.data)
+                    $("#OwnerLastName").val(ui.item.data);
+            },
+            error: function (data) {
+                $("#OwnerLastName").removeClass('ui-autocomplete-loading');
+            }
+        }).keypress(function (e) {
+            if (e.which === 13)
+                window.location = '@Url.Action("Index")?q=' + this.value;
+        });
+
+
+        $("#AreaCode").autocomplete({
+            minLength: 2,
+            source: '@Url.Action("GetAreaCode","DBECompany")',
+            select: function (event, ui) {
+                if (ui.item.data)
+                    $("#AreaCode").val(ui.item.data);
+            },
+            error: function (data) {
+                $("#AreaCode").removeClass('ui-autocomplete-loading');
+            }
+        }).keypress(function (e) {
+            if (e.which === 13)
+                window.location = '@Url.Action("Index")?q=' + this.value;
+        });
+
+
+
+        //////////////////////////////////////////////
+        //$("#Select2States").select2();
+        //$("#Select2States").select2({multiple: true});
+        //////////////////////////////////////////////
+        //allow user to search only on cities where we have dbe companies
+        $("#City").autocomplete({
+            delay: 0,
+            minLength: 2,
+            source: '@Url.Action("cities","DBECompany")',
+            select: function (event, ui) {
+                if (ui.item.data)
+                    $("city").val(ui.item.data);
+            },
+            error: function (data) {
+                $("#City").removeClass('ui-autocomplete-loading');
+            }
+        }).keypress(function (e) {
+            if (e.which === 13)
+                window.location = '@Url.Action("Index")?q=' + this.value;
+        });
+    </script>
+}   
+    @ViewBag.message
+    @using (Html.BeginForm("Index", "DBECompany", FormMethod.Post, new { id = "DBESearchForm" }))        {
+        <legend class="display-title">Search Engine</legend>
+        @Html.HiddenFor(model => model.CompanyId, new { id = "currentCompanyId"})
+        <fieldset>
+            <h2>AHTD DBE Company Search</h2>
+            <section>
+                <p>ARDOT'S DBE Search Page</p>
+                <p>Search results may be downloaded to Excel, by clicking the "Download Results to Excel" button after your search results are displayed. To download the full Certification Directory do not enter search criteria, scroll to the bottom of the page and click the "Download Entire Directory to Excel" button.</p>
+                <p>The DBE directory is solely for the purpose of identifying those DBEs that are certified in the State of Arkansas. It is not intended to represent a listing of DBEs deemed eligible to participate on contracts, or to indicate that such DBEs satisfy any requirements which may affect DBEs ability to work on contracts.</p>
+                <a href="http://www.arkansashighways.com/ProgCon/letting/dbedirectory.pdf" , target="_blank">Link to Arkansas PDF</a><br />
+                <a href="https://txdot.txdotcms.com/?TN=txdot" , target="_blank">TxDOT Directory Search Page</a>
+            </section>
+            <div>
+                <h3>Search by Certification Type</h3><p> (Select at least one)</p>
+                <table id="CertificaitonTypes">
+                    <tr>@Html.CheckBoxFor(model => model.DBE, true) @Html.LabelFor(model => model.DBE)</tr>
+                    <tr>@Html.CheckBoxFor(model => model.ACDBE, true)  @Html.LabelFor(model => model.ACDBE)</tr>
+                    <tr>@Html.CheckBoxFor(model => model.SBE, true)    @Html.LabelFor(model => model.SBE)</tr>
+                    <tr>@Html.CheckBoxFor(model => model.M, true)    @Html.LabelFor(model => model.M)</tr>
+                </table>
+            </div>
+            <div class="ui-widget">
+                <H3>Search by Business or the DBA Name:</H3>
+                @Html.LabelFor(model => model.Company)
+                @Html.TextBoxFor(model => model.Company, null, new { @class = "searchBar" })
+                @Html.HiddenFor(model => model.CompanyId)
+            </div>
+            <div class="ui-widget">
+                <h3>Search by Business Description</h3>
+                @Html.Label("Business Description: ")
+                @Html.TextBox("BusinessDescription")
+            </div>
+
+            <h3>Search by NAICS or Departmental Code </h3>
+            <input id="modaldiv" type="button" value="Look up by NAICS Code" onclick="getForm()" />
+            @Html.TextBoxFor(model => model.NAICS)
+
+            <input id="ItemCodemodaldiv" type="button" value="Look up by Item Code" onclick="getItemCodeForm()" />
+            @Html.TextBoxFor(model => model.ItemCode)
+
+            <div id="dialog" style="display:none;"></div>
+            <div id="ItemCodedialog" style="display:none;"></div>
+            <div id="companyDetailDialog" style="display:none;"></div>
+
+            <div>
+                <h3>Search by Contact Person</h3>
+                @Html.LabelFor(model => model.OwnerFirstName, "First Name: ")
+                @Html.TextBoxFor(model => model.OwnerFirstName, null, new { @class = "searchBar" })
+                @Html.Hidden("SearchOwnerFirstName")
+                @Html.LabelFor(model => model.OwnerLastName, "Last Name: ")
+                @Html.TextBoxFor(model => model.OwnerLastName, null, new { @class = "searchBar" })
+                @Html.Hidden("SearchOwnerLastName")
+            </div>
+
+            <div>
+                <h3>Search by Company Location</h3>
+                @Html.LabelFor(model => model.Cities)
+                @Html.TextBoxFor(model => model.Cities, null, new { @class = "searchBar" })<br />
+                @*@Html.Label("State")   *@
+                @Html.DropDownListFor(model => model.States, new MultiSelectList(ViewBag.StateList), "Select Many", new { @Name="States[]", Multiple = true, Class="Form-Control" })<br />
+
+                @*        <select multiple="" name="tags[]" id="Select2States" style="width:700px">
+                    <option value ="AL">Alabama</option>
+                    <option value ="AR">Arkansas</option>
+                    <option value ="AZ">Arizona</option>
+                    <option value ="AK">Alaska</option>
+                    <option value ="WA">Washington</option>
+                </select>*@
+
+                @Html.Label("Zip Code")
+                @Html.DropDownListFor(model => model.OwnerZipCodes, new MultiSelectList(ViewBag.ZipCodeList, "Select Many"), new {@Name="OwnerZipCodes[]", Multiple=true, @class="Form-Control" })
+                @*<select id="ddlzipcodes" style="display:inline">
+                    @foreach (var zip in ViewBag.ZipCodeList)
+                    {
+                        <option value='@zip'>@zip</option>
+                    }
+                </select>
+                @Html.DropDownListFor(x => x.Zip, new MultiSelectList(ViewBag.ZipCodeList))*@
+
+                @*@Html.DropDownList("Zip",new SelectList(ViewBag.ZipCodeList),"Select ZipCode")*@
+
+                @*@Html.ListBoxFor(x => x.Zip, new MultiSelectList(ViewBag.ZipCodeList))*@<br />
+
+                @Html.Label("Area Code")@Html.TextBoxFor(model => model.AreaCode, null, new { @class = "searchBar" })<br />
+                @Html.Label("County")@Html.TextBoxFor(model => model.County, null, new { @class = "searchBar" })
+            </div>
+
+            @*<div>
+                <h3>Search by Certification Type</h3>(Select at least one)
+
+                    @Html.CheckBox("ACDBE")@Html.Label("Airport Concessionaire Disadvantaged Business Enterprise (ACDBE)")
+                    @Html.CheckBox("DBE")@Html.Label("Disadvantaged Business Enterprise (DBE)")
+                    @Html.CheckBox("SBE")@Html.Label("Small Business Enterprise-Nathan (SBE)")
+            </div>   *@
+            <div style="text-align: center">
+                @Html.Label("Search Companies Meeting Criteria")
+                @*<input type="submit" value="Search" />*@
+                <input id="Search" type="button" value="Search" />
+                <input id="Validate" type="button" value="Validate" onclick="ValidatePage()" />
+            </div>
+            <div id="SearchResultsContainer"></div>
+        </fieldset>
+    }

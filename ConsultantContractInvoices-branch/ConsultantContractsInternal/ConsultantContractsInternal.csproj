@@ -60,9 +60,8 @@
       <HintPath>..\packages\AHTDAppLogWebClient.1.0.4853.14032\lib\net40\AHTD.Logging.WebClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AHTD.Security.Web, Version=1.0.5289.21130, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AHTDSTSWebClient.1.0.5289.21130\lib\net40\AHTD.Security.Web.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AHTD.Security.Web, Version=1.0.6976.25438, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AHTD.Security.Web.5.0.0\lib\AHTD.Security.Web.dll</HintPath>
     </Reference>
     <Reference Include="AHTD.Web, Version=1.0.5490.25537, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AHTDWeb.1.0.5490.25537\lib\net40\AHTD.Web.dll</HintPath>
@@ -126,8 +125,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IdentityModel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IdentityModel.6.1.7600.16394\lib\net35\Microsoft.IdentityModel.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\AHTD.Security.Web.5.0.0\lib\Microsoft.IdentityModel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ReportViewer.Common.v12.12.0.0.1\lib\Microsoft.ReportViewer.Common.dll</HintPath>
@@ -268,6 +266,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\ValidateJsonAntiForgeryTokenAttribute.cs" />
+    <Compile Include="ClaimTypes.cs" />
     <Compile Include="Controllers\AllotmentsLookupController.cs" />
     <Compile Include="Controllers\ApplicationSecurityController.cs" />
     <Compile Include="Controllers\ConsultantsController.cs" />
@@ -923,8 +922,6 @@
     <Content Include="Reports\Main.Master" />
     <Content Include="Reports\ReportTemplate.aspx" />
     <Content Include="Reports\site.Master" />
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Properties\PublishProfiles\devweb4.pubxml" />
     <None Include="Properties\PublishProfiles\WebDeployProfile.pubxml" />
     <None Include="Scripts\jquery-1.11.2.intellisense.js" />
@@ -997,10 +994,6 @@
     <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.ascx" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.ascx" />
     <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
@@ -1088,6 +1081,12 @@
     <Content Include="Views\Shared\_paging.cshtml" />
     <Content Include="Views\Report\ReportTemplate.cshtml" />
     <Content Include="Views\Report\ReportPage.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.UserTest.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1110,6 +1109,15 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UserTest|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

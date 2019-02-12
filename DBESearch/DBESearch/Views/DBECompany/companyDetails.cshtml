@@ -1,0 +1,183 @@
+﻿@model IEnumerable<DBESearch.Models.CompanyViewModels>
+@using DBESearch.Models;
+@{
+    Layout = null;
+}
+
+<style>
+    table {
+        border: 1px solid black;
+        background-color: white;
+        border-collapse: collapse;
+        width: 75%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        height: 50px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    tr:hover {
+        background-color: #d1d1d1
+    }
+</style>
+@*<table>
+    @foreach (var item in Model) {
+    <tr><td>Business Name: </td><td>@Html.DisplayFor(modelItem => item.CompanyName)</td></tr>
+    <tr><td>Address        </td><td>@Html.DisplayFor(modelItem => item.CompanyAddress),@Html.DisplayFor(modelItem => item.City) , @Html.DisplayFor(modelItem => item.State)@Html.DisplayFor(modelItem => item.Zip)</td></tr>
+    <tr><td>Phone          </td><td>@Html.DisplayFor(modelItem => item.Phone)</td></tr>
+    <tr><td>FAX            </td><td>@Html.DisplayFor(modelItem => item.Fax)</td></tr>
+    <tr><td>Alt. FAX       </td><td>@Html.DisplayFor(modelItem => item.AltFax)</td></tr>
+    <tr><td>Email          </td><td>@Html.DisplayFor(modelItem => item.Email)</td></tr>
+    <tr><td>Email          </td><td>@Html.DisplayFor(modelItem => item.AltEmail)</td></tr>
+    <tr><td>County         </td><td>CountyName ( @Html.DisplayFor(modelItem => item.State))</td></tr>
+
+    }
+    </table>*@
+
+
+@if (Request.UrlReferrer != null)
+{
+    <a onclick="history.go(-1); return false;" href="#">Modify Search Criteria</a><br />
+    <input type="button" onclick="history.go(-1); return false;" value="Modify Search Criteria" />
+}
+
+
+
+<h2>Company Details</h2>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DBAName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.District)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DBE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ACDBE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SBP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MBE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Certified)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CertificationDate)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DBAName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.District)
+            </td>
+            <td>
+                @if (item.DBE.HasValue && item.DBE.Value)
+                {<img src="~/context/images/tick.png" /> }
+                @*@Html.DisplayFor(modelItem => item.DBE)*@
+            </td>
+            <td>
+                @if (item.ACDBE.HasValue && item.ACDBE.Value)
+                {<img src="~/context/images/tick.png" /> }
+                @*@Html.DisplayFor(modelItem => item.ACDBE)*@
+            </td>
+            <td>
+                @if (item.SBP.HasValue && item.SBP.Value)
+                {<img src="~/context/images/tick.png" /> }
+                @*@Html.DisplayFor(modelItem => item.SBP)*@
+            </td>
+            <td>
+                @if (item.MBE.HasValue && item.MBE.Value)
+                {<img src="~/context/images/tick.png" /> }
+                @*@Html.DisplayFor(modelItem => item.MBE)*@
+            </td>
+            <td>
+                @if (item.Certified.HasValue && item.Certified.Value)
+                {<img src="~/context/images/tick.png" /> }
+                @*@Html.DisplayFor(modelItem => item.Certified)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CertificationDate)
+            </td>
+        </tr>@*
+            foreach ( var naics in item.CompanyNAICSCodesList)
+             {
+                 <tr><td>@naics.NAICSCode</td><td>@naics.Description</td></tr>
+             }
+            foreach (var depcodes in item.CompanyItemCodesList)
+            {
+                <tr>
+                    <td>@depcodes.ItemCode</td><td>@depcodes.Description</td><td>@depcodes.Comments</td>
+                </tr>
+            }*@
+    }
+</table>
+<br /><br /><br />
+<h3>Services provided. Listed by NAICS code and descriptio.</h3>
+<table>
+    @foreach (var item in Model)
+    {
+        foreach (var naics in item.CompanyNAICSCodesList)
+        {
+            <tr><td>@naics.NAICSCode</td><td>@naics.Description</td></tr>
+        }
+    }
+</table>
+<br /><br /><br />
+<h3>Services provided. Listed by ARDOT departmental codes and description.</h3>
+<table>
+    @foreach (var item in Model)
+    {
+        foreach (var depcodes in item.CompanyItemCodesList)
+        {
+            <tr>
+                <td>@depcodes.ItemCode</td>
+                <td>@depcodes.Description</td>
+                <td>@depcodes.Comments</td>
+            </tr>
+        }
+    }
+</table>

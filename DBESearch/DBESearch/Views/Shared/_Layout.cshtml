@@ -1,0 +1,77 @@
+﻿@using System.Web.Mvc.Html
+@using System.Web.Optimization
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>DBE Directory</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/themes/base")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/global")
+    @Styles.Render("~/Content/themes/metro/jquery-dropdown")
+    @Styles.Render("~/Content/themes/base/jqueryui")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Styles/CommonCSS")
+    @RenderSection("styles", required: false)
+    <style>
+        a.approve-button {
+            background: url(@Url.Content("~/Content/tick.png")) 6px 4px no-repeat #f3f3f3;
+            padding-left: 30px;
+        }
+
+        a.reject-button {
+            background: url(@Url.Content("~/Content/delete_red.png")) 6px 5px no-repeat #f3f3f3;
+            padding-left: 30px;
+        }
+        a.save-button {
+            background: url(@Url.Content("~/Content/Save3.png")) 6px 4px no-repeat #f3f3f3 ;
+            width:50px;
+            padding-left: 30px;
+        }
+
+        a.Edit-button {
+            background: url(@Url.Content("~/Content/edit.png")) 6px 4px no-repeat #f3f3f3 ;
+            width:40px;
+            padding-left: 30px;
+        }
+        .searchBar {
+            height: 22px;
+            background-image: url(@Url.Content("~/Content/Apps-Search-Log-icon.png");
+            background-size: 35px;
+            background-repeat: no-repeat;
+            background-position: left;
+            padding-left: 35px;
+            display: inline;
+            width: 450px !important;
+            font-size: 16px;
+            border: 2px solid gray;
+            background-position: -2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="global-topbar-container">
+        <header>
+            <div>
+                @*<span id="global-topbar"><img src="@Url.Content("~/Images/ahtd_topimage.png")" /></span>*@
+            </div>
+        </header>
+    </div>
+    <section id="content">
+        @RenderBody()
+    </section>
+    <footer>
+        <p class="noprint">&copy; @DateTime.Now.Year ARDOT. All rights reserved.</p>
+    </footer>
+    @Scripts.Render("~/scripts/jquery")
+    @Scripts.Render("~/scripts/jquery-dropdown")
+    @Scripts.Render("~/scripts/jqueryui")
+    @Scripts.Render("~/scripts/Jqueryval")
+    @Scripts.Render("~/scripts/modernizr")
+    @Scripts.Render("~/scripts/bootstrap")
+    @Scripts.Render("~/scripts/site")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

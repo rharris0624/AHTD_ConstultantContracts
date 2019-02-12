@@ -1,0 +1,54 @@
+﻿@*@model DBE.Models.DBECompany[]*@
+@model IEnumerable<DBESearch.Models.DBECompany>
+@using DBESearch.Models;
+
+<style>
+    table {
+        border: 1px solid black;
+        background-color: white;
+        border-collapse: collapse;
+        width: 75%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        height: 50px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    tr:hover {
+        background-color: #d1d1d1;
+        cursor: pointer;
+    }
+</style>
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+<table id="SearchResults" style="margin: 0px auto;">
+    <tr><td>Company</td><td>City</td></tr>
+    @foreach (var company in Model)
+    {
+        <tr>
+            <td id="companyid" style="display:none;">@company.CompanyId</td>
+            <td>@company.CompanyName</td>
+            <td>@company.CompanyAddress , @company.City, @company.State @company.zipCode</td>
+            <td>@company.Phone</td>
+            <td id="url">@Html.ActionLink(@company.CompanyName, "companydetails", new { id = company.CompanyId });</td>
+        </tr>
+    }
+</table>
+
+
+<script type="text/javascript">
+
+    //$('table').find('tr').click(function () {alert($(this).children("td:first").text()); });
+</script>

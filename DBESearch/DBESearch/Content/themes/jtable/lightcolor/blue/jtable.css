@@ -1,0 +1,84 @@
+﻿/******************************************************************************
+ * Name        : jtable jQuery plug-in 'Light color - Orange' theme
+ * Author      : Halil İbrahim KALKAN
+ * Description : This file defines 'orange' colors for jtable light color theme.
+ *****************************************************************************/
+
+/* IMPORTS *******************************************************************/
+
+@import '../jtable_lightcolor_base.css';
+
+/* MAIN ELEMENTS *************************************************************/
+
+/* A div that contains title of the table (if any title supplied in options) */
+div.jtable-title
+{
+	background-color: #00478F;
+	border-color: #00478F;
+	padding: 0;
+}
+
+div.jtable-title-text 
+{
+	color: #fff;
+	font-size:1.7em;
+	font-weight: normal;
+	text-align: center;
+}
+
+/* PAGING ********************************************************************/
+
+/* Active/current page link */
+.jtable-page-number-active
+{
+	background-color: #00478F;
+	border-color: #123458;
+}
+
+/* ROWS **********************************************************************/
+
+/* Selected row */
+table.jtable tr.jtable-row-selected,
+table.jtable tr.jtable-row-selected:hover
+{
+	background-color: #5f9cdc;
+}
+
+/* ROW ANIMATIONS ***********************************************************/
+
+/* A 'new created row' style for animation */
+table.jtable tr.jtable-row-created
+{
+	background-color: #5f9cdc;
+}
+
+/* An 'updated row style' for animation */
+table.jtable tr.jtable-row-updated
+{
+	background-color: #5f9cdc;
+}
+
+/* A 'deleting row style' for animation */
+table.jtable tr.jtable-row-deleting
+{
+	background-color: #5f9cdc;
+}
+
+/* COMMAND BUTTONS ***********************************************************/
+
+/* 'add new record' link */
+span.jtable-add-record a
+{
+	color: #00478F;
+}
+
+/* BUSY MESSAGE AND PANEL ****************************************************/
+
+/* A div that contains a message while table UI is busy */
+div.jtable-busy-message
+{
+	border-color: transparent;
+	background: url('loading.gif') no-repeat;
+	background-color: #00478F;
+	background-position: 5px;
+}

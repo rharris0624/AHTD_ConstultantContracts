@@ -23,6 +23,8 @@ using ArDOT_UserProv.Client.API;
 using ConsultantContractsInternal.Security.Attributes;
 using System.Web.Caching;
 using System.Configuration;
+using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace ConsultantContractsInternal.Controllers
 {
@@ -34,7 +36,7 @@ namespace ConsultantContractsInternal.Controllers
         {
             using (var context = new ConsultantContractsEntities())
             {
-                _AvailableDivs = UserProvHelpers.AvailableDivisions(context, CurrentUser.UserName);
+                _AvailableDivs = UserProvHelpers.AvailableDivisions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\",""));
             }
         }
         // Variable that holds the file
@@ -389,7 +391,7 @@ namespace ConsultantContractsInternal.Controllers
                 var comments = context.CommentsHistories.Create();
                 comments.CommentNo = Convert.ToString(contractCode);
                 comments.Type = "Contract";
-                comments.UserId = CurrentUser.UserName;
+                comments.UserId = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                 comments.DateEntered = DateTime.Now;
                 comments.Comment = text;
 
@@ -780,7 +782,7 @@ namespace ConsultantContractsInternal.Controllers
             {
                 var newContract = model.PopulateContract(context.Contracts.Create());
                 newContract.LastUpdateDate = DateTime.Now;
-                newContract.LastUpdateUser = CurrentUser.UserName;
+                newContract.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
                 var workTypeIdList = model.WorkTypes.Select(w => w.WorkTypeId);
 
                 var workTypes =
@@ -793,7 +795,7 @@ namespace ConsultantContractsInternal.Controllers
                         {
                             var s = sc.ToContractSubConsultant();
                             s.LastUpdateDate = DateTime.Now;
-                            s.LastUpdateUser = CurrentUser.UserName;
+                            s.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
 
                             if (sc.SalaryRates != null)
                             {
@@ -801,7 +803,7 @@ namespace ConsultantContractsInternal.Controllers
                                 {
                                     var sr = srvm.ToSubConSalaryRate();
                                     sr.SubConsultantId = s.SubConsultantId;
-                                    sr.LastUpdateUser = CurrentUser.UserName;
+                                    sr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
                                     sr.LastUpdateDate = DateTime.Now;
 
                                     s.SubConsultantSalaryRates.Add(sr);
@@ -813,7 +815,7 @@ namespace ConsultantContractsInternal.Controllers
                                 {
                                     var sr = srvm.ToSubConServiceRate();
                                     sr.SubConsultantId = s.SubConsultantId;
-                                    sr.LastUpdateUser = CurrentUser.UserName;
+                                    sr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
                                     sr.LastUpdateDate = DateTime.Now;
 
                                     s.SubConsultantServiceRates.Add(sr);
@@ -828,7 +830,7 @@ namespace ConsultantContractsInternal.Controllers
                     {
                         var s = sr.ToSalaryRate();
                         s.LastUpdateDate = DateTime.Now;
-                        s.LastUpdateUser = CurrentUser.UserName;
+                        s.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
 
                         newContract.SalaryRates.Add(s);
                     });
@@ -840,7 +842,7 @@ namespace ConsultantContractsInternal.Controllers
                     {
                         var s = sr.ToServiceRate();
                         s.LastUpdateDate = DateTime.Now;
-                        s.LastUpdateUser = CurrentUser.UserName;
+                        s.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
 
                         newContract.ServiceRates.Add(s);
                     });
@@ -852,7 +854,7 @@ namespace ConsultantContractsInternal.Controllers
                     {
                         var a = avm.ToAllotment();
                         a.LastUpdateDate = DateTime.Now;
-                        a.LastUpdateUser = CurrentUser.UserName;
+                        a.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
 
                         newContract.ContractAllotments.Add(a);
                     });
@@ -864,7 +866,7 @@ namespace ConsultantContractsInternal.Controllers
                     {
                         var a = avm.ToAllotment();
                         a.LastUpdateDate = DateTime.Now;
-                        a.LastUpdateUser = CurrentUser.UserName;
+                        a.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
 
                         newContract.ContractAllotments.Add(a);
                     });
@@ -879,7 +881,7 @@ namespace ConsultantContractsInternal.Controllers
                     var comments = context.CommentsHistories.Create();
                     comments.CommentNo = Convert.ToString(newContract.ContractCode);
                     comments.Type = "Contract";
-                    comments.UserId = CurrentUser.UserName;
+                    comments.UserId = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
                     comments.DateEntered = DateTime.Now;
                     comments.Comment = _remarks;
 
@@ -973,7 +975,7 @@ namespace ConsultantContractsInternal.Controllers
 
                 //JL40985  2/9/2017  Added these 6 parameters.
                 contract.LastUpdateDate = DateTime.Now;
-                contract.LastUpdateUser = CurrentUser.UserName;
+                contract.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", "");
                 contract.HomeOfficeOverheadRateMax = model.HomeOfficeOverheadRateMax != null ? Math.Round((decimal)model.HomeOfficeOverheadRateMax, 3) : 0.00m;
                 contract.FieldServiceOverheadRateMax = model.FieldServiceOverheadRateMax != null ? Math.Round((decimal)model.FieldServiceOverheadRateMax, 3) : 0.00m;
                 contract.FCCM = model.FCCM != null ? Math.Round((decimal)model.FCCM, 3) : 0.00m;
@@ -1023,7 +1025,7 @@ namespace ConsultantContractsInternal.Controllers
         {
             using (var context = new ConsultantContractsEntities())
             {
-                IEnumerable<int> availableDivs = UserProvHelpers.AvailableDivisions(context, CurrentUser.UserName);
+                IEnumerable<int> availableDivs = UserProvHelpers.AvailableDivisions(context, Regex.Replace(Thread.CurrentPrincipal.Identity.Name, @".*\\", ""));
                 List<Contract> r = null;
 
                 if (String.IsNullOrWhiteSpace(term))

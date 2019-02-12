@@ -11,9 +11,9 @@
 	<tr>
 	   @{i++;}
         @if (@i == 1) { isChecked = "checked"; } else { isChecked = ""; }
-		<td> @if( @i > 1){<input type="radio" name="role" checked="@isChecked" id="activate_@(i)" data-value="@item.Name"/>}</td>
+		<td> @if( @i > 1){<input type="radio" name="role" checked="@isChecked" id="activate_@(i)" data-value="@item.Value"/>}</td>
 		<td style="font-weight: bold;">@item.ClaimType</td>
-		<td>@item.Name</td>
+		<td>@item.Value</td>
 	</tr>
 </text>
 }

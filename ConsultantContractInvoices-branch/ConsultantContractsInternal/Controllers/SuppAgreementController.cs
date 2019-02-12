@@ -14,6 +14,8 @@ using ConsultantContractsInternal.Security;
 using ConsultantContractsInternal.Security.Attributes;
 using System.Globalization;
 using Elmah;
+using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace ConsultantContractsInternal.Controllers
 {
@@ -60,7 +62,7 @@ namespace ConsultantContractsInternal.Controllers
 
                 supp.Remarks = text;
                 supp.RemarkLastEditDate = DateTime.Now;
-                supp.RemarkLastEditUser = CurrentUser.UserName;
+                supp.RemarkLastEditUser = Regex.Replace(@"ahtd\something", @".*\\", "");
 
                 context.SaveChanges();
 
@@ -149,9 +151,9 @@ namespace ConsultantContractsInternal.Controllers
 
                     //suppagreement audit
                     newSuppAgreement.LastUpdateDate = DateTime.Now;
-                    newSuppAgreement.LastUpdateUser = CurrentUser.UserName;
+                    newSuppAgreement.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                     contract.LastUpdateDate = DateTime.Now;
-                    contract.LastUpdateUser = CurrentUser.UserName;
+                    contract.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                     contract.CompletionDate = model.CompletionDate != null ? model.CompletionDate : DateTime.MinValue;
 
                     //check for subcon on vm
@@ -164,7 +166,7 @@ namespace ConsultantContractsInternal.Controllers
                             //get subcon entity
                             var sc = subcon.ToSuppSubConsultant();
                             sc.LastUpdateDate = DateTime.Now;
-                            sc.LastUpdateUser = CurrentUser.UserName;
+                            sc.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                             //try and get subcon on contract
                             var sccheck = context.ContractSubConsultants
@@ -222,7 +224,7 @@ namespace ConsultantContractsInternal.Controllers
                                 }
                             }
                             sccheck.LastUpdateDate = DateTime.Now;
-                            sccheck.LastUpdateUser = CurrentUser.UserName;
+                            sccheck.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                             //check for salary rates on current subcon
                             if (subcon.SalaryRates != null)
@@ -235,7 +237,7 @@ namespace ConsultantContractsInternal.Controllers
                                         var s = sr.ToSubConSalaryRate();
                                         s.SubConsultantId = subcon.ConsultantId;
                                         s.LastUpdateDate = DateTime.Now;
-                                        s.LastUpdateUser = CurrentUser.UserName;
+                                        s.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                                         //add to supp subcon entity
                                         sc.SuppSubConsultantSalaryRates.Add(s);
@@ -256,7 +258,7 @@ namespace ConsultantContractsInternal.Controllers
                                                 csr.RateMax = sr.RateMax;
                                                 csr.RateMin = sr.RateMin;
                                                 csr.LastUpdateDate = DateTime.Now;
-                                                csr.LastUpdateUser = CurrentUser.UserName;
+                                                csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                             }
                                         }
                                         else // Create Salary Rate
@@ -270,7 +272,7 @@ namespace ConsultantContractsInternal.Controllers
                                             csr.RateMin = sr.RateMin;
                                             csr.RateMinOrig = sr.RateMin;
                                             csr.LastUpdateDate = DateTime.Now;
-                                            csr.LastUpdateUser = CurrentUser.UserName;
+                                            csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                             sccheck.SubConsultantSalaryRates.Add(csr);
                                         }
                                     }
@@ -288,7 +290,7 @@ namespace ConsultantContractsInternal.Controllers
                                         var s = sr.ToSubConServiceRate();
                                         s.SubConsultantId = subcon.ConsultantId;
                                         s.LastUpdateDate = DateTime.Now;
-                                        s.LastUpdateUser = CurrentUser.UserName;
+                                        s.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                                         //add to supp subcon
                                         sc.SuppSubConsultantServiceRates.Add(s);
@@ -307,7 +309,7 @@ namespace ConsultantContractsInternal.Controllers
                                                 csr.RateMax = sr.RateMax;
                                                 csr.RateMin = sr.RateMin;
                                                 csr.LastUpdateDate = DateTime.Now;
-                                                csr.LastUpdateUser = CurrentUser.UserName;
+                                                csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                             }
                                         }
                                         else // Create
@@ -321,7 +323,7 @@ namespace ConsultantContractsInternal.Controllers
                                             csr.RateMin = sr.RateMin;
                                             csr.RateMinOrig = sr.RateMin;
                                             csr.LastUpdateDate = DateTime.Now;
-                                            csr.LastUpdateUser = CurrentUser.UserName;
+                                            csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                             sccheck.SubConsultantServiceRates.Add(csr);
                                         }
                                     }
@@ -342,7 +344,7 @@ namespace ConsultantContractsInternal.Controllers
                             {
                                 var s = sr.ToSalaryRate();
                                 s.LastUpdateDate = DateTime.Now;
-                                s.LastUpdateUser = CurrentUser.UserName;
+                                s.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                                 newSuppAgreement.SuppSalaryRates.Add(s);
 
@@ -360,7 +362,7 @@ namespace ConsultantContractsInternal.Controllers
                                         csr.RateMax = sr.RateMax;
                                         csr.RateMin = sr.RateMin;
                                         csr.LastUpdateDate = DateTime.Now;
-                                        csr.LastUpdateUser = CurrentUser.UserName;
+                                        csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                     }
                                 }
                                 else // Create Salary Rate
@@ -370,7 +372,7 @@ namespace ConsultantContractsInternal.Controllers
                                     csr.RateMax = sr.RateMax;
                                     csr.RateMin = sr.RateMin;
                                     csr.LastUpdateDate = DateTime.Now;
-                                    csr.LastUpdateUser = CurrentUser.UserName;
+                                    csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                     contract.SalaryRates.Add(csr);
                                 }
                             }
@@ -387,7 +389,7 @@ namespace ConsultantContractsInternal.Controllers
                             {
                                 var s = sr.ToServiceRate();
                                 s.LastUpdateDate = DateTime.Now;
-                                s.LastUpdateUser = CurrentUser.UserName;
+                                s.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                                 newSuppAgreement.SuppServiceRates.Add(s);
 
@@ -405,7 +407,7 @@ namespace ConsultantContractsInternal.Controllers
                                         csr.RateMax = sr.RateMax;
                                         csr.RateMin = sr.RateMin;
                                         csr.LastUpdateDate = DateTime.Now;
-                                        csr.LastUpdateUser = CurrentUser.UserName;
+                                        csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                     }
                                 }
                                 else // Create
@@ -415,7 +417,7 @@ namespace ConsultantContractsInternal.Controllers
                                     csr.RateMax = sr.RateMax;
                                     csr.RateMin = sr.RateMin;
                                     csr.LastUpdateDate = DateTime.Now;
-                                    csr.LastUpdateUser = CurrentUser.UserName;
+                                    csr.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
                                     contract.ServiceRates.Add(csr);
                                 }
                             }
@@ -432,7 +434,7 @@ namespace ConsultantContractsInternal.Controllers
                             {
                                 var a = avm.ToAllotment();
                                 a.LastUpdateDate = DateTime.Now;
-                                a.LastUpdateUser = CurrentUser.UserName;
+                                a.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                                 newSuppAgreement.SuppAllotments.Add(a);
 
@@ -455,7 +457,7 @@ namespace ConsultantContractsInternal.Controllers
                             {
                                 var a = avm.ToAllotment();
                                 a.LastUpdateDate = DateTime.Now;
-                                a.LastUpdateUser = CurrentUser.UserName;
+                                a.LastUpdateUser = Regex.Replace(Thread.CurrentPrincipal.Identity.Name,@".*\\","");
 
                                 newSuppAgreement.SuppAllotments.Add(a);
 
